@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personality Orientation Test | VibeHub Club</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        :root {
+            --radio-dot-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27rgb(29,26,21)%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3ccircle cx=%278%27 cy=%278%27 r=%273%27/%3e%3c/svg%3e');
+        }
+        .custom-radio:checked {
+            background-image: var(--radio-dot-svg);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 md:px-20 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg">
+<span class="material-symbols-outlined text-slate-900">explore</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">VibeHub Club</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="home.html">Home</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="event.html">Events</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="ABOUT.html">About</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary transition-colors text-sm font-medium" href="adminpanel.html">Admin</a>
+</nav>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="Student profile avatar with friendly smile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcbf7SSy9E5nxh3CEKbceAfs3kiWAAX16UYkMTC-r2jv4-aui3L2RhpNv-rbGx4_FrdSOdYk0BjKit29V0S28TtqjAqKj5bjaAyVNhNwJtu3eMn4LdxwPKsd0n21oToZWbiM-qXEkd4kSeFagzKzooFMG3Bv8ZfQlROWVWLqLsKnURLQhcnNignZZrx6QLPUE6VtQfHo3wqwHlUjsLfJoEPUQ7Y9_lrmx0GXahfLAcEJ3Tv7fJ4Kh6CGvzmKoROZeGpvEdlQXgi5GT");'></div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex flex-1 justify-center py-10 px-4">
+<div class="layout-content-container flex flex-col max-w-[800px] flex-1">
+<!-- Progress Bar Component -->
+<div class="flex flex-col gap-4 mb-10 bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex gap-6 justify-between items-end">
+<div class="flex flex-col">
+<span class="text-primary font-bold text-xs uppercase tracking-widest mb-1">Current Progress</span>
+<p class="text-slate-900 dark:text-white text-lg font-bold">Step 3 of 8</p>
+</div>
+<p class="text-slate-900 dark:text-white text-sm font-bold bg-primary px-2 py-1 rounded">35%</p>
+</div>
+<div class="rounded-full bg-slate-100 dark:bg-slate-800 h-3 overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 35%;"></div>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">psychology</span>
+                            Personality Orientation Test
+                        </p>
+</div>
+<!-- Question Header -->
+<div class="flex flex-col gap-4 mb-8">
+<h1 class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-tight">Which environment fuels your energy the most?</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg">Select the option that feels most natural to you. There are no wrong answers.</p>
+</div>
+<!-- Multiple Choice Options -->
+<div class="flex flex-col gap-4 mb-10">
+<!-- Option 1 -->
+<label class="group relative flex items-center gap-4 rounded-xl border-2 border-solid border-slate-200 dark:border-slate-800 p-6 cursor-pointer hover:border-primary dark:hover:border-primary/50 transition-all bg-white dark:bg-slate-900/20">
+<input checked="" class="custom-radio h-6 w-6 border-2 border-slate-300 dark:border-slate-700 bg-transparent text-transparent checked:border-slate-900 dark:checked:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 transition-colors" name="orientation-test" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-normal">Competitive team environments where results matter</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">Focus on performance, discipline, and physical excellence</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">sports_kabaddi</span>
+</label>
+<!-- Option 2 -->
+<label class="group relative flex items-center gap-4 rounded-xl border-2 border-solid border-slate-200 dark:border-slate-800 p-6 cursor-pointer hover:border-primary dark:hover:border-primary/50 transition-all bg-white dark:bg-slate-900/20">
+<input class="custom-radio h-6 w-6 border-2 border-slate-300 dark:border-slate-700 bg-transparent text-transparent checked:border-slate-900 dark:checked:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 transition-colors" name="orientation-test" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-normal">Creative workshops with collaborative brainstorming</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">Focus on artistic expression, storytelling, and cultural exchange</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">palette</span>
+</label>
+<!-- Option 3 -->
+<label class="group relative flex items-center gap-4 rounded-xl border-2 border-solid border-slate-200 dark:border-slate-800 p-6 cursor-pointer hover:border-primary dark:hover:border-primary/50 transition-all bg-white dark:bg-slate-900/20">
+<input class="custom-radio h-6 w-6 border-2 border-slate-300 dark:border-slate-700 bg-transparent text-transparent checked:border-slate-900 dark:checked:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 transition-colors" name="orientation-test" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-normal">Solo deep-work sessions for personal projects</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">Focus on building your own vision, research, and strategy</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">self_improvement</span>
+</label>
+<!-- Option 4 -->
+<label class="group relative flex items-center gap-4 rounded-xl border-2 border-solid border-slate-200 dark:border-slate-800 p-6 cursor-pointer hover:border-primary dark:hover:border-primary/50 transition-all bg-white dark:bg-slate-900/20">
+<input class="custom-radio h-6 w-6 border-2 border-slate-300 dark:border-slate-700 bg-transparent text-transparent checked:border-slate-900 dark:checked:border-primary focus:outline-none focus:ring-0 focus:ring-offset-0 transition-colors" name="orientation-test" type="radio"/>
+<div class="flex grow flex-col">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-normal">Leading a diverse group towards a common goal</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">Focus on leadership, management, and entrepreneurial growth</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">groups</span>
+</label>
+</div>
+<!-- Navigation Buttons -->
+<div class="flex justify-between items-center pt-6 border-t border-slate-200 dark:border-slate-800">
+<button class="flex items-center gap-2 min-w-[120px] cursor-pointer justify-center rounded-lg h-14 px-6 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-base font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+<span>Previous</span>
+</button>
+<a href=\"mbtiresult.html\" class=\"flex items-center gap-2 min-w-[120px] cursor-pointer justify-center rounded-lg h-14 px-8 bg-primary text-slate-900 text-base font-bold hover:brightness-95 transition-all shadow-lg shadow-primary/20\">
+<span>Next Step</span>
+<span class=\"material-symbols-outlined\">arrow_forward</span>
+</a>
+</div>
+<!-- Help Text -->
+<div class="mt-12 text-center">
+<p class="text-slate-400 text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-xs">info</span>
+                            Your progress is saved automatically
+                        </p>
+</div>
+</div>
+</main>
+<!-- Footer Section -->
+<footer class="mt-auto py-8 px-6 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-[800px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 dark:text-slate-400 text-xs">
+<p>© 2024 VibeHub Club. Empowering university students.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

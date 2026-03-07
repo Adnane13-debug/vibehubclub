@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Events Exploration | VibeHub Club</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+             colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/20 px-6 md:px-20 py-4 bg-background-light dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-slate-900 dark:text-slate-100">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-slate-900">
+<span class="material-symbols-outlined">hub</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">VibeHub Club</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-sm font-medium transition-colors" href="home.html">Home</a>
+<a class="text-slate-900 dark:text-slate-100 text-sm font-semibold border-b-2 border-primary" href="event.html">Events</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-sm font-medium transition-colors" href="ABOUT.html">About</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-sm font-medium transition-colors" href="mbti.html">MBTI Test</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden lg:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-200/50 dark:bg-slate-800/50">
+<div class="text-slate-500 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border-none bg-transparent focus:ring-0 placeholder:text-slate-500 px-4 pl-2 text-sm font-normal" placeholder="Search events..." value=""/>
+</div>
+</label>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-slate-900 text-sm font-bold transition-transform hover:scale-105 active:scale-95">
+                        Profile
+                    </button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/30" data-alt="Student profile avatar smiling clearly" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBF8hOXJorGRuL7EdKD6Cj2eDr8Uviiw-nYkzKp4ExAP4SJBC9RHJLJzs3XHmuIvgP4qR8xEmL1b1qW0crnslhmF89gPPIaHRwPNU-8Y9qw1lqq-cncoI6tkW_E6sdz8K6-3iU7P6H_KTRWMXk2gHO2XNzMMfd9erW8CwImvmzy7OKGTWJh25NFOHBS5886a0AYJbRdUp0w08O7qbj_7JEQPq_E_C9jrJaG4JtXRO21nD9hpulJNRyE_TcgXEi5dPYFMN0E_G9MkXW8");'></div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-10 px-6 md:px-20">
+<div class="layout-content-container flex flex-col max-w-[1200px] flex-1">
+<!-- Hero Section Header -->
+<div class="flex flex-col gap-4 mb-10">
+<h1 class="text-slate-900 dark:text-slate-100 text-5xl font-black leading-tight tracking-tight">Events Exploration</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg max-w-2xl">Connect with your peers and enrich your university experience through our curated events in Sports, Culture, and Entrepreneurship.</p>
+</div>
+<!-- Filter Controls -->
+<div class="flex flex-wrap gap-3 mb-10 border-b border-primary/10 pb-6">
+<button class="flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-slate-900 text-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+                        All Events
+                    </button>
+<button class="flex h-10 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">sports_soccer</span>
+                        Sport
+                        <span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-10 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">theater_comedy</span>
+                        Culture
+                        <span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-10 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span>
+                        Entrepreneurship
+                        <span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-10 items-center justify-center gap-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 transition-colors ml-auto">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                        Date Range
+                    </button>
+</div>
+<!-- Event Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 w-full overflow-hidden">
+<div class="absolute top-4 left-4 z-10 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Sports</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Athletes sprinting on a professional running track" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAxWbJ6_gIzMdhfX5krvP8jM5nhf8P9MYZsU9T2qI0bQPmBxtmnffm8a7aw6qZXSk7GITDKBut8IT4jx8c-LnKHOxhCMfBSTm4uSEpNebkTD0r3uZoM1-1O_Ih9-q8cUT5nZ9RtN4YJd11j_ufIrKuMvdWrENOuC0aslExwT65-eEaigr_WR6yu2pem7LtFx_9EcN8MW9c1tJeN3zzJKQa4RwECWEJBskvUZ55HsL9lOU0nUMPmpntr0TFN8C_yCg56dUxdvSLEqVp4");'></div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-2 group-hover:text-primary transition-colors">Annual Sports Meet 2024</h3>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-4">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Oct 15, 2024</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Main Stadium</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">Experience the thrill of competition! Join hundreds of students for a day of track events, team sports, and spirit.</p>
+<a href="eventdetails.html" class="w-full flex items-center justify-center gap-2 h-11 rounded-lg bg-primary text-slate-900 font-bold text-sm transition-colors hover:bg-primary/90">
+                                Participate <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 w-full overflow-hidden">
+<div class="absolute top-4 left-4 z-10 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Culture</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Colorful light beams at a music festival concert" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7B0v4mQm5GMPpUG88wEWhg8iFS7sUUrHkLoZKW4jUESmDJHTSBT4NaLpYCkqj1XU8gz8vIFBtssGZasJJR01hDkYaDTw96ppYzBL0sZCh8BH6dKIDoKHMWjYAedIha6Gweps9LogFIVboFb6eOc078kw9y0afsV4knumGMh0XZ5Td6-yD_rLAsXsG1uwoAjl5pUS9qI5h6Qu10HMxRdHVd4euisjEEmDW1z-cxb75YwwnOTesqHQy6RC51H7jFGRtVniJZ1QENJVV");'></div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-2 group-hover:text-primary transition-colors">Cultural Night: Fusion</h3>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-4">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Nov 02, 2024</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Grand Auditorium</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">A vibrant showcase of global traditions through dance, music, and performance arts. A night to remember.</p>
+<a href="eventdetails.html" class="w-full flex items-center justify-center gap-2 h-11 rounded-lg bg-primary text-slate-900 font-bold text-sm transition-colors hover:bg-primary/90">
+                                Participate <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 w-full overflow-hidden">
+<div class="absolute top-4 left-4 z-10 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Entrepreneurship</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Modern coworking space with people collaborating" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlIkUQa5IGDIGFDyzYzk7XdFSUMf-HlFUq8NpOowMYcFvOjdWOe7o_UkXayu_rVskqiGJ_2h1NQFf85RCx4Ht9QnYKk2VltlhJIsiD5o-Mz87nnFM0ygRGdoXcapO1dlChVXzLrVFdWqoDMj7bJ3Lx4712Gwol45Mt4kcvhUEIQKm7LlmSkfiTafTz4_nATxFTzNxufBw01DD-U_eAAsJ_O3LFZ5O8Tu56C4TrYuupQB9d5xr6HmkjsMGtr7afxNcw5mc9dMiF3zA_");'></div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-2 group-hover:text-primary transition-colors">Startup Pitch Deck</h3>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-4">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Nov 10, 2024</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Innovation Hub</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">Ready to change the world? Present your business idea to top-tier investors and win incubation resources.</p>
+<a href="eventdetails.html" class="w-full flex items-center justify-center gap-2 h-11 rounded-lg bg-primary text-slate-900 font-bold text-sm transition-colors hover:bg-primary/90">
+                                Participate <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 w-full overflow-hidden">
+<div class="absolute top-4 left-4 z-10 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Sports</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Large group of people running a marathon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2bu4j0ugV6vn7gnaSxEBBo8IRNCRjzeeE2c1afn10QJnBaLjabp_DSZ4mKtC5M9lHPcWoHWGB2chIiHkd7S-LIZP9GWKmdZXKCyEZilOaEAbJbMMGarZVrEZAhHnfiM7LkpZBR2btQ9rIpFwAmdEJpJWn_kzNa2uxtng7tab35vG1cdorPrIrZreexfkwY9XcZjBXUSFoJ39NnPDR_mtSKVA8-O4O5m6NSvd2SNgxgurI9Ge0J39ArmEbWlbiL_2uku2AsoLOnUk3");'></div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-2 group-hover:text-primary transition-colors">Marathon for a Cause</h3>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-4">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Dec 05, 2024</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>City Park</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">Run for health and charity! All proceeds from the 10k run will support local education initiatives.</p>
+<a href="eventdetails.html" class="w-full flex items-center justify-center gap-2 h-11 rounded-lg bg-primary text-slate-900 font-bold text-sm transition-colors hover:bg-primary/90">
+                                Participate <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 w-full overflow-hidden">
+<div class="absolute top-4 left-4 z-10 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Culture</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Modern art gallery with colorful abstract paintings" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjt3jV9RYDIFrywvcBJFbX7tGzFn3ecQoHxTC_Y2FOyIs8aDZOkY_lnXUqko1Dl1FbsDaHZrbFFYHvgPKt2LMHLmb4YVGWeIHdPm_-FyyuUPlXNswDubkpL-ZDC4_tpJdToj7EhwsO2JiidrE1DT3WpuKKcu8HBSdrOkWJ026VWEHOwDWyzXZL1kCJvioqF1IEahAD2XE880q8hKZ2G_3iRT6tpZEIbwf4O2ghrvlB8V9RLBM2O9O2qGdsC6jSMPfDxDsLBu0F8L03");'></div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-2 group-hover:text-primary transition-colors">Art Exhibition: Origins</h3>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-4">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Dec 12, 2024</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Exhibition Hall</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">Discover the next generation of artists. A curated exhibition featuring painting, sculpture, and digital media.</p>
+<a href="eventdetails.html" class="w-full flex items-center justify-center gap-2 h-11 rounded-lg bg-primary text-slate-900 font-bold text-sm transition-colors hover:bg-primary/90">
+                                Participate <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group flex flex-col bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+<div class="relative h-56 w-full overflow-hidden">
+<div class="absolute top-4 left-4 z-10 bg-primary text-slate-900 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Entrepreneurship</div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-110" data-alt="Group of professionals having a boardroom meeting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAO-Z3jVTXNKbtX44VYk7bO8RFMdep5R1JGcV9GbAaTxcvd38dDb3ywpJMUSNqmcuDWElE8e9R4YShBr6vHx43ZwuE6LlEjxWqLH_15Z6zb-n4YtA6StlPH1Yw9GOQ4a-cWdU1ugTKmcfZEpl0fLYVAjmlsKG4GUcA-3sKZLN_cHoiKZ-yKZuAAb6hlnNXEMuXeJUjfd40I7mcV3O0Sog20m4SRH0xweVkObWz_aWAoUUMGh_5DHgHqDmFPAF_eeCIi6Rth0tzbCj0M");'></div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-2 group-hover:text-primary transition-colors">Leadership Seminar</h3>
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm mb-4">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span>Jan 08, 2025</span>
+<span class="mx-1">•</span>
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span>Conference Suite</span>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1">Learn critical soft skills and strategic thinking from industry veterans who have built global enterprises.</p>
+<a href="eventdetails.html" class="w-full flex items-center justify-center gap-2 h-11 rounded-lg bg-primary text-slate-900 font-bold text-sm transition-colors hover:bg-primary/90">
+                                Participate <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Featured Horizontal Section -->
+<div class="mt-20 p-8 @container bg-primary/10 rounded-2xl border border-primary/20">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="w-full md:w-1/2 h-64 bg-center bg-no-repeat bg-cover rounded-xl shadow-lg" data-alt="Close up of sports equipment on a green field" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCQUibfn6WeZlf_XPzrochXs3zTuOLNovEDqaxSbt9lQM_mFRXx0uwEjJtrLcEZ3yM-W2gUVqCS3_n7e9RF_jh67gUE8B6DKsn3tCJbbhsIJFfH4vV8gCod6jRXeJz6gDJUNhfFHQYxPrzU1bfiCUBm-nzEftjxPX2Xyfq5djDrjE-JP71PI-Msp2sNjW5g4yxyrXQqi96yCHGbgI6Yx7FhiQWWum7gVWg46Xr7dmZDxunHlh3t7pc-rvfYeVYd6qzKp8OM6oTHYYVu");'></div>
+<div class="w-full md:w-1/2 flex flex-col gap-4">
+<div class="flex items-center gap-2 text-primary-dark font-bold text-sm tracking-wide uppercase">
+<span class="material-symbols-outlined text-[18px]">star</span>
+                                Featured Event
+                            </div>
+<h2 class="text-slate-900 dark:text-slate-100 text-3xl font-black">Inter-University Athletics Championship</h2>
+<p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed">The biggest sports event of the year is coming. Represent VibeHub Club in the regional qualifiers across 15 different disciplines. Special training sessions start next week.</p>
+<div class="flex items-center gap-6 text-slate-700 dark:text-slate-300 font-medium">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">event</span>
+                                    Feb 20-25
+                                </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">groups</span>
+                                    500+ Registered
+                                </div>
+</div>
+<div class="flex gap-4 mt-2">
+<button class="flex min-w-[140px] items-center justify-center rounded-lg h-12 px-6 bg-primary text-slate-900 font-bold text-sm shadow-md transition-transform hover:scale-105">
+                                    Register Now
+                                </button>
+<button class="flex min-w-[140px] items-center justify-center rounded-lg h-12 px-6 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-bold text-sm border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition-colors">
+                                    Learn More
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="flex justify-center mt-16 mb-10">
+<button class="flex items-center gap-2 px-8 py-3 rounded-full border-2 border-primary text-slate-900 dark:text-slate-100 font-bold text-sm transition-all hover:bg-primary/20">
+                        View All Upcoming Events
+                        <span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-12 px-6 md:px-20">
+<div class="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 text-slate-900 dark:text-slate-100">
+<div class="size-6 flex items-center justify-center bg-primary rounded text-slate-900">
+<span class="material-symbols-outlined text-[16px]">hub</span>
+</div>
+<h2 class="text-lg font-bold">VibeHub Club</h2>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Empowering the university community through passion, creativity, and enterprise.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-slate-900 dark:text-slate-100 font-bold text-sm uppercase tracking-wider">Explore</h3>
+<ul class="flex flex-col gap-2 text-slate-600 dark:text-slate-400 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Sports Gallery</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Culture Portal</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Startup Hub</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Alumni Network</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-slate-900 dark:text-slate-100 font-bold text-sm uppercase tracking-wider">Resources</h3>
+<ul class="flex flex-col gap-2 text-slate-600 dark:text-slate-400 text-sm">
+<li><a class="hover:text-primary transition-colors" href="#">Membership Guide</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Event Hosting</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Branding Kit</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Use</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-4">
+<h3 class="text-slate-900 dark:text-slate-100 font-bold text-sm uppercase tracking-wider">Newsletter</h3>
+<div class="flex h-10 w-full rounded-lg overflow-hidden border border-slate-300 dark:border-slate-700">
+<input class="flex-1 px-4 bg-transparent text-sm focus:ring-0 border-none" placeholder="Email address" type="email"/>
+<button class="bg-primary text-slate-900 px-4 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</div>
+<p class="text-slate-500 text-[11px]">Get weekly updates on new campus events.</p>
+</div>
+</div>
+<div class="max-w-[1200px] mx-auto mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-slate-500 dark:text-slate-500 text-xs">
+<p>© 2024 VibeHub Club. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary" href="#"><span class="material-symbols-outlined text-[18px]">social_leaderboard</span></a>
+<a class="hover:text-primary font-bold" href="#">X</a>
+<a class="hover:text-primary" href="#"><span class="material-symbols-outlined text-[18px]">photo_camera</span></a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

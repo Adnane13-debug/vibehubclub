@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VibeHub Club Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                   colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-primary/30 bg-white dark:bg-background-dark flex flex-col fixed h-full">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-slate-900">
+<span class="material-symbols-outlined">hub</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-tight">VibeHub Club</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-slate-900 font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm">Members</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm">Events</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="text-sm">Announcements</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary/20 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm">Settings</span>
+</a>
+<div class="flex items-center gap-3 px-3 py-4 mt-2">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional headshot profile picture of an admin" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbPk9GHhifdsSP6qTaAq5ia0NkYCM2CMhzwtTgjpXZJSdGbMmA-Z-B4ngP8FOqZuopB77V9u_aQOG3hZyXVV5Tfinr4W2LCWUAffZF8eI1oZkyd-jExjH-egAxmMvWCgd7_TSepxKd-gzInPke7-1i8yIvTOGQS0x-IWni3LJSaHXL418hY9eq0RxtcFVwUg6jFfkhUOeDdPxGwYAoP3ICh31uleWI2326xoXRM3iYz1RZbr8Xr5fvJWag5gLEop2RyVKSY8-edUqH"/>
+</div>
+<div class="flex-1">
+<p class="text-xs font-semibold">Alex Rivera</p>
+<p class="text-[10px] text-slate-500">Super Admin</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8">
+<!-- Header -->
+<header class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">Executive Dashboard</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Overview of VibeHub's Sports, Culture, and Entrepreneurship wings.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Export Report
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-slate-900 rounded-lg text-sm font-bold shadow-sm hover:brightness-95 transition-all">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                        Create Event
+                    </button>
+</div>
+</header>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined p-2 bg-blue-100 text-blue-600 rounded-lg">groups</span>
+<span class="text-emerald-500 text-xs font-bold flex items-center">+12% <span class="material-symbols-outlined text-xs">trending_up</span></span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Members</p>
+<h3 class="text-2xl font-bold mt-1">1,240</h3>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined p-2 bg-amber-100 text-amber-600 rounded-lg">event_available</span>
+<span class="text-slate-400 text-xs font-bold flex items-center">Steady <span class="material-symbols-outlined text-xs">horizontal_rule</span></span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Events</p>
+<h3 class="text-2xl font-bold mt-1">8</h3>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined p-2 bg-emerald-100 text-emerald-600 rounded-lg">payments</span>
+<span class="text-emerald-500 text-xs font-bold flex items-center">+5.2% <span class="material-symbols-outlined text-xs">trending_up</span></span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Monthly Revenue</p>
+<h3 class="text-2xl font-bold mt-1">$4,850</h3>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined p-2 bg-purple-100 text-purple-600 rounded-lg">bolt</span>
+<span class="text-rose-500 text-xs font-bold flex items-center">-2% <span class="material-symbols-outlined text-xs">trending_down</span></span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Engagement Rate</p>
+<h3 class="text-2xl font-bold mt-1">68.4%</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Members Table -->
+<div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+<h4 class="font-bold text-lg">Recent Members</h4>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-sm">search</span>
+<input class="pl-9 pr-4 py-2 text-sm border-slate-200 dark:border-slate-700 bg-background-light dark:bg-slate-900 rounded-lg focus:ring-primary focus:border-primary w-64" placeholder="Search members..." type="text"/>
+</div>
+</div>
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500 font-bold">
+<tr>
+<th class="px-6 py-4">Member</th>
+<th class="px-6 py-4">Department</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Joined</th>
+<th class="px-6 py-4">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a female student member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn9X8h09CDUnY5rn6LC0LR7uikklyRf6xT2Vl7Ex-5_fYEcq60vcXa0sGBu32oNQT6q-hWcef4m1AD6yZSH6YsF_5l4EIQUCZnRzd5CDRk7-VTHXtYDSZ-qkmW7-YmvdYzMZOG9r5HJZnZbcXUkQNDBqVBK6CuE3OqtUOzjuhCJV5Yz8w-Z5o6bs-CfZSsM2W2mVzymrEeeiy4lvQY3um-oJQtBKEbL2jHNY4Pdm2wtzbusOoh_9WZnvDykmNFiiI62Dx7M3Tn11qO"/>
+</div>
+<span class="text-sm font-medium">Sarah Jenkins</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Entrepreneurship</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-700 uppercase">Active</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 12, 2023</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-slate-600">more_vert</span></td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a male student member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMkA0KM4owCAbOha5CV1DxebbYli1_iAIvtxXnAe3-K83GItMueVDpfVWugmf_7jNnKNlWW5VppngoaQpKiSp6p89LILGABCxOsZDdxjGbuQonDZLlY8nASIJpr-Um64SVbSbmPtO8S78CQzdUPgGV_nNClXdAiiBP91iVDilOBW2LhPlFn6FA6g6QA8eG4CwPFxgj5c-YeGbEM-mYX-vwI5qMwVxPWwdaOttsrt-iK5WjAhAQIL7yRJAFfNbFAByhcbY7wKs6uOYb"/>
+</div>
+<span class="text-sm font-medium">David Chen</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Sports</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-700 uppercase">Active</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 10, 2023</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-slate-600">more_vert</span></td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a female student leader" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeT4wbBaXAH7T_l6AvIJE2GhXjlIdff07YW3j887sWKfAL-nHw_5iW_Gd0E4ik65Iep-qEBxt_yU8IJ7F9pqzqfDbcU5GxyTjzn4DTPdZy_JGlAGkJP0f1CqqgYt-jU1pNOZyYQRV3oJmXmAEvALZjm3ugYYC9LrZFoPzrh5vtJyIa3BLwNYq-27BP-uRZSBVQvrx38JzrAS_5h66pVOFejvW5YXPSL2GDFoS1tApcL6OxHlTMfFIXa5aUWUnZKMMHka7JOPFUqBoC"/>
+</div>
+<span class="text-sm font-medium">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Culture</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 text-[10px] font-bold rounded-full bg-amber-100 text-amber-700 uppercase">Pending</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 09, 2023</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-slate-600">more_vert</span></td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a male student athlete" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5kD0jFH8Bp9TvHBymC_X4kQ-N1Ab2dN_qg3zavf-z3I1hcVdNKgB2hVR0Ze2VXEGdIWGOQset9ECw6evfGyr-38Ngx7ih_3XNDDUoQsO1Z5OpK-hfszN6GqUA08ed7xpB0C8MaiAvWesCum3L4JSr_RHgfxFAdiWoyEVCSLgtYQTPF6RKgTRp3c3I1BlV9CgDsw-zBJ9x0ozfsTx7WaeJeeef__U0eNqkOtO3YZRegJRIXGOIlfbatR1dNh8y9BEReTyXbhtB5wsl"/>
+</div>
+<span class="text-sm font-medium">Marcus Thorne</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">Sports</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-700 uppercase">Active</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">Oct 05, 2023</td>
+<td class="px-6 py-4"><span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-slate-600">more_vert</span></td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+<p class="text-xs text-slate-500">Showing 4 of 1,240 members</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs border border-slate-200 dark:border-slate-700 rounded hover:bg-slate-50 transition-colors">Previous</button>
+<button class="px-3 py-1 text-xs bg-slate-900 text-white dark:bg-primary dark:text-slate-900 rounded">Next</button>
+</div>
+</div>
+</div>
+<!-- Quick Actions & Activity -->
+<div class="space-y-6">
+<!-- Quick Actions Card -->
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+<h4 class="font-bold text-lg mb-4">Quick Actions</h4>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-all text-slate-900">
+<span class="material-symbols-outlined mb-1">campaign</span>
+<span class="text-xs font-bold">Announce</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-all text-slate-900">
+<span class="material-symbols-outlined mb-1">mail</span>
+<span class="text-xs font-bold">Message All</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-all text-slate-900">
+<span class="material-symbols-outlined mb-1">person_add</span>
+<span class="text-xs font-bold">Invite</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-all text-slate-900">
+<span class="material-symbols-outlined mb-1">receipt_long</span>
+<span class="text-xs font-bold">Invoices</span>
+</button>
+</div>
+</div>
+<!-- Upcoming Events -->
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-center mb-4">
+<h4 class="font-bold text-lg">Upcoming Events</h4>
+<a class="text-xs text-blue-600 hover:underline" href="#">View all</a>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 items-center">
+<div class="w-12 h-12 rounded-lg bg-primary/30 flex flex-col items-center justify-center text-slate-900 shrink-0">
+<span class="text-xs font-bold">OCT</span>
+<span class="text-lg font-black leading-none">24</span>
+</div>
+<div>
+<p class="text-sm font-bold truncate">Startup Pitch Night</p>
+<p class="text-xs text-slate-500">Innovation Hall • 6:00 PM</p>
+</div>
+</div>
+<div class="flex gap-4 items-center">
+<div class="w-12 h-12 rounded-lg bg-primary/30 flex flex-col items-center justify-center text-slate-900 shrink-0">
+<span class="text-xs font-bold">OCT</span>
+<span class="text-lg font-black leading-none">28</span>
+</div>
+<div>
+<p class="text-sm font-bold truncate">Inter-Uni Basketball</p>
+<p class="text-xs text-slate-500">Sports Complex • 10:00 AM</p>
+</div>
+</div>
+<div class="flex gap-4 items-center">
+<div class="w-12 h-12 rounded-lg bg-primary/30 flex flex-col items-center justify-center text-slate-900 shrink-0">
+<span class="text-xs font-bold">NOV</span>
+<span class="text-lg font-black leading-none">02</span>
+</div>
+<div>
+<p class="text-sm font-bold truncate">Jazz Fusion Night</p>
+<p class="text-xs text-slate-500">Arts Center • 7:30 PM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
