@@ -4,6 +4,8 @@ import express   from 'express'
 import cors      from 'cors'
 import dotenv    from 'dotenv'
 import authRoutes from './routes/auth.routes.js'
+import publicRoutes from './routes/public.routes.js'
+
 dotenv.config()
 
 const app = express()
@@ -21,6 +23,9 @@ app.get('/', (req, res) => {
 
 // auth routes
 app.use('/api/auth', authRoutes)
+
+//public routes
+app.use('/api/public', publicRoutes)
 
 // start the server
 app.listen(process.env.PORT, () => {
