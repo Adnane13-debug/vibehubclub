@@ -5,7 +5,7 @@ import AuthLayout from "../../layouts/AuthLayout";
 import HomePage from "../../features/home/pages/HomePage";
 import AboutPage from "../../features/about/pages/AboutPage";
 import EventsPage from "../../features/events/pages/EventsPage";
-// import EventDetailsPage from "../../features/events/pages/EventDetailsPage";
+import EventDetailsPage from "../../features/events/pages/EventDetailsPage";
 import ContactPage from "../../features/contact/pages/ContactPage";
 import LoginPage from "../../features/auth/pages/LoginPage";
 import RegisterPage from "../../features/auth/pages/RegisterPage";
@@ -19,7 +19,7 @@ function AppRouter() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:id" element={<div />} />
+          <Route path="/events/:id" element={<EventDetailsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
