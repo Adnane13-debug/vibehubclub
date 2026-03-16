@@ -46,11 +46,11 @@
   }
 
   .section-padding {
-    @apply py-12 md:py-24;
+    @apply py-16 md:py-24;
   }
 
   .section-title {
-    @apply mb-4 text-4xl md:text-5xl font-heading text-slate-900;
+    @apply mb-5 text-4xl md:text-5xl font-heading tracking-tight text-slate-900;
   }
 
   .section-subtitle {
@@ -58,19 +58,32 @@
   }
 
   .nav-link {
-    @apply text-sm font-semibold transition-colors duration-200 hover:text-primary;
+    @apply relative text-sm font-semibold tracking-wide text-slate-700 transition-colors duration-200 hover:text-primary;
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 -bottom-1 mx-auto h-0.5 w-0 rounded-full bg-primary opacity-0 transition-all duration-200;
+  }
+
+  .nav-link-active {
+    @apply text-slate-900;
+  }
+
+  .nav-link-active::after {
+    @apply w-full opacity-100;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-slate-900 transition-all duration-200 hover:opacity-90;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-bold text-slate-900 shadow-[0_18px_45px_rgba(15,23,42,0.18)] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_55px_rgba(15,23,42,0.22)];
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 font-bold text-slate-900 transition-all duration-200 hover:bg-slate-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-7 py-3 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50;
   }
 
   .card-soft {
-    @apply rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl;
+    @apply rounded-2xl border border-slate-200/80 bg-white/80 shadow-[0_18px_45px_rgba(15,23,42,0.06)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_65px_rgba(15,23,42,0.14)];
   }
 
   .text-muted {
@@ -79,5 +92,9 @@
 
   .border-primary-soft {
     border-color: rgba(245, 159, 10, 0.2);
+  }
+
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-800;
   }
 }

@@ -1,54 +1,109 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { to: "/", label: "Home" },
+    { to: "/about", label: "About" },
+    { to: "/events", label: "Events" },
+    { to: "/contact", label: "Contact" },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-background-light/80 px-6 py-4 backdrop-blur-md lg:px-20">
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 backdrop-blur-xl">
+      <div className="container-custom flex items-center justify-between py-4">
         <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-primary p-1.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/90 shadow-md shadow-primary/40">
             <span className="material-symbols-outlined text-slate-900">hub</span>
           </div>
-          <h2 className="font-heading text-2xl font-black tracking-tight text-slate-900">
-            VibeHub
-          </h2>
+          <div className="flex flex-col leading-none">
+            <span className="font-heading text-xl font-black tracking-tight text-slate-900">
+              VibeHub
+            </span>
+            <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-slate-500">
+              University Club
+            </span>
+          </div>
         </div>
 
-        <nav className="hidden items-center gap-10 md:flex">
-          <Link
-            className="text-sm font-semibold transition-colors hover:text-primary"
-            to="/"
-          >
-            Home
-          </Link>
-          <Link
-            className="text-sm font-semibold transition-colors hover:text-primary"
-            to="/about"
-          >
-            About
-          </Link>
-          <Link
-            className="text-sm font-semibold transition-colors hover:text-primary"
-            to="/events"
-          >
-            Events
-          </Link>
-          <Link
-            className="text-sm font-semibold transition-colors hover:text-primary"
-            to="/contact"
-          >
-            Contact
-          </Link>
+        <nav className="hidden items-center gap-8 md:flex">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "nav-link-active" : ""}`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="hidden items-center gap-3 md:flex">
+          <Link
+            to="/login"
+            className="btn-secondary h-10 px-5 text-xs font-semibold"
+          >
+            Sign in
+          </Link>
           <Link
             to="/register"
-            className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-slate-900 transition-all hover:bg-primary/80"
+            className="btn-primary h-10 px-5 text-xs font-bold"
           >
             Join Club
           </Link>
         </div>
+
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-800 shadow-sm transition-colors hover:bg-slate-50 md:hidden"
+          aria-label="Toggle navigation"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <span className="material-symbols-outlined text-[22px]">
+            {isOpen ? "close" : "menu"}
+          </span>
+        </button>
       </div>
+
+      {isOpen && (
+        <div className="border-t border-slate-200/80 bg-background-light/95 backdrop-blur-md md:hidden">
+          <div className="container-custom flex flex-col gap-2 py-4">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `nav-link block py-2 ${isActive ? "nav-link-active" : ""}`
+                }
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+            <div className="mt-2 flex flex-col gap-2 pt-2">
+              <Link
+                to="/login"
+                className="btn-secondary w-full justify-center"
+                onClick={() => setIsOpen(false)}
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/register"
+                className="btn-primary w-full justify-center"
+                onClick={() => setIsOpen(false)}
+              >
+                Join Club
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -1,4 +1,4 @@
-export const EVENTS = [
+   export const EVENTS = [
   {
     id: "annual-sports-meet-2024",
     category: "Sports",
