@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VibeHub Club | Personality Test</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                 colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .font-serif { font-family: 'Newsreader', serif; }
+      .font-sans { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 border-r-0 bg-[#faf7f2] dark:bg-[#1d1a15] shadow-xl py-8 z-50">
+<div class="px-6 mb-12">
+<h1 class="text-xl font-serif font-black text-[#1d1a15] dark:text-[#faf7f2] uppercase tracking-widest">VibeHub Club</h1>
+<p class="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-on-surface-variant mt-1 opacity-60">Premium Membership</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 dark:text-[#faf7f2]/50 pl-5 py-3 font-sans text-sm font-medium uppercase tracking-[0.1em] hover:bg-[#e8d9c4]/10 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 dark:text-[#faf7f2]/50 pl-5 py-3 font-sans text-sm font-medium uppercase tracking-[0.1em] hover:bg-[#e8d9c4]/10 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Member Directory</span>
+</a>
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 dark:text-[#faf7f2]/50 pl-5 py-3 font-sans text-sm font-medium uppercase tracking-[0.1em] hover:bg-[#e8d9c4]/10 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span>Events</span>
+</a>
+<!-- Semantic Mapping: Active Tab for Personality Test -->
+<a class="flex items-center space-x-3 text-[#1d1a15] dark:text-[#faf7f2] font-bold border-l-4 border-[#e8d9c4] pl-4 py-3 font-sans text-sm uppercase tracking-[0.1em]" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>Personality</span>
+</a>
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 dark:text-[#faf7f2]/50 pl-5 py-3 font-sans text-sm font-medium uppercase tracking-[0.1em] hover:bg-[#e8d9c4]/10 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 dark:text-[#faf7f2]/50 pl-5 py-3 font-sans text-sm font-medium uppercase tracking-[0.1em] hover:bg-[#e8d9c4]/10 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="px-6 pt-8 border-t border-surface-container mt-auto">
+<button class="w-full py-3 rounded-full bg-primary-container text-on-primary-container font-sans text-xs font-bold uppercase tracking-widest shadow-sm hover:opacity-90 transition-all">Upgrade Plan</button>
+<div class="mt-6 flex flex-col space-y-3">
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 font-sans text-[10px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center space-x-3 text-[#1d1a15]/50 font-sans text-[10px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopAppBar (Authority Source: JSON) -->
+<header class="fixed top-0 w-full md:left-64 md:w-[calc(100%-16rem)] flex justify-between items-center px-8 h-20 bg-[#faf7f2]/80 backdrop-blur-md z-40 shadow-sm">
+<div class="flex items-center space-x-4">
+<span class="md:hidden material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
+<span class="font-serif italic font-bold tracking-tight text-xl text-on-surface">Personality <span class="text-primary italic">Insights</span></span>
+</div>
+<div class="hidden lg:flex space-x-8">
+<a class="text-[#1d1a15]/60 font-medium font-sans text-sm uppercase tracking-widest hover:text-[#e8d9c4] transition-colors" href="#">Benefits</a>
+<a class="text-[#1d1a15]/60 font-medium font-sans text-sm uppercase tracking-widest hover:text-[#e8d9c4] transition-colors" href="#">Events</a>
+<a class="text-[#1d1a15]/60 font-medium font-sans text-sm uppercase tracking-widest hover:text-[#e8d9c4] transition-colors" href="#">Community</a>
+</div>
+<div class="flex items-center space-x-6">
+<button class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</button>
+<div class="h-10 w-10 rounded-full bg-surface-container overflow-hidden shadow-sm">
+<img alt="Member Profile Picture" class="object-cover w-full h-full" data-alt="Close up portrait of a club member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGxbuF45E3VncbXj4OJgZ4ls3JxGwkNWV0FBZqIqIezujbHzJNf996CkbY4RPCfrK7qcj7LtXgpzDXcOyyueqaBWYzU-BEUO0gFS5g4164og7Vf9bPykpvut135IgxsN2L3XeN38rinBvu8hNgdkANS2kfOnyo2VJJBfoeAxlYT8r9kiO9urEVajNPW0ZW83mtmO92wYjSTZBwRxb10N4RKEF1evGqmOuOQUgNGGal0980N_Eb49BSzhkFnne1duwrdz5mnKDa8_Gp"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 md:pl-64 min-h-screen px-6 lg:px-12 pb-12">
+<div class="max-w-6xl mx-auto">
+<!-- Breadcrumb / Tab Indicator -->
+<div class="mb-8 flex items-center space-x-2 text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-on-surface-variant opacity-50">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface">Personality Test</span>
+</div>
+<!-- Pre-Test Hero Section: Ivory Pulse Asymmetric Layout -->
+<div class="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-12">
+<!-- Large Narrative Card -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-2xl p-8 lg:p-12 shadow-xl relative overflow-hidden flex flex-col justify-between">
+<!-- Background Accent -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary-container/20 rounded-full blur-3xl"></div>
+<div>
+<div class="inline-block px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-sans text-[10px] font-black uppercase tracking-widest mb-6">
+                            2024 Membership Feature
+                        </div>
+<h2 class="text-4xl lg:text-6xl font-serif font-black text-on-surface leading-[1.1] mb-6">
+                            Unlock Your <br/><span class="italic text-primary">VibeHub Identity.</span>
+</h2>
+<p class="text-lg lg:text-xl text-on-surface-variant font-light leading-relaxed max-w-xl mb-8">
+                            Our proprietary MBTI-based assessment helps us curate your club experience. Discover your communication style, ideal networking circles, and personal growth paths within the VibeHub community.
+                        </p>
+</div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center space-y-6 sm:space-y-0 sm:space-x-10 border-t border-surface-container pt-8">
+<div class="flex items-center space-x-4">
+<div class="h-12 w-12 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Duration</p>
+<p class="text-sm font-bold text-on-surface">10 Minutes</p>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="h-12 w-12 rounded-xl bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="star">star</span>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Complexity</p>
+<p class="text-sm font-bold text-on-surface">Low / Intuitive</p>
+</div>
+</div>
+<button class="sm:ml-auto px-8 py-4 rounded-full bg-on-surface text-surface font-sans text-xs font-black uppercase tracking-[0.2em] shadow-2xl hover:scale-105 transition-transform">
+                            Start Test
+                        </button>
+</div>
+</div>
+<!-- Secondary Visual/Info Block -->
+<div class="lg:col-span-4 flex flex-col space-y-8">
+<div class="bg-primary text-on-primary rounded-2xl p-8 shadow-xl flex-1 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<h3 class="text-2xl font-serif italic font-bold mb-4">Why it matters?</h3>
+<ul class="space-y-4 font-sans text-sm leading-relaxed opacity-90">
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+<span>Personalized event recommendations.</span>
+</li>
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+<span>Smart matching for community circles.</span>
+</li>
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-lg" data-icon="check_circle">check_circle</span>
+<span>Tailored professional growth content.</span>
+</li>
+</ul>
+</div>
+<!-- Decorative Element (Ivory Pulse Aesthetic) -->
+<div class="bg-surface-container rounded-2xl overflow-hidden shadow-sm aspect-square relative">
+<img alt="Abstract aesthetic community" class="w-full h-full object-cover grayscale opacity-40" data-alt="Abstract soft lighting in a library or lounge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYrUIM583B4uoPFfuxQsPPNMrnpwM7aUUon17IDoz4Kl2vjBzv8Vh7H-MjwKYczWwTDnEr5Bvm2ADe98bdy0P2oc8jr6MP1Oeqn772R4wVhP0xo-8ilujHDzBvnC-PP4PUWCCkOAvS3raQTX9IxqfXVN_NaVcnbZi3okg1DJr245AqJQinSFfEM8mwmkL1mVhF89vUJa_ZCjfloOg3Uw6LmdU57Qepc10mK1ORSeDa7amv_Kkg3MWk0yX6hXISsWmlARznChiR-ZBh"/>
+<div class="absolute inset-0 flex items-center justify-center p-8 text-center">
+<p class="font-serif italic text-xl text-on-background/60 leading-tight">"Self-awareness is the hallmark of the modern academic vanguard."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Last Result History Block (Empty State) -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-serif text-2xl font-bold text-on-surface">Assessment History</h3>
+<div class="h-[1px] flex-1 mx-8 bg-surface-container"></div>
+</div>
+<div class="bg-surface-container rounded-2xl p-12 border-2 border-dashed border-outline-variant flex flex-col items-center justify-center text-center">
+<div class="h-16 w-16 rounded-full bg-surface-container-high flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl text-outline" data-icon="history_edu">history_edu</span>
+</div>
+<h4 class="font-serif text-xl font-bold text-on-surface mb-2">No previous records found</h4>
+<p class="text-on-surface-variant text-sm max-w-sm font-sans mb-8">
+                        It looks like you haven't taken the VibeHub Personality Test yet. Complete your first assessment to see your growth over time.
+                    </p>
+<button class="px-6 py-2 rounded-full border border-on-surface-variant/20 text-on-surface-variant font-sans text-[10px] font-black uppercase tracking-widest hover:bg-on-surface hover:text-surface transition-colors">
+                        View Sample Result
+                    </button>
+</div>
+</section>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface/90 backdrop-blur-md flex items-center justify-around px-4 border-t-0 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50">
+<button class="flex flex-col items-center justify-center text-on-surface/40">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface/40">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="psychology" data-weight="fill" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface/40">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface/40">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</nav>
+</div>
+</main>
+</body></html>

@@ -14,11 +14,13 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 backdrop-blur-xl">
       <div className="container-custom flex items-center justify-between py-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/90 shadow-md shadow-primary/40">
-            <span className="material-symbols-outlined text-slate-900">hub</span>
-          </div>
-          <div className="flex flex-col leading-none">
+        <Link to="/" className="flex flex-shrink-0 items-center gap-3 group">
+          <img
+            src="/logo vibe hub.svg"
+            alt="VibeHub Logo"
+            className="h-12 w-auto transition-all duration-300 group-hover:animate-floating-logo drop-shadow-[0_0_12px_#f59f0a] group-hover:drop-shadow-[0_0_30px_#f59f0a]"
+          />
+          <div className="flex flex-col leading-none whitespace-nowrap overflow-hidden max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100 transition-all duration-[800ms] ease-out">
             <span className="font-heading text-xl font-black tracking-tight text-slate-900">
               VibeHub
             </span>
@@ -26,7 +28,7 @@ function Navbar() {
               University Club
             </span>
           </div>
-        </div>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (

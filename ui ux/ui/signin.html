@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                 colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf7f2;
+        }
+        .serif-italic {
+            font-family: 'Newsreader', serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex items-center justify-center p-6 selection:bg-primary-container">
+<!-- Auth Container -->
+<main class="w-full max-w-[440px] flex flex-col items-center">
+<!-- Login Card -->
+<div class="w-full bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden relative">
+<!-- Decorative Gradient Header -->
+<div class="h-2 bg-primary-container w-full"></div>
+<div class="px-10 pt-12 pb-14">
+<!-- Brand Identity -->
+<div class="flex flex-col items-center mb-10">
+<div class="mb-4 text-on-background">
+<span class="text-2xl font-headline font-black uppercase tracking-widest">VibeHub Club</span>
+</div>
+<h1 class="text-4xl font-headline font-bold text-on-surface tracking-tight">
+                        Welcome <span class="serif-italic">Back</span>
+</h1>
+<p class="mt-2 text-on-surface-variant font-body text-sm text-center">
+                        Access your premium academic sanctuary.
+                    </p>
+</div>
+<!-- Form Section -->
+<form class="space-y-6">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block text-xs font-label font-medium uppercase tracking-[0.1em] text-on-surface-variant" for="email">Email Address</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3.5 bg-surface-container-high rounded-lg text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary-container border-none transition-all duration-300" id="email" placeholder="name@university.edu" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="block text-xs font-label font-medium uppercase tracking-[0.1em] text-on-surface-variant" for="password">Password</label>
+<a class="text-[11px] font-label font-medium uppercase tracking-[0.05em] text-primary hover:text-on-primary-fixed-variant transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<input class="w-full pl-11 pr-4 py-3.5 bg-surface-container-high rounded-lg text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary-container border-none transition-all duration-300" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center">
+<label class="flex items-center space-x-3 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 rounded-lg border-none bg-surface-container-high text-primary focus:ring-offset-0 focus:ring-primary-container transition-all cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute opacity-0 peer-checked:opacity-100 text-white text-[14px] left-[3px] pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="text-sm font-body text-on-surface-variant group-hover:text-on-surface transition-colors">Remember my session</span>
+</label>
+</div>
+<!-- Primary Action -->
+<button class="w-full py-4 bg-primary-container text-on-primary-container font-label font-bold uppercase tracking-widest rounded-full shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex justify-center items-center space-x-2" type="submit">
+<span>Login</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="mt-8 flex items-center justify-center space-x-4">
+<div class="h-[1px] flex-1 bg-surface-container-high"></div>
+<span class="text-[10px] font-label font-medium uppercase tracking-[0.2em] text-outline">Journal Access</span>
+<div class="h-[1px] flex-1 bg-surface-container-high"></div>
+</div>
+</div>
+</div>
+<!-- Secondary Action Link -->
+<div class="mt-8 text-center">
+<p class="text-sm font-body text-on-surface-variant">
+                Don't have an account? 
+                <a class="ml-1 text-on-surface font-semibold hover:text-primary underline underline-offset-4 decoration-primary-container decoration-2 transition-all" href="#">Sign Up</a>
+</p>
+</div>
+<!-- Footer Branding -->
+<footer class="mt-12 opacity-40">
+<div class="flex items-center space-x-2">
+<span class="text-[10px] font-label font-medium uppercase tracking-[0.3em] text-on-background">Est. 2024</span>
+<span class="h-1 w-1 bg-on-background rounded-full"></span>
+<span class="text-[10px] font-label font-medium uppercase tracking-[0.3em] text-on-background">Ivory Pulse Core</span>
+</div>
+</footer>
+</main>
+<!-- Background Elements for Editorial Depth -->
+<div class="fixed top-[-10%] left-[-5%] w-[40%] h-[40%] bg-primary-container/10 blur-[120px] -z-10 rounded-full"></div>
+<div class="fixed bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-secondary-container/20 blur-[120px] -z-10 rounded-full"></div>
+<!-- Abstract Illustration (Top Corner) -->
+<div class="fixed top-12 right-12 hidden lg:block opacity-20 pointer-events-none">
+<div class="w-64 h-64 border-[1px] border-on-background/20 rounded-full flex items-center justify-center p-8">
+<div class="w-full h-full border-[1px] border-on-background/10 rounded-full flex items-center justify-center p-8">
+<span class="material-symbols-outlined text-6xl text-on-background/30" data-alt="Abstract academic emblem outline">account_balance</span>
+</div>
+</div>
+</div>
+</body></html>
