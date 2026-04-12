@@ -5,367 +5,310 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Contact - VibeHub Club</title>
-    <!-- Google Fonts: Newsreader (Serif) & Inter (Sans) -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@100..900&amp;display=swap"
-        rel="stylesheet" />
-    <!-- Material Symbols -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+    <title>Contact Us | VibeHub Club</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    colors: {
-                        "on-secondary-fixed-variant": "#4b463f",
-                        "tertiary-container": "#dadae7",
-                        "background": "#faf7f2",
-                        "on-tertiary-fixed-variant": "#454651",
-                        "primary-container": "#e8d9c4",
-                        "secondary-fixed": "#eae1d7",
-                        "on-tertiary-fixed": "#191b24",
-                        "on-primary-fixed": "#221a0e",
-                        "on-surface-variant": "#4c463e",
-                        "on-secondary-container": "#68625a",
-                        "primary": "#685d4c",
-                        "on-secondary": "#ffffff",
-                        "surface-container-low": "#faf7f2",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-bright": "#ffffff",
-                        "tertiary-fixed-dim": "#c5c5d2",
-                        "secondary-fixed-dim": "#cec5bb",
-                        "inverse-on-surface": "#faf7f2",
-                        "surface-tint": "#685d4c",
-                        "on-primary-container": "#221a0e",
-                        "on-background": "#1d1a15",
-                        "inverse-surface": "#1d1a15",
-                        "outline": "#7d766d",
-                        "on-secondary-fixed": "#1f1b15",
-                        "inverse-primary": "#d3c5b0",
-                        "on-primary-fixed-variant": "#4f4536",
-                        "on-surface": "#1d1a15",
-                        "primary-fixed-dim": "#d3c5b0",
-                        "on-primary": "#ffffff",
-                        "surface-container-high": "#ece7e4",
-                        "tertiary": "#5c5e69",
+                    "colors": {
+                        "on-surface-variant": "#464554",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "secondary": "#006591",
+                        "primary": "#4648d4",
+                        "on-background": "#191c1e",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "surface": "#f7f9fb",
                         "error-container": "#ffdad6",
-                        "surface-variant": "#e7e1df",
-                        "secondary-container": "#e7ded4",
-                        "on-tertiary": "#ffffff",
-                        "secondary": "#635d55",
-                        "outline-variant": "#cec5ba",
-                        "on-tertiary-container": "#5e5f6a",
-                        "surface-container-highest": "#e7e1df",
-                        "tertiary-fixed": "#e1e1ee",
+                        "surface-bright": "#f7f9fb",
+                        "outline-variant": "#c7c4d7",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001e2f",
                         "on-error": "#ffffff",
-                        "primary-fixed": "#f0e0cb",
-                        "surface-dim": "#ded9d6",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-variant": "#e0e3e5",
+                        "on-primary-container": "#fffbff",
+                        "surface-tint": "#494bd6",
+                        "secondary-container": "#39b8fd",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "tertiary": "#904900",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#c9e6ff",
+                        "on-tertiary-container": "#fffbff",
                         "on-error-container": "#93000a",
-                        "surface-container": "#f2edea",
-                        "surface": "#faf7f2",
-                        "error": "#ba1a1a"
+                        "surface-dim": "#d8dadc",
+                        "on-primary-fixed": "#07006c",
+                        "outline": "#767586",
+                        "on-tertiary-fixed": "#301400",
+                        "secondary-fixed-dim": "#89ceff",
+                        "tertiary-fixed": "#ffdcc5",
+                        "tertiary-container": "#b55d00",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-fixed-variant": "#004c6e",
+                        "surface-container": "#eceef0",
+                        "inverse-primary": "#c0c1ff",
+                        "error": "#ba1a1a",
+                        "background": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary-container": "#6063ee",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#004666",
+                        "on-surface": "#191c1e",
+                        "primary-fixed": "#e1e0ff"
                     },
-                    fontFamily: {
-                        "headline": ["Newsreader", "serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {
+                    "borderRadius": {
                         "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "2xl": "1rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
                         "full": "9999px"
                     },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
                 },
             },
         }
     </script>
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
         }
 
-        .tonal-shift {
-            background-color: #f2edea;
-        }
-
-        .tonal-relief {
-            background-color: #1d1a15;
-        }
-
-        .no-line {
-            border: none !important;
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
     </style>
 </head>
 
-<body class="bg-background text-on-background font-body selection:bg-primary-container">
-    <!-- TopAppBar -->
-    <nav class="fixed top-0 w-full z-50 bg-[#faf7f2]/80 dark:bg-[#1d1a15]/80 backdrop-blur-md shadow-sm">
-        <div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
-            <div class="text-2xl font-black text-[#1d1a15] dark:text-[#faf7f2] font-headline italic">
-                VibeHub Club
-            </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a class="text-[#1d1a15]/60 dark:text-[#faf7f2]/60 hover:text-[#e8d9c4] transition-colors duration-300 font-label uppercase tracking-widest text-xs"
-                    href="#">Home</a>
-                <a class="text-[#1d1a15]/60 dark:text-[#faf7f2]/60 hover:text-[#e8d9c4] transition-colors duration-300 font-label uppercase tracking-widest text-xs"
-                    href="#">About</a>
-                <a class="text-[#1d1a15]/60 dark:text-[#faf7f2]/60 hover:text-[#e8d9c4] transition-colors duration-300 font-label uppercase tracking-widest text-xs"
-                    href="#">Events</a>
-                <a class="text-[#1d1a15]/60 dark:text-[#faf7f2]/60 hover:text-[#e8d9c4] transition-colors duration-300 font-label uppercase tracking-widest text-xs"
-                    href="#">Membership</a>
-                <a class="text-[#1d1a15] dark:text-[#faf7f2] border-b-2 border-[#e8d9c4] pb-1 font-label uppercase tracking-widest text-xs"
-                    href="#">Contact</a>
+<body class="bg-surface text-on-surface selection:bg-primary/20">
+    <!-- TopNavBar -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(99,102,241,0.05)]">
+        <div class="flex justify-between items-center px-8 h-16 w-full max-w-screen-2xl mx-auto">
+            <div class="flex items-center gap-8">
+                <span
+                    class="text-xl font-bold tracking-tighter text-indigo-600 dark:text-indigo-400 font-['Plus_Jakarta_Sans']">VibeHub
+                    Club</span>
+                <div class="hidden md:flex items-center gap-6">
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:scale-105 transition-transform duration-300 font-['Plus_Jakarta_Sans'] tracking-tight"
+                        href="#">Profile</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:scale-105 transition-transform duration-300 font-['Plus_Jakarta_Sans'] tracking-tight"
+                        href="#">Dashboard</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:scale-105 transition-transform duration-300 font-['Plus_Jakarta_Sans'] tracking-tight"
+                        href="#">About</a>
+                </div>
             </div>
             <div class="flex items-center gap-4">
-                <span class="material-symbols-outlined text-on-surface cursor-pointer">account_circle</span>
+                <div class="hidden lg:block relative">
+                    <span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
+                        <span class="material-symbols-outlined text-[20px]">search</span>
+                    </span>
+                    <input
+                        class="bg-surface-container-high border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 w-64"
+                        placeholder="Search..." type="text" />
+                </div>
                 <button
-                    class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-label text-xs uppercase tracking-widest font-bold hover:scale-95 active:duration-100 transition-transform">
-                    Join Now
-                </button>
+                    class="material-symbols-outlined text-slate-500 hover:text-indigo-600 transition-colors">notifications</button>
+                <button
+                    class="material-symbols-outlined text-slate-500 hover:text-indigo-600 transition-colors">settings</button>
+                <div class="w-8 h-8 rounded-full overflow-hidden bg-slate-200">
+                    <img alt="User profile"
+                        data-alt="Close-up portrait of a professional male with a soft bokeh background and warm lighting"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBopwJTPr3nP9hWSk83BSkDBcrY_UlPJdv2C3OtvTGE6OPkTKRkN_wfr-dD8fx1o8-saDDXAnPXxRDTjVZnW365wImnDAqbH1l_bYuautQRqeS8IPS_k16z80KTUU9zNHy4TLI-rHyxcZWInr8LkQq6J0Wr8HhTrb8mnF9zp_zHi1p_oWMzY-CHTMUJKGO-fWWYELtEhrBU3CU53z6oFWlz-vXm1OTPyNdioIyZPI05-14GIY6Z-eZ7fSvSBlDanND6QbMi8PFivmw" />
+                </div>
             </div>
         </div>
     </nav>
-    <main class="pt-24">
+    <main class="pt-16">
         <!-- Hero Section -->
-        <section class="relative px-8 py-24 md:py-32 flex flex-col items-center text-center overflow-hidden">
-            <div class="absolute inset-0 -z-10 opacity-10 pointer-events-none">
-                <div
-                    class="absolute top-0 right-0 w-96 h-96 bg-primary-container rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 w-64 h-64 bg-secondary-container rounded-full blur-3xl translate-y-1/2 -translate-x-1/2">
-                </div>
+        <section class="relative py-24 overflow-hidden">
+            <div
+                class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary-container/10 -z-10">
             </div>
-            <h1 class="font-headline text-5xl md:text-7xl font-bold tracking-tight text-on-surface max-w-4xl">
-                Get in <span class="italic font-light">Touch</span>
-            </h1>
-            <p class="mt-6 text-on-surface-variant text-lg md:text-xl max-w-2xl font-body leading-relaxed">
-                Connect with the Academic Vanguard. Whether you’re an aspiring member, a potential partner, or a curious
-                student, our gates are always open.
-            </p>
+            <div
+                class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -z-10">
+            </div>
+            <div class="max-w-7xl mx-auto px-8 text-center">
+                <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter text-on-surface mb-6">Contact Us</h1>
+                <p class="text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+                    Have a question or just want to vibe? Reach out and our team of ethereal curators will get back to
+                    you shortly.
+                </p>
+            </div>
         </section>
-        <!-- Contact Info & Form -->
-        <section class="max-w-screen-2xl mx-auto px-8 pb-32">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-                <!-- Left: Contact Details -->
-                <div class="lg:col-span-5 space-y-12">
-                    <div class="space-y-4">
-                        <span
-                            class="font-label text-xs uppercase tracking-[0.2em] text-primary font-bold">Inquiries</span>
-                        <h2 class="font-headline text-4xl font-bold">Office of Engagement</h2>
-                    </div>
-                    <div class="space-y-8">
-                        <div class="flex gap-6 group">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary-container transition-colors">
-                                <span class="material-symbols-outlined">mail</span>
+        <!-- Main Interaction Area -->
+        <section class="max-w-7xl mx-auto px-8 pb-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <!-- Contact Form Card -->
+                <div
+                    class="lg:col-span-7 bg-surface-container-lowest p-8 md:p-12 rounded-xl shadow-[0_20px_40px_rgba(73,75,214,0.05)] border border-outline-variant/15">
+                    <h2 class="text-3xl font-bold tracking-tight mb-8">Send us a message</h2>
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Full
+                                    Name</label>
+                                <input
+                                    class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
+                                    placeholder="Alex Rivera" type="text" />
                             </div>
-                            <div>
-                                <p
-                                    class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                    Email us</p>
-                                <p class="text-lg font-headline mt-1">hello@vibehub.club</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6 group">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary-container transition-colors">
-                                <span class="material-symbols-outlined">call</span>
-                            </div>
-                            <div>
-                                <p
-                                    class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                    Call us</p>
-                                <p class="text-lg font-headline mt-1">+212 5XX-XXXXXX</p>
+                            <div class="space-y-2">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Email
+                                    Address</label>
+                                <input
+                                    class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
+                                    placeholder="alex@vibe.com" type="email" />
                             </div>
                         </div>
-                        <div class="flex gap-6 group">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary-container transition-colors">
-                                <span class="material-symbols-outlined">location_on</span>
-                            </div>
-                            <div>
-                                <p
-                                    class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                    Visit our campus</p>
-                                <p class="text-lg font-headline mt-1 leading-snug">CMC OFPPT, Academic
-                                    District<br />Tamesna, Morocco</p>
-                            </div>
+                        <div class="space-y-2">
+                            <label
+                                class="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Message</label>
+                            <textarea
+                                class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-slate-400"
+                                placeholder="How can we help you curate your experience?" rows="5"></textarea>
                         </div>
-                    </div>
-                    <div class="pt-8 space-y-4">
-                        <p class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                            Follow the Movement</p>
-                        <div class="flex gap-4">
-                            <a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:border-primary-container transition-all"
-                                href="#">
-                                <span class="material-symbols-outlined text-sm">public</span>
-                            </a>
-                            <a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:border-primary-container transition-all"
-                                href="#">
-                                <span class="material-symbols-outlined text-sm">share</span>
-                            </a>
-                        </div>
-                    </div>
+                        <button
+                            class="w-full md:w-auto px-10 py-4 bg-gradient-to-br from-primary to-primary-container text-white rounded-full font-bold shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-300"
+                            type="submit">
+                            Send Message
+                        </button>
+                    </form>
                 </div>
-                <!-- Right: Form -->
-                <div class="lg:col-span-7">
+                <!-- Contact Info Cards & Grid -->
+                <div class="lg:col-span-5 grid grid-cols-1 gap-6">
+                    <!-- Info Card: Email -->
                     <div
-                        class="bg-surface-container-lowest p-8 md:p-12 rounded-2xl shadow-xl border border-surface-container-high relative">
-                        <!-- Decorative element -->
+                        class="group bg-surface-container-low p-8 rounded-xl flex items-center gap-6 hover:bg-surface-container-high transition-colors duration-300">
                         <div
-                            class="absolute -top-4 -right-4 w-24 h-24 bg-primary-container rounded-2xl -z-10 rotate-12">
+                            class="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-3xl">alternate_email</span>
                         </div>
-                        <form class="space-y-8">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div class="space-y-2">
-                                    <label
-                                        class="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Full
-                                        Name</label>
-                                    <input
-                                        class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/40"
-                                        placeholder="e.g. Adam Smith" type="text" />
-                                </div>
-                                <div class="space-y-2">
-                                    <label
-                                        class="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Email
-                                        Address</label>
-                                    <input
-                                        class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/40"
-                                        placeholder="student@example.com" type="email" />
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <label
-                                    class="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Category
-                                    of Inquiry</label>
-                                <select
-                                    class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container text-on-surface-variant">
-                                    <option>Sports &amp; Athletics</option>
-                                    <option>Arts &amp; Culture</option>
-                                    <option>Entrepreneurship Lab</option>
-                                    <option>General Membership</option>
-                                </select>
-                            </div>
-                            <div class="space-y-2">
-                                <label
-                                    class="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Message</label>
-                                <textarea
-                                    class="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/40"
-                                    placeholder="Tell us how we can help..." rows="5"></textarea>
-                            </div>
-                            <button
-                                class="w-full bg-on-surface text-surface py-5 rounded-full font-label text-xs uppercase tracking-[0.2em] font-bold hover:bg-primary transition-colors shadow-lg shadow-on-surface/10"
-                                type="submit">
-                                Send Message
-                            </button>
-                        </form>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-primary mb-1">Email Support</p>
+                            <p class="text-lg font-semibold text-on-surface">support@vibehub.club</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
-        <!-- Map Section -->
-        <section class="px-8 pb-32">
-            <div class="max-w-screen-2xl mx-auto">
-                <div
-                    class="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 bg-surface-container-high">
-                    <img alt="Campus Map Location" class="w-full h-full object-cover"
-                        data-alt="Abstract minimalist topographic map of a university campus district"
-                        data-location="Tamesna, Morocco"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4TudFjd-7PiGnQM_XfjTn6GTmW-Vb37vDePmRqLfe7TlZ1_EZZDLCcN8XQs9XY6YOMzdjfA3yhnVSO95JeiKC_PXpi9zwd_wFt7qwwNlBBrHE-9cvFPk1r3Oii1LBqC2wC8bwabCVzc50gSIfQow_u30muZrLkET5dG45BtJ3MBELk8TdTERpvS4O0Ek2dxq00BgkJXSJ2woJkA_O4yvFnpRpZEs3umj3-OjJdKuxAk50Q46O1hNzv8_6dRBgeCkStPwTxECmxb-M" />
-                    <div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
-                    <div class="absolute bottom-8 left-8 bg-surface p-6 rounded-xl shadow-2xl max-w-xs">
-                        <h4 class="font-headline font-bold text-lg">Main Campus HQ</h4>
-                        <p class="text-xs text-on-surface-variant font-body mt-2">Find us at the heart of the Academic
-                            Hub in CMC Tamesna.</p>
-                        <a class="inline-flex items-center mt-4 text-xs font-bold uppercase tracking-widest text-primary gap-2 hover:gap-4 transition-all"
+                    <!-- Info Card: Location -->
+                    <div
+                        class="group bg-surface-container-low p-8 rounded-xl flex items-center gap-6 hover:bg-surface-container-high transition-colors duration-300">
+                        <div
+                            class="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-secondary shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-3xl">location_on</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-1">HQ Location</p>
+                            <p class="text-lg font-semibold text-on-surface">Digital Nomad Hub, Tokyo</p>
+                        </div>
+                    </div>
+                    <!-- Bento Grid Socials -->
+                    <div class="grid grid-cols-2 gap-6">
+                        <a class="bg-[#1DA1F2]/5 hover:bg-[#1DA1F2]/10 p-8 rounded-xl flex flex-col items-center justify-center gap-3 transition-colors group"
                             href="#">
-                            Open in Maps <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            <div
+                                class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#1DA1F2] shadow-sm">
+                                <span class="material-symbols-outlined text-2xl">share</span>
+                            </div>
+                            <span class="font-bold text-sm">Twitter</span>
+                        </a>
+                        <a class="bg-[#E1306C]/5 hover:bg-[#E1306C]/10 p-8 rounded-xl flex flex-col items-center justify-center gap-3 transition-colors group"
+                            href="#">
+                            <div
+                                class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#E1306C] shadow-sm">
+                                <span class="material-symbols-outlined text-2xl">camera</span>
+                            </div>
+                            <span class="font-bold text-sm">Instagram</span>
+                        </a>
+                        <a class="col-span-2 bg-surface-container-lowest border border-outline-variant/10 p-6 rounded-xl flex items-center justify-between group hover:border-primary/30 transition-all"
+                            href="#">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">work</span>
+                                </div>
+                                <span class="font-bold">Connect on LinkedIn</span>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">arrow_forward</span>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- FAQ Section -->
-        <section class="bg-surface-container py-32 px-8">
-            <div class="max-w-4xl mx-auto space-y-16">
-                <div class="text-center space-y-4">
-                    <span class="font-label text-xs uppercase tracking-[0.2em] text-primary font-bold">Inquiries</span>
-                    <h2 class="font-headline text-4xl md:text-5xl font-bold italic">Curated Questions</h2>
+        <!-- CTA Section -->
+        <section class="max-w-7xl mx-auto px-8 mb-24">
+            <div class="relative bg-on-surface rounded-[2rem] p-12 md:p-20 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-tr from-primary/40 to-transparent opacity-50"></div>
+                <!-- Decorative Elements -->
+                <div
+                    class="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] bg-primary-container rounded-full blur-[100px] opacity-20">
                 </div>
-                <div class="grid gap-6">
-                    <!-- FAQ 1 -->
-                    <div
-                        class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm group cursor-pointer hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-headline text-xl font-bold">How to join VibeHub Club?</h3>
-                            <span
-                                class="material-symbols-outlined text-primary group-hover:rotate-45 transition-transform">add</span>
-                        </div>
-                        <div class="mt-4 text-on-surface-variant text-sm leading-relaxed max-w-2xl">
-                            Membership is open to all students at CMC OFPPT. Simply fill out the registration form
-                            during our induction weeks or visit the club office to begin your journey.
-                        </div>
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-white mb-6">Ready to find your
+                        vibe?</h2>
+                    <p class="text-lg text-white/70 max-w-xl mb-10">
+                        Join 10,000+ creators and curators in the world's most ethereal digital community.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button
+                            class="px-10 py-4 bg-white text-on-surface rounded-full font-bold hover:scale-105 transition-transform duration-300">
+                            Join the Club
+                        </button>
+                        <button
+                            class="px-10 py-4 border border-white/20 text-white rounded-full font-bold hover:bg-white/10 transition-colors">
+                            Explore Members
+                        </button>
                     </div>
-                    <!-- FAQ 2 -->
-                    <div
-                        class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm group cursor-pointer hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-headline text-xl font-bold">When are the next events?</h3>
-                            <span
-                                class="material-symbols-outlined text-primary group-hover:rotate-45 transition-transform">add</span>
-                        </div>
-                        <div class="mt-4 text-on-surface-variant text-sm leading-relaxed max-w-2xl">
-                            Our seasonal calendar is released every month. You can find the latest schedule in the
-                            'Events' section of this portal or via our official campus announcement boards.
-                        </div>
-                    </div>
-                    <!-- FAQ 3 -->
-                    <div
-                        class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm group cursor-pointer hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-headline text-xl font-bold">Who to contact for partnerships?</h3>
-                            <span
-                                class="material-symbols-outlined text-primary group-hover:rotate-45 transition-transform">add</span>
-                        </div>
-                        <div class="mt-4 text-on-surface-variant text-sm leading-relaxed max-w-2xl">
-                            Strategic alliances are managed by our External Relations team. Please address your inquiry
-                            to partners@vibehub.club or use the contact form under the 'Entrepreneurship' category.
-                        </div>
-                    </div>
+                </div>
+                <!-- Abstract Image Float -->
+                <div class="absolute right-[-10%] top-1/2 -translate-y-1/2 hidden xl:block w-96 h-96 opacity-40">
+                    <img alt="Abstract 3D art" class="w-full h-full object-cover rounded-full"
+                        data-alt="Abstract 3D flowing shapes in iridescent purple and blue tones with a soft ethereal glow and high gloss texture"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrfYkbJE_otd2aO5P6Y3jqUlAn_Rj6jpPm8R7fH6jQsM88ja4udnxMWvN2GCpFoWBBTSsqNYiCsM-LXqZDf6p42lSrqVANcm3W8e1-eyb3dGUeyUmEs8udTvCi2osR0ZkPP6QrhJZJnOq1V9dU1Wc7dRlx5-767Zas9L3Nz4Jn1g9emOwIPwMdhxbr18rxNwwRe1jDjb62EZJeOqFZKfUGdkaZXiCOhY9Zqa0105w904TrGjaP1g3KgKhhI08IKyXVzTBpdaIj1xQ" />
                 </div>
             </div>
         </section>
     </main>
     <!-- Footer -->
-    <footer class="w-full py-12 px-8 bg-[#1d1a15] dark:bg-[#000000]">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6 max-w-screen-2xl mx-auto">
-            <div class="text-lg font-headline italic text-[#faf7f2]">
-                VibeHub Club
-            </div>
-            <div class="flex flex-wrap justify-center gap-8">
-                <a class="font-label uppercase tracking-[0.1em] text-xs text-[#faf7f2]/50 hover:text-[#e8d9c4] transition-opacity"
+    <footer class="bg-white dark:bg-slate-900 w-full py-12 border-t-0 bg-surface-container-low">
+        <div class="flex flex-col items-center justify-center gap-4 w-full px-8">
+            <div class="flex gap-8 mb-4">
+                <a class="text-slate-400 hover:text-indigo-400 transition-colors duration-200 text-xs font-['Inter']"
                     href="#">Privacy Policy</a>
-                <a class="font-label uppercase tracking-[0.1em] text-xs text-[#faf7f2]/50 hover:text-[#e8d9c4] transition-opacity"
+                <a class="text-slate-400 hover:text-indigo-400 transition-colors duration-200 text-xs font-['Inter']"
                     href="#">Terms of Service</a>
-                <a class="font-label uppercase tracking-[0.1em] text-xs text-[#faf7f2]/50 hover:text-[#e8d9c4] transition-opacity"
-                    href="#">Campus Map</a>
-                <a class="font-label uppercase tracking-[0.1em] text-xs text-[#faf7f2]/50 hover:text-[#e8d9c4] transition-opacity"
-                    href="#">Directory</a>
+                <a class="text-indigo-500 transition-colors duration-200 text-xs font-['Inter']" href="#">Contact</a>
             </div>
-            <div class="font-label uppercase tracking-[0.1em] text-[10px] text-[#e8d9c4] opacity-80">
-                © 2024 VibeHub Club. The Academic Vanguard.
-            </div>
+            <p class="text-slate-400 text-xs font-['Inter'] text-center">© 2024 VibeHub Club. Designed for Ethereal
+                Curators.</p>
         </div>
     </footer>
 </body>

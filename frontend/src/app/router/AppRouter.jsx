@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import AuthLayout from "../../layouts/AuthLayout";
+import ProtectedRoute from "./ProtectedRoute";
 
 import HomePage from "../../features/home/pages/HomePage";
 import AboutPage from "../../features/about/pages/AboutPage";
@@ -10,6 +11,7 @@ import ContactPage from "../../features/contact/pages/ContactPage";
 import LoginPage from "../../features/auth/pages/LoginPage";
 import RegisterPage from "../../features/auth/pages/RegisterPage";
 import ProfilePage from "../../features/profile/pages/ProfilePage";
+import AdminPage from "../../features/admin/pages/AdminPage";
 
 function AppRouter() {
   return (
@@ -21,7 +23,22 @@ function AppRouter() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:id" element={<EventDetailsPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         <Route element={<AuthLayout />}>
