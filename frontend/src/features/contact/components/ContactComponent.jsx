@@ -1,191 +1,187 @@
+import { Link } from "react-router-dom";
+
 function ContactComponent() {
-    return (
-        <main className="pt-24">
-            {/* Hero Section */}
-            <section className="relative px-8 py-24 md:py-32 flex flex-col items-center text-center overflow-hidden">
-                <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-primary-container rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
-                    </div>
-                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary-container rounded-full blur-3xl translate-y-1/2 -translate-x-1/2">
-                    </div>
+  return (
+    <main className="pt-16">
+      {/* ── Hero Section ── */}
+      <section className="relative py-24 overflow-hidden">
+        {/* Background gradients */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 -z-10" />
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -z-10" />
+
+        <div className="max-w-7xl mx-auto px-8 text-center">
+          <h1 className="text-6xl md:text-7xl font-black tracking-tighter text-slate-900 mb-6">
+            Contact Us
+          </h1>
+          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Have a question or just want to vibe? Reach out and our team of
+            dedicated curators will get back to you shortly.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Main Interaction Area ── */}
+      <section className="max-w-7xl mx-auto px-8 pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+          {/* Contact Form Card */}
+          <div className="lg:col-span-7 bg-white p-8 md:p-12 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-slate-100">
+            <h2 className="text-3xl font-bold tracking-tight mb-8 text-slate-900">
+              Send us a message
+            </h2>
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">
+                    Full Name
+                  </label>
+                  <input
+                    className="w-full bg-slate-100 border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-slate-400 text-slate-900"
+                    placeholder="Alex Rivera"
+                    type="text"
+                  />
                 </div>
-                <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight text-on-surface max-w-4xl">
-                    Get in <span className="italic font-light">Touch</span>
-                </h1>
-                <p className="mt-6 text-on-surface-variant text-lg md:text-xl max-w-2xl font-body leading-relaxed">
-                    Connect with the Academic Vanguard. Whether you're an aspiring member, a potential partner, or a curious
-                    student, our gates are always open.
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">
+                    Email Address
+                  </label>
+                  <input
+                    className="w-full bg-slate-100 border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-slate-400 text-slate-900"
+                    placeholder="alex@vibe.com"
+                    type="email"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">
+                  Message
+                </label>
+                <textarea
+                  className="w-full bg-slate-100 border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-slate-400 text-slate-900"
+                  placeholder="How can we help you curate your experience?"
+                  rows="5"
+                />
+              </div>
+              <button
+                className="w-full md:w-auto px-10 py-4 bg-primary text-background-dark rounded-full font-bold shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-300"
+                type="submit"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          {/* Contact Info Cards & Social Grid */}
+          <div className="lg:col-span-5 grid grid-cols-1 gap-6">
+
+            {/* Info Card: Email */}
+            <div className="group bg-slate-50 p-8 rounded-xl flex items-center gap-6 hover:bg-slate-100 transition-colors duration-300">
+              <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform duration-300">
+                <span className="material-symbols-outlined text-3xl">alternate_email</span>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1">
+                  Email Support
                 </p>
-            </section>
-            {/* Contact Info & Form */}
-            <section className="max-w-screen-2xl mx-auto px-8 pb-32">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-                    {/* Left: Contact Details */}
-                    <div className="lg:col-span-5 space-y-12">
-                        <div className="space-y-4">
-                            <span className="font-label text-xs uppercase tracking-[0.2em] text-primary font-bold">Inquiries</span>
-                            <h2 className="font-headline text-4xl font-bold">Office of Engagement</h2>
-                        </div>
-                        <div className="space-y-8">
-                            <div className="flex gap-6 group">
-                                <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary-container transition-colors">
-                                    <span className="material-symbols-outlined">mail</span>
-                                </div>
-                                <div>
-                                    <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                        Email us</p>
-                                    <p className="text-lg font-headline mt-1">hello@vibehub.club</p>
-                                </div>
-                            </div>
-                            <div className="flex gap-6 group">
-                                <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary-container transition-colors">
-                                    <span className="material-symbols-outlined">call</span>
-                                </div>
-                                <div>
-                                    <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                        Call us</p>
-                                    <p className="text-lg font-headline mt-1">+212 5XX-XXXXXX</p>
-                                </div>
-                            </div>
-                            <div className="flex gap-6 group">
-                                <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary-container transition-colors">
-                                    <span className="material-symbols-outlined">location_on</span>
-                                </div>
-                                <div>
-                                    <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                        Visit our campus</p>
-                                    <p className="text-lg font-headline mt-1 leading-snug">CMC OFPPT, Academic
-                                        District<br />Tamesna, Morocco</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="pt-8 space-y-4">
-                            <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                Follow the Movement</p>
-                            <div className="flex gap-4">
-                                <a className="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:border-primary-container transition-all"
-                                    href="#">
-                                    <span className="material-symbols-outlined text-sm">public</span>
-                                </a>
-                                <a className="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:border-primary-container transition-all"
-                                    href="#">
-                                    <span className="material-symbols-outlined text-sm">share</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Right: Form */}
-                    <div className="lg:col-span-7">
-                        <div className="bg-surface-container-lowest p-8 md:p-12 rounded-2xl shadow-xl border border-surface-container-high relative">
-                            {/* Decorative element */}
-                            <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary-container rounded-2xl -z-10 rotate-12">
-                            </div>
-                            <form className="space-y-8">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div className="space-y-2">
-                                        <label className="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Full
-                                            Name</label>
-                                        <input className="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/40"
-                                            placeholder="e.g. Adam Smith" type="text" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Email
-                                            Address</label>
-                                        <input className="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/40"
-                                            placeholder="student@example.com" type="email" />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Category
-                                        of Inquiry</label>
-                                    <select className="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container text-on-surface-variant">
-                                        <option>Sports &amp; Athletics</option>
-                                        <option>Arts &amp; Culture</option>
-                                        <option>Entrepreneurship Lab</option>
-                                        <option>General Membership</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">Message</label>
-                                    <textarea className="w-full bg-surface-container-high border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-container placeholder:text-on-surface-variant/40"
-                                        placeholder="Tell us how we can help..." rows="5"></textarea>
-                                </div>
-                                <button className="w-full bg-on-surface text-surface py-5 rounded-full font-label text-xs uppercase tracking-[0.2em] font-bold hover:bg-primary transition-colors shadow-lg shadow-on-surface/10"
-                                    type="submit">
-                                    Send Message
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                <p className="text-lg font-semibold text-slate-900">support@vibehub.club</p>
+              </div>
+            </div>
+
+            {/* Info Card: Location */}
+            <div className="group bg-slate-50 p-8 rounded-xl flex items-center gap-6 hover:bg-slate-100 transition-colors duration-300">
+              <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-slate-500 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                <span className="material-symbols-outlined text-3xl">location_on</span>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">
+                  HQ Location
+                </p>
+                <p className="text-lg font-semibold text-slate-900">
+                  CMC OFPPT, Tamesna, Morocco
+                </p>
+              </div>
+            </div>
+
+            {/* Bento Social Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              <a
+                className="bg-sky-50 hover:bg-sky-100 p-8 rounded-xl flex flex-col items-center justify-center gap-3 transition-colors group"
+                href="#"
+              >
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sky-500 shadow-sm">
+                  <span className="material-symbols-outlined text-2xl">share</span>
                 </div>
-            </section>
-            {/* Map Section */}
-            <section className="px-8 pb-32">
-                <div className="max-w-screen-2xl mx-auto">
-                    <div className="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 bg-surface-container-high">
-                        <img alt="Campus Map Location" className="w-full h-full object-cover"
-                            data-alt="Abstract minimalist topographic map of a university campus district"
-                            data-location="Tamesna, Morocco"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4TudFjd-7PiGnQM_XfjTn6GTmW-Vb37vDePmRqLfe7TlZ1_EZZDLCcN8XQs9XY6YOMzdjfA3yhnVSO95JeiKC_PXpi9zwd_wFt7qwwNlBBrHE-9cvFPk1r3Oii1LBqC2wC8bwabCVzc50gSIfQow_u30muZrLkET5dG45BtJ3MBELk8TdTERpvS4O0Ek2dxq00BgkJXSJ2woJkA_O4yvFnpRpZEs3umj3-OjJdKuxAk50Q46O1hNzv8_6dRBgeCkStPwTxECmxb-M" />
-                        <div className="absolute inset-0 bg-primary/10 pointer-events-none"></div>
-                        <div className="absolute bottom-8 left-8 bg-surface p-6 rounded-xl shadow-2xl max-w-xs">
-                            <h4 className="font-headline font-bold text-lg">Main Campus HQ</h4>
-                            <p className="text-xs text-on-surface-variant font-body mt-2">Find us at the heart of the Academic
-                                Hub in CMC Casablanca .</p>
-                            <a className="inline-flex items-center mt-4 text-xs font-bold uppercase tracking-widest text-primary gap-2 hover:gap-4 transition-all"
-                                href="#">
-                                Open in Maps <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                            </a>
-                        </div>
-                    </div>
+                <span className="font-bold text-sm text-slate-700">Twitter</span>
+              </a>
+              <a
+                className="bg-pink-50 hover:bg-pink-100 p-8 rounded-xl flex flex-col items-center justify-center gap-3 transition-colors group"
+                href="#"
+              >
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm">
+                  <span className="material-symbols-outlined text-2xl">camera</span>
                 </div>
-            </section>
-            {/* FAQ Section */}
-            <section className="bg-surface-container py-32 px-8">
-                <div className="max-w-4xl mx-auto space-y-16">
-                    <div className="text-center space-y-4">
-                        <span className="font-label text-xs uppercase tracking-[0.2em] text-primary font-bold">Inquiries</span>
-                        <h2 className="font-headline text-4xl md:text-5xl font-bold italic">Curated Questions</h2>
-                    </div>
-                    <div className="grid gap-6">
-                        {/* FAQ 1 */}
-                        <div className="bg-surface-container-lowest p-8 rounded-2xl shadow-sm group cursor-pointer hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-center">
-                                <h3 className="font-headline text-xl font-bold">How to join VibeHub Club?</h3>
-                                <span className="material-symbols-outlined text-primary group-hover:rotate-45 transition-transform">add</span>
-                            </div>
-                            <div className="mt-4 text-on-surface-variant text-sm leading-relaxed max-w-2xl">
-                                Membership is open to all students at CMC OFPPT. Simply fill out the registration form
-                                during our induction weeks or visit the club office to begin your journey.
-                            </div>
-                        </div>
-                        {/* FAQ 2 */}
-                        <div className="bg-surface-container-lowest p-8 rounded-2xl shadow-sm group cursor-pointer hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-center">
-                                <h3 className="font-headline text-xl font-bold">When are the next events?</h3>
-                                <span className="material-symbols-outlined text-primary group-hover:rotate-45 transition-transform">add</span>
-                            </div>
-                            <div className="mt-4 text-on-surface-variant text-sm leading-relaxed max-w-2xl">
-                                Our seasonal calendar is released every month. You can find the latest schedule in the
-                                'Events' section of this portal or via our official campus announcement boards.
-                            </div>
-                        </div>
-                        {/* FAQ 3 */}
-                        <div className="bg-surface-container-lowest p-8 rounded-2xl shadow-sm group cursor-pointer hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-center">
-                                <h3 className="font-headline text-xl font-bold">Who to contact for partnerships?</h3>
-                                <span className="material-symbols-outlined text-primary group-hover:rotate-45 transition-transform">add</span>
-                            </div>
-                            <div className="mt-4 text-on-surface-variant text-sm leading-relaxed max-w-2xl">
-                                Strategic alliances are managed by our External Relations team. Please address your inquiry
-                                to partners@vibehub.club or use the contact form under the 'Entrepreneurship' category.
-                            </div>
-                        </div>
-                    </div>
+                <span className="font-bold text-sm text-slate-700">Instagram</span>
+              </a>
+              <a
+                className="col-span-2 bg-white border border-slate-100 p-6 rounded-xl flex items-center justify-between group hover:border-primary/30 transition-all"
+                href="#"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <span className="material-symbols-outlined">work</span>
+                  </div>
+                  <span className="font-bold text-slate-800">Connect on LinkedIn</span>
                 </div>
-            </section>
-        </main>
-    );
+                <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">
+                  arrow_forward
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA Banner ── */}
+      <section className="max-w-7xl mx-auto px-8 mb-24">
+        <div className="relative bg-background-dark rounded-3xl p-12 md:p-20 overflow-hidden">
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary/40 to-transparent opacity-50" />
+          {/* Decorative glow */}
+          <div className="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] bg-primary rounded-full blur-[100px] opacity-20" />
+
+          <div className="relative z-10 flex flex-col items-center text-center">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white mb-6">
+              Ready to find your vibe?
+            </h2>
+            <p className="text-lg text-white/70 max-w-xl mb-10">
+              Join the largest student community on campus and start building
+              your legacy today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/register"
+                className="px-10 py-4 bg-white text-background-dark rounded-full font-bold hover:scale-105 transition-transform duration-300"
+              >
+                Join the Club
+              </Link>
+              <button className="px-10 py-4 border border-white/20 text-white rounded-full font-bold hover:bg-white/10 transition-colors">
+                Explore Members
+              </button>
+            </div>
+          </div>
+
+          {/* Decorative abstract image */}
+          <div className="absolute right-[-10%] top-1/2 -translate-y-1/2 hidden xl:block w-96 h-96 opacity-40">
+            <img
+              alt="Abstract 3D art"
+              className="w-full h-full object-cover rounded-full"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrfYkbJE_otd2aO5P6Y3jqUlAn_Rj6jpPm8R7fH6jQsM88ja4udnxMWvN2GCpFoWBBTSsqNYiCsM-LXqZDf6p42lSrqVANcm3W8e1-eyb3dGUeyUmEs8udTvCi2osR0ZkPP6QrhJZJnOq1V9dU1Wc7dRlx5-767Zas9L3Nz4Jn1g9emOwIPwMdhxbr18rxNwwRe1jDjb62EZJeOqFZKfUGdkaZXiCOhY9Zqa0105w904TrGjaP1g3KgKhhI08IKyXVzTBpdaIj1xQ"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
 
 export default ContactComponent;

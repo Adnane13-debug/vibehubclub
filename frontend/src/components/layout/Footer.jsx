@@ -5,12 +5,16 @@ function Footer() {
     <footer className="bg-slate-950/98 py-14 text-white">
       <div className="container-custom grid grid-cols-1 gap-12 md:grid-cols-4">
         <div className="col-span-1 flex flex-col gap-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/90 shadow-md shadow-primary/40">
-              <span className="material-symbols-outlined text-slate-900">
-                hub
-              </span>
-            </div>
+          <Link
+            to="/"
+            className="group flex w-fit items-center gap-3"
+            aria-label="VibeHub Club home"
+          >
+            <img
+              src="/logo vibe hub.svg"
+              alt=""
+              className="h-15 w-auto animate-floating-logo-slow drop-shadow-[0_0_12px_#f59f0a] transition-all duration-300 group-hover:drop-shadow-[0_0_24px_#f59f0a]"
+            />
             <div className="flex flex-col leading-none">
               <span className="font-heading text-xl font-black tracking-tight">
                 VibeHub
@@ -19,7 +23,7 @@ function Footer() {
                 University Club
               </span>
             </div>
-          </div>
+          </Link>
           <p className="max-w-xs text-sm leading-relaxed text-slate-400">
             The premier student-led organization for well-rounded university
             experiences.
@@ -119,9 +123,7 @@ function Footer() {
       </div>
 
       <div className="container-custom mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800/80 pt-6 text-xs text-slate-500 md:flex-row md:text-[11px]">
-        <p>
-          © 2024 VibeHub Club. All rights reserved.
-        </p>
+        <p>© 2024 VibeHub Club. All rights reserved.</p>
         <div className="flex gap-4">
           <a
             className="text-slate-500 transition-colors hover:text-white"

@@ -2,10 +2,16 @@
 
 @theme {
   --animate-floating-logo: floating-logo 3s ease-in-out infinite;
+  --animate-floating-logo-slow: floating-logo-slow 8s ease-in-out infinite;
 
   @keyframes floating-logo {
     0%, 100% { transform: translateY(0) scale(1.1); }
     50% { transform: translateY(-8px) scale(1.1); }
+  }
+
+  @keyframes floating-logo-slow {
+    0%, 100% { transform: translateY(0) scale(1.05); }
+    50% { transform: translateY(-5px) scale(1.05); }
   }
 
   /* colors */

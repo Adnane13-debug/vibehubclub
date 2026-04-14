@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../auth/AuthContext";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
 
   const navItems = [
     { to: "/", label: "Home" },
@@ -45,18 +47,41 @@ function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link
-            to="/login"
-            className="btn-secondary h-10 px-5 text-xs font-semibold"
-          >
-            Sign in
-          </Link>
-          <Link
-            to="/register"
-            className="btn-primary h-10 px-5 text-xs font-bold"
-          >
-            Join Club
-          </Link>
+          {!isAuthenticated ? (
+            <>
+              <Link
+                to="/login"
+                className="btn-secondary h-10 px-5 text-xs font-semibold"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/register"
+                className="btn-primary h-10 px-5 text-xs font-bold"
+              >
+                Create account
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to={user?.role === "admin" ? "/admin" : "/profile"}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-slate-900 transition-colors hover:bg-primary/30"
+                title={user?.role === "admin" ? "Admin" : "Profile"}
+              >
+                <span className="material-symbols-outlined text-[22px]">
+                  {user?.role === "admin" ? "admin_panel_settings" : "account_circle"}
+                </span>
+              </Link>
+              <button
+                type="button"
+                className="btn-secondary h-10 px-4 text-xs"
+                onClick={() => logout()}
+              >
+                Log out
+              </button>
+            </>
+          )}
         </div>
 
         <button
@@ -88,20 +113,44 @@ function Navbar() {
               </NavLink>
             ))}
             <div className="mt-2 flex flex-col gap-2 pt-2">
-              <Link
-                to="/login"
-                className="btn-secondary w-full justify-center"
-                onClick={() => setIsOpen(false)}
-              >
-                Sign in
-              </Link>
-              <Link
-                to="/register"
-                className="btn-primary w-full justify-center"
-                onClick={() => setIsOpen(false)}
-              >
-                Join Club
-              </Link>
+              {!isAuthenticated ? (
+                <>
+                  <Link
+                    to="/login"
+                    className="btn-secondary w-full justify-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn-primary w-full justify-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Create account
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to={user?.role === "admin" ? "/admin" : "/profile"}
+                    className="btn-primary w-full justify-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {user?.role === "admin" ? "Admin" : "Profile"}
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn-secondary w-full justify-center"
+                    onClick={() => {
+                      logout();
+                      setIsOpen(false);
+                    }}
+                  >
+                    Log out
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
