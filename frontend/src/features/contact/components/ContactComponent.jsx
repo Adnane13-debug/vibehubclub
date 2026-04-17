@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { MdAlternateEmail, MdLocationOn, MdArrowForward } from "react-icons/md";
+import { FaXTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 
 function ContactComponent() {
   return (
@@ -77,7 +79,7 @@ function ContactComponent() {
             {/* Info Card: Email */}
             <div className="group bg-slate-50 p-8 rounded-xl flex items-center gap-6 hover:bg-slate-100 transition-colors duration-300">
               <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform duration-300">
-                <span className="material-symbols-outlined text-3xl">alternate_email</span>
+                <MdAlternateEmail size={30} />
               </div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-primary mb-1">
@@ -90,14 +92,14 @@ function ContactComponent() {
             {/* Info Card: Location */}
             <div className="group bg-slate-50 p-8 rounded-xl flex items-center gap-6 hover:bg-slate-100 transition-colors duration-300">
               <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-slate-500 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                <span className="material-symbols-outlined text-3xl">location_on</span>
+                <MdLocationOn size={30} />
               </div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">
                   HQ Location
                 </p>
                 <p className="text-lg font-semibold text-slate-900">
-                  CMC OFPPT, Tamesna, Morocco
+                  CMC OFPPT, Casablanca , Morocco
                 </p>
               </div>
             </div>
@@ -109,16 +111,16 @@ function ContactComponent() {
                 href="#"
               >
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-sky-500 shadow-sm">
-                  <span className="material-symbols-outlined text-2xl">share</span>
+                  <FaXTwitter size={22} />
                 </div>
-                <span className="font-bold text-sm text-slate-700">Twitter</span>
+                <span className="font-bold text-sm text-slate-700">Twitter / X</span>
               </a>
               <a
                 className="bg-pink-50 hover:bg-pink-100 p-8 rounded-xl flex flex-col items-center justify-center gap-3 transition-colors group"
                 href="#"
               >
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm">
-                  <span className="material-symbols-outlined text-2xl">camera</span>
+                  <FaInstagram size={22} />
                 </div>
                 <span className="font-bold text-sm text-slate-700">Instagram</span>
               </a>
@@ -128,13 +130,11 @@ function ContactComponent() {
               >
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    <span className="material-symbols-outlined">work</span>
+                    <FaLinkedinIn size={20} />
                   </div>
                   <span className="font-bold text-slate-800">Connect on LinkedIn</span>
                 </div>
-                <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">
-                  arrow_forward
-                </span>
+                <MdArrowForward size={22} className="text-slate-300 group-hover:text-primary transition-colors" />
               </a>
             </div>
           </div>
