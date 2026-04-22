@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import MemberHeader from "./MemberHeader";
+import MemberStatsPanel from "./MemberStatsPanel";
+import UpcomingEventCard from "./UpcomingEventCard";
+import PastExperienceList from "./PastExperienceList";
 
 const UPCOMING = [
   {
@@ -47,7 +51,7 @@ const PAST = [
 ];
 
 /**
- * Member UI adapted from `ui ux/ui/member.html`.
+ * MemberDashboard - Refactored orchestrator component.
  */
 function MemberDashboard({ user }) {
   const first = user?.name ?? "Member";
@@ -67,83 +71,21 @@ function MemberDashboard({ user }) {
 
   return (
     <div className="pb-16 pt-4">
-      <header className="mb-12">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <h1 className="mb-2 font-heading text-4xl font-extrabold tracking-tight text-slate-900">
-              Welcome back, {first}
-            </h1>
-            <p className="max-w-md text-slate-600">
-              Your creative energy is at its peak this week. Check your upcoming
-              curator meets.
-            </p>
-          </div>
-          <div className="card-soft w-full rounded-xl p-6 shadow-md md:w-80">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-heading text-sm font-bold uppercase tracking-wider text-primary">
-                {tier}
-              </span>
-              <span className="text-xs font-medium text-slate-500">
-                {xp} / {xpGoal} XP to Gold
-              </span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-primary to-amber-600"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        </div>
-      </header>
+      <MemberHeader 
+        first={first} 
+        tier={tier} 
+        xp={xp} 
+        xpGoal={xpGoal} 
+        pct={pct} 
+      />
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-        <div className="flex flex-col gap-6 md:col-span-3">
-          <div className="card-soft flex flex-col items-center justify-center rounded-xl p-8 text-center shadow-md">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-sky-800">
-              <span className="material-symbols-outlined">event_available</span>
-            </div>
-            <span className="font-heading text-3xl font-bold">{attended}</span>
-            <span className="text-sm font-medium text-slate-600">
-              Events Attended
-            </span>
-          </div>
-          <div className="card-soft flex flex-col items-center justify-center rounded-xl p-8 text-center shadow-md">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
-              <span className="material-symbols-outlined">quiz</span>
-            </div>
-            <span className="font-heading text-3xl font-bold">
-              {String(tests).padStart(2, "0")}
-            </span>
-            <span className="text-sm font-medium text-slate-600">
-              Tests Taken
-            </span>
-          </div>
-
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-hover p-8 text-slate-900 shadow-lg">
-            <div className="relative z-10">
-              <h3 className="mb-1 font-heading text-lg font-bold opacity-90">
-                Last Result
-              </h3>
-              <div className="mb-4 font-heading text-5xl font-extrabold tracking-tighter">
-                {mbti}
-              </div>
-              <p className="mb-6 text-xs leading-relaxed opacity-90">
-                {mbtiBlurb}
-              </p>
-              <Link
-                to="/events"
-                className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-900/20 bg-white/20 py-3 text-sm font-bold backdrop-blur-sm transition-colors hover:bg-white/30"
-              >
-                Retake Test
-                <span className="material-symbols-outlined text-sm">refresh</span>
-              </Link>
-            </div>
-            <div className="pointer-events-none absolute -bottom-4 -right-4 rotate-12 opacity-10 transition-transform group-hover:scale-110">
-              <span className="material-symbols-outlined text-9xl">psychology</span>
-            </div>
-          </div>
-        </div>
+        <MemberStatsPanel 
+          attended={attended} 
+          tests={tests} 
+          mbti={mbti} 
+          mbtiBlurb={mbtiBlurb} 
+        />
 
         <div className="flex flex-col gap-8 md:col-span-9">
           <div>
@@ -163,57 +105,7 @@ function MemberDashboard({ user }) {
             </div>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {UPCOMING.map((ev) => (
-                <article
-                  key={ev.id}
-                  className="group card-soft flex flex-col overflow-hidden rounded-xl shadow-md"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      alt=""
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      src={ev.image}
-                    />
-                    <div className="absolute left-4 top-4">
-                      <span
-                        className={`rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur ${ev.badgeStyle}`}
-                      >
-                        {ev.badge}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="mb-2 flex items-start justify-between">
-                      <h3 className="font-heading text-xl font-bold transition-colors group-hover:text-primary">
-                        {ev.title}
-                      </h3>
-                      <div className="text-right">
-                        <span className="block text-lg font-bold leading-tight text-primary">
-                          {ev.day}
-                        </span>
-                        <span className="block text-xs font-bold uppercase text-slate-500">
-                          {ev.month}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="mb-4 line-clamp-2 text-sm text-slate-600">
-                      {ev.desc}
-                    </p>
-                    <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-600">
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm">
-                          schedule
-                        </span>
-                        {ev.time}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm">
-                          location_on
-                        </span>
-                        {ev.place}
-                      </span>
-                    </div>
-                  </div>
-                </article>
+                <UpcomingEventCard key={ev.id} event={ev} />
               ))}
             </div>
           </div>
@@ -222,35 +114,7 @@ function MemberDashboard({ user }) {
             <h2 className="mb-6 font-heading text-2xl font-bold text-slate-900">
               Recent Experiences
             </h2>
-            <div className="card-soft overflow-hidden rounded-xl shadow-md">
-              <div className="divide-y divide-slate-100">
-                {PAST.map((p) => (
-                  <div
-                    key={p.id}
-                    className="flex cursor-pointer items-center gap-6 p-6 transition-colors hover:bg-slate-50"
-                  >
-                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl">
-                      <img
-                        alt=""
-                        className="h-full w-full object-cover"
-                        src={p.thumb}
-                      />
-                    </div>
-                    <div className="min-w-0 grow">
-                      <h4 className="font-bold text-slate-900">{p.title}</h4>
-                      <p className="text-xs text-slate-500">{p.meta}</p>
-                    </div>
-                    <div className="hidden shrink-0 sm:block">
-                      <img
-                        alt=""
-                        className="h-8 w-8 rounded-full border-2 border-white object-cover ring-2 ring-slate-100"
-                        src={avatar}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <PastExperienceList pastEvents={PAST} avatar={avatar} />
           </div>
         </div>
       </div>
