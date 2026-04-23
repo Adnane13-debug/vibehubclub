@@ -5,6 +5,8 @@ import cors      from 'cors'
 import dotenv    from 'dotenv'
 import authRoutes from './routes/auth.routes.js'
 import publicRoutes from './routes/public.routes.js'
+import adminRoutes from './routes/admin.routes.js'
+import memberRoutes from './routes/member.routes.js'
 
 dotenv.config()
 
@@ -26,6 +28,12 @@ app.use('/api/auth', authRoutes)
 
 //public routes
 app.use('/api/public', publicRoutes)
+
+//admin routes
+app.use('/api/admin', adminRoutes)
+
+//member routes
+app.use('/api/member', memberRoutes)
 
 // start the server
 app.listen(process.env.PORT, () => {
