@@ -1,8 +1,8 @@
-// this file contains the logic for each auth route
 
-import db     from '../config/db.js'
+
+import db from '../config/db.js'
 import bcrypt from 'bcrypt'
-import jwt    from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -93,11 +93,11 @@ export const login = (req, res) => {
       res.json({
         token,
         user: {
-          id:     user.id,
-          nom:    user.nom,
+          id: user.id,
+          nom: user.nom,
           prenom: user.prenom,
-          email:  user.email,
-          role:   user.role
+          email: user.email,
+          role: user.role
         }
       })
     }
