@@ -6,6 +6,8 @@ import OverviewTab from "./OverviewTab";
 import AnalyticsTab from "./AnalyticsTab";
 import MembersTab from "./MembersTab";
 import EventsTab from "./EventsTab";
+import CreateEventModal from "./CreateEventModal";
+import VisitorProfileEdit from "../profile/VisitorProfileEdit";
 
 // ─── seed data ───────────────────────────────────────────────────────────────
 
@@ -15,8 +17,8 @@ const initialEvents = [
     dateLabel: "22 JUL",
     title: "Summer Rooftop Gala",
     subtitle: "18:00 • Sky Lounge",
-    category: "Social",
-    categoryClass: "bg-sky-100 text-sky-800",
+    category: "Culture",
+    categoryClass: "bg-rose-100 text-rose-800",
     status: "Confirmed",
     statusTone: "emerald",
   },
@@ -25,7 +27,7 @@ const initialEvents = [
     dateLabel: "15 AUG",
     title: "Tech Founders Mixer",
     subtitle: "10:00 • Innovation Hub",
-    category: "Networking",
+    category: "Entrepreneurship",
     categoryClass: "bg-amber-100 text-amber-900",
     status: "Drafting",
     statusTone: "primary",
@@ -35,7 +37,7 @@ const initialEvents = [
     dateLabel: "02 SEP",
     title: "Art & Vibes Workshop",
     subtitle: "14:00 • Creative Loft",
-    category: "Workshop",
+    category: "Culture",
     categoryClass: "bg-rose-100 text-rose-800",
     status: "Confirmed",
     statusTone: "emerald",
@@ -78,9 +80,9 @@ const DEFAULT_AVATAR =
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
 function categoryClass(category) {
-  if (category === "Social") return "bg-sky-100 text-sky-800";
-  if (category === "Networking") return "bg-amber-100 text-amber-900";
-  return "bg-rose-100 text-rose-800";
+  if (category === "Sports") return "bg-emerald-100 text-emerald-800";
+  if (category === "Culture") return "bg-rose-100 text-rose-800";
+  return "bg-amber-100 text-amber-900";
 }
 
 // ─── orchestrator ─────────────────────────────────────────────────────────────
@@ -94,10 +96,16 @@ function AdminDashboard() {
   // Navigation
   const [activeTab, setActiveTab] = useState("overview");
 
+  // Profile Edit state
+  const [userData, setUserData] = useState(user || {});
+
+  // Create Event Modal state
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+
   // Events state
   const [events, setEvents] = useState(initialEvents);
   const [editingId, setEditingId] = useState(null);
-  const [draft, setDraft] = useState({ title: "", subtitle: "", category: "Social" });
+  const [draft, setDraft] = useState({ title: "", subtitle: "", category: "Sports" });
 
   // Members state
   const [members, setMembers] = useState(initialMembers);
@@ -143,20 +151,26 @@ function AdminDashboard() {
     setEditingId(null);
   };
 
-  const addEvent = () => {
+  const handleOpenCreateEvent = () => setIsCreateEventOpen(true);
+  const handleCloseCreateEvent = () => setIsCreateEventOpen(false);
+
+  const handleSaveNewEvent = (newDraft) => {
     const id = `e${Date.now()}`;
+    const dateLabel = newDraft.date 
+      ? new Date(newDraft.date).toLocaleDateString("en-US", { day: "numeric", month: "short" }).toUpperCase()
+      : "NEW";
     const newEv = {
       id,
-      dateLabel: "NEW",
-      title: "New Event",
-      subtitle: "TBD • TBD",
-      category: "Social",
-      categoryClass: "bg-sky-100 text-sky-800",
-      status: "Drafting",
-      statusTone: "primary",
+      dateLabel,
+      title: newDraft.title,
+      subtitle: newDraft.subtitle,
+      category: newDraft.category,
+      categoryClass: categoryClass(newDraft.category),
+      status: "Confirmed",
+      statusTone: "emerald",
     };
     setEvents((prev) => [...prev, newEv]);
-    startEdit(newEv);
+    setIsCreateEventOpen(false);
   };
 
   const deleteEvent = (id) => {
@@ -164,25 +178,20 @@ function AdminDashboard() {
     if (editingId === id) setEditingId(null);
   };
 
-  const addMember = (e) => {
-    e.preventDefault();
-    if (!memberName.trim()) return;
-    setMembers((prev) => [
-      ...prev,
-      {
-        id: `m${Date.now()}`,
-        name: memberName.trim(),
-        role: memberRole,
-        tier: "Standard",
-        tierClass: "bg-slate-100 text-slate-600",
-        avatar: user?.avatarUrl || DEFAULT_AVATAR,
-      },
-    ]);
-    setMemberName("");
+  const acceptMemberRequest = (newMemberObj) => {
+    setMembers((prev) => [newMemberObj, ...prev]);
   };
 
   const removeMember = (id) =>
     setMembers((prev) => prev.filter((m) => m.id !== id));
+
+  const updateMemberRole = (id, newRole) => {
+    setMembers((prev) => prev.map((m) => m.id === id ? { ...m, role: newRole } : m));
+  };
+
+  const updateMemberStatus = (id, newStatus) => {
+    setMembers((prev) => prev.map((m) => m.id === id ? { ...m, status: newStatus } : m));
+  };
 
   const postAnnouncement = (e) => {
     e.preventDefault();
@@ -222,7 +231,7 @@ function AdminDashboard() {
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onCreateEvent={() => { setActiveTab("events"); addEvent(); }}
+        onCreateEvent={() => { setActiveTab("events"); handleOpenCreateEvent(); }}
         onLogout={logout}
       />
 
@@ -242,23 +251,37 @@ function AdminDashboard() {
           {activeTab === "members" && (
             <MembersTab
               members={members}
-              memberName={memberName}
-              setMemberName={setMemberName}
-              memberRole={memberRole}
-              setMemberRole={setMemberRole}
-              onAddMember={addMember}
+              onUpdateRole={updateMemberRole}
+              onUpdateStatus={updateMemberStatus}
               onRemoveMember={removeMember}
+              onAcceptRequest={acceptMemberRequest}
             />
           )}
           {activeTab === "events" && (
             <EventsTab
-              onAddEvent={addEvent}
+              onAddEvent={handleOpenCreateEvent}
               {...eventsTableProps}
               {...announcementProps}
             />
           )}
+          {activeTab === "profile" && (
+            <VisitorProfileEdit 
+              user={userData} 
+              onSave={(updatedData) => {
+                setUserData(prev => ({ ...prev, ...updatedData }));
+                setActiveTab("overview");
+              }} 
+              onCancel={() => setActiveTab("overview")} 
+            />
+          )}
         </div>
       </main>
+
+      <CreateEventModal 
+        isOpen={isCreateEventOpen} 
+        onClose={handleCloseCreateEvent} 
+        onSave={handleSaveNewEvent} 
+      />
     </div>
   );
 }

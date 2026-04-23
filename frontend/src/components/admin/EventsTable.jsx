@@ -49,9 +49,9 @@ function EventsTable({
                         setDraft((d) => ({ ...d, category: e.target.value }))
                       }
                     >
-                      <option>Social</option>
-                      <option>Networking</option>
-                      <option>Workshop</option>
+                      <option>Sports</option>
+                      <option>Culture</option>
+                      <option>Entrepreneurship</option>
                     </select>
                     <div className="flex gap-2">
                       <button

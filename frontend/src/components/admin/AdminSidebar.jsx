@@ -3,6 +3,7 @@ const SIDEBAR_TABS = [
   { id: "analytics", label: "Analytics", icon: "monitoring" },
   { id: "members", label: "Members", icon: "group" },
   { id: "events", label: "Events", icon: "calendar_today" },
+  { id: "profile", label: "Profile Settings", icon: "settings" },
 ];
 
 function sidebarBtnClass(active) {

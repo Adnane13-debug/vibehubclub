@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import MemberHeader from "./MemberHeader";
 import MemberStatsPanel from "./MemberStatsPanel";
 import UpcomingEventCard from "./UpcomingEventCard";
 import PastExperienceList from "./PastExperienceList";
+import VisitorProfileEdit from "./VisitorProfileEdit";
 
 const UPCOMING = [
   {
@@ -54,23 +56,45 @@ const PAST = [
  * MemberDashboard - Refactored orchestrator component.
  */
 function MemberDashboard({ user }) {
-  const first = user?.name ?? "Member";
-  const mbti = user?.mbti ?? "INTJ";
+  const [isEditing, setIsEditing] = useState(false);
+  const [userData, setUserData] = useState(user || {});
+
+  const handleSave = (updatedData) => {
+    setUserData(prev => ({ ...prev, ...updatedData }));
+    setIsEditing(false);
+  };
+
+  const first = userData?.name ?? "Member";
+  const mbti = userData?.mbti ?? "INTJ";
   const mbtiBlurb =
-    user?.mbtiBlurb ??
+    userData?.mbtiBlurb ??
     "The Architect: Imaginative and strategic thinkers with a plan for everything.";
-  const attended = user?.eventsAttended ?? 12;
-  const tests = user?.testsTaken ?? 4;
-  const xp = user?.xpCurrent ?? 240;
-  const xpGoal = user?.xpGoal ?? 500;
-  const tier = user?.tier ?? "Silver Tier";
+  const attended = userData?.eventsAttended ?? 12;
+  const tests = userData?.testsTaken ?? 4;
+  const xp = userData?.xpCurrent ?? 240;
+  const xpGoal = userData?.xpGoal ?? 500;
+  const tier = userData?.tier ?? "Silver Tier";
   const pct = Math.min(100, Math.round((xp / xpGoal) * 100));
   const avatar =
-    user?.avatarUrl ??
+    userData?.avatarUrl ??
     "https://lh3.googleusercontent.com/aida-public/AB6AXuCnXEFypmfE2zm7XkpmzJuD-Im1sxaSlArAVc69QQ1FEguvOi0Oin6CQThtEqJxxdQE0-eLyYaw26faFpjXFEPfa7MTqTR-2am03zzlZ57SHQ64agFGp7SMN-oIUlNDZ6n4FhHhZpFS0-H8PB6qZMa818KqwvFS6EDbC-WDxWjQe19UI0zOnRPukCnFwUiDUHHi0BQxx1iYwNBgMi_j6gYFTx4RP1j6MkMa3bPOCM-3S6fSIGrtwsld9OXIm13fobnJChus0LcAt6o";
 
+  if (isEditing) {
+    return <VisitorProfileEdit user={userData} onSave={handleSave} onCancel={() => setIsEditing(false)} />;
+  }
+
   return (
-    <div className="pb-16 pt-4">
+    <div className="pb-16 pt-4 max-w-[1280px] mx-auto px-6 md:px-8">
+      <div className="flex justify-end mb-4">
+        <button 
+          onClick={() => setIsEditing(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-lg font-semibold transition-colors shadow-sm"
+        >
+          <span className="material-symbols-outlined text-[18px]">settings</span>
+          Profile Settings
+        </button>
+      </div>
+
       <MemberHeader 
         first={first} 
         tier={tier} 
