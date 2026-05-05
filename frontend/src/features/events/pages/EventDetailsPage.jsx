@@ -12,17 +12,26 @@ function EventDetailsPage() {
   const [loading, setLoading] = useState(true)
   const [joining, setJoining] = useState(false)
   const [message, setMessage] = useState('')
+  const [isJoined, setIsJoined] = useState(false)
 
   useEffect(() => {
     api.get(`/api/public/events/${id}`)
       .then(res => {
         setEvent(res.data)
         setLoading(false)
+        // Check if user is joined
+        if (isAuthenticated) {
+          api.get('/api/member/events')
+            .then(res => {
+              setIsJoined(res.data.some(e => e.id === parseInt(id)))
+            })
+            .catch(err => console.log(err))
+        }
       })
       .catch(() => {
         setLoading(false)
       })
-  }, [id])
+  }, [id, isAuthenticated])
 
   const handleJoin = async () => {
     if (!isAuthenticated) {
@@ -34,8 +43,22 @@ function EventDetailsPage() {
     try {
       await api.post(`/api/member/events/${id}/join`)
       setMessage('✅ Vous êtes inscrit à cet événement!')
+      setIsJoined(true)
     } catch (err) {
       setMessage(err.response?.data?.message || 'Erreur lors de l\'inscription')
+    } finally {
+      setJoining(false)
+    }
+  }
+
+  const handleCancel = async () => {
+    setJoining(true)
+    try {
+      await api.delete(`/api/member/events/${id}/cancel`)
+      setMessage('✅ Participation annulée!')
+      setIsJoined(false)
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Erreur lors de l\'annulation')
     } finally {
       setJoining(false)
     }
@@ -88,14 +111,24 @@ function EventDetailsPage() {
           </div>
         )}
 
-        {/* Join button */}
-        <button
-          onClick={handleJoin}
-          disabled={joining}
-          className="btn-primary w-fit"
-        >
-          {joining ? 'Inscription...' : isAuthenticated ? 'Participer à cet événement' : 'Connectez-vous pour participer'}
-        </button>
+        {/* Join/Cancel button */}
+        {isJoined ? (
+          <button
+            onClick={handleCancel}
+            disabled={joining}
+            className="btn-primary w-fit"
+          >
+            {joining ? 'Annulation...' : 'Annuler participation'}
+          </button>
+        ) : (
+          <button
+            onClick={handleJoin}
+            disabled={joining}
+            className="btn-primary w-fit"
+          >
+            {joining ? 'Inscription...' : isAuthenticated ? 'Participer à cet événement' : 'Connectez-vous pour participer'}
+          </button>
+        )}
 
       </div>
     </div>

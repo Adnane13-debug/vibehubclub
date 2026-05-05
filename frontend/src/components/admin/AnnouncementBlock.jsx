@@ -8,6 +8,8 @@ function AnnouncementBlock({
   setAnnBody,
   onPost,
   announcements,
+  onEdit,
+  onDelete,
 }) {
   return (
     <div className="rounded-xl border border-slate-200/80 bg-slate-50 p-6 shadow-md md:p-8">
@@ -68,6 +70,20 @@ function AnnouncementBlock({
             <li key={a.id} className="rounded-lg bg-white p-3 shadow-sm">
               <p className="font-semibold">{a.subject || "(no subject)"}</p>
               <p className="text-slate-600">{a.body}</p>
+              <div className="mt-2 flex gap-2">
+                <button
+                  onClick={() => onEdit(a.id, a.subject, a.body)}
+                  className="text-xs text-primary hover:underline"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => onDelete(a.id)}
+                  className="text-xs text-red-600 hover:underline"
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>

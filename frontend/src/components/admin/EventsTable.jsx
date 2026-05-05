@@ -10,6 +10,7 @@ function EventsTable({
   onSaveEdit,
   onCancelEdit,
   onDelete,
+  onToggleStatus,
 }) {
   return (
     <div className="overflow-x-auto">
@@ -98,6 +99,12 @@ function EventsTable({
                   />
                   <span className="text-xs font-medium">{ev.status}</span>
                 </div>
+                <button
+                  onClick={() => onToggleStatus(ev.raw.id, ev.raw.statut)}
+                  className="mt-1 text-xs text-primary hover:underline"
+                >
+                  Toggle Status
+                </button>
               </td>
               <td className="py-4 pl-4 text-right align-top opacity-0 transition-opacity group-hover:opacity-100">
                 <button

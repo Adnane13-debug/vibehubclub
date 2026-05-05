@@ -38,6 +38,12 @@ function AdminDashboard() {
   const [annSubject, setAnnSubject] = useState("")
   const [annBody, setAnnBody] = useState("")
 
+  // Notifications
+  const [notifications, setNotifications] = useState([])
+
+  // Test results
+  const [testResults, setTestResults] = useState([])
+
   // Edit event state
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({ title: "", subtitle: "", category: "sport" })
@@ -49,8 +55,10 @@ function AdminDashboard() {
       api.get('/api/admin/events'),
       api.get('/api/admin/members'),
       api.get('/api/admin/announcements'),
+      api.get('/api/admin/notifications'),
+      api.get('/api/admin/tests/results'),
     ])
-      .then(([statsRes, eventsRes, membersRes, annRes]) => {
+      .then(([statsRes, eventsRes, membersRes, annRes, notifRes, testRes]) => {
         setStats(statsRes.data)
 
         // format events to match what sub-components expect
@@ -82,6 +90,10 @@ function AdminDashboard() {
           subject: a.titre,
           body: a.contenu
         })))
+
+        setNotifications(notifRes.data)
+
+        setTestResults(testRes.data)
 
         setLoading(false)
       })
@@ -161,6 +173,21 @@ function AdminDashboard() {
     }
   }
 
+  const toggleEventStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === 'publie' ? 'brouillon' : 'publie'
+    try {
+      await api.patch(`/api/admin/events/${id}/status`, { statut: newStatus })
+      setEvents(prev => prev.map(e => e.id === id ? {
+        ...e,
+        status: newStatus === 'publie' ? 'Confirmed' : 'Draft',
+        statusTone: newStatus === 'publie' ? 'emerald' : 'primary',
+        raw: { ...e.raw, statut: newStatus }
+      } : e))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const updateMemberStatus = async (id, newStatus) => {
     try {
       await api.patch(`/api/admin/members/${id}/status`, { statut: newStatus })
@@ -193,11 +220,34 @@ function AdminDashboard() {
     }
   }
 
+  const editAnnouncement = async (id, subject, body) => {
+    try {
+      await api.put(`/api/admin/announcements/${id}`, {
+        titre: subject,
+        contenu: body
+      })
+      setAnnouncements(prev => prev.map(a => a.id === id ? { ...a, subject, body } : a))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const deleteAnnouncement = async (id) => {
+    try {
+      await api.delete(`/api/admin/announcements/${id}`)
+      setAnnouncements(prev => prev.filter(a => a.id !== id))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const announcementProps = {
     annSubject, setAnnSubject,
     annBody, setAnnBody,
     onPost: postAnnouncement,
-    announcements
+    announcements,
+    onEdit: editAnnouncement,
+    onDelete: deleteAnnouncement
   }
 
   const eventsTableProps = {
@@ -205,7 +255,8 @@ function AdminDashboard() {
     onStartEdit: startEdit,
     onSaveEdit: saveEdit,
     onCancelEdit: () => setEditingId(null),
-    onDeleteEvent: deleteEvent
+    onDeleteEvent: deleteEvent,
+    onToggleStatus: toggleEventStatus
   }
 
   if (loading) return <div className="p-8 text-center">Chargement du dashboard...</div>
@@ -232,6 +283,23 @@ function AdminDashboard() {
             />
           )}
           {activeTab === "analytics" && <AnalyticsTab stats={statsCards} />}
+          {activeTab === "members" && (
+            <div className="mb-4">
+              <button
+                onClick={async () => {
+                  try {
+                    await api.post('/api/admin/notifications/inactive-members')
+                    alert('Notifications sent to inactive members')
+                  } catch (err) {
+                    console.log(err)
+                  }
+                }}
+                className="btn-primary"
+              >
+                Notifier membres inactifs
+              </button>
+            </div>
+          )}
           {activeTab === "members" && (
             <MembersTab
               members={members}

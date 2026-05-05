@@ -4,6 +4,7 @@ import {
   useContext,
   useMemo,
   useState,
+  useEffect,
 } from 'react'
 import api from '../services/api'
 
@@ -18,6 +19,21 @@ export function AuthProvider({ children }) {
       return null
     }
   })
+
+  // Fetch fresh user data on mount if token exists
+  useEffect(() => {
+    const token = localStorage.getItem('vibehub_token')
+    if (token) {
+      api.get('/api/auth/me')
+        .then(res => setUser(res.data))
+        .catch(err => {
+          console.log('Failed to fetch user:', err)
+          localStorage.removeItem('vibehub_token')
+          localStorage.removeItem('vibehub_user')
+          setUser(null)
+        })
+    }
+  }, [])
 
   // LOGIN — calls real API
   const login = useCallback(async (email, mot_de_passe) => {
