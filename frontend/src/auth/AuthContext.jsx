@@ -4,24 +4,43 @@ import {
   useContext,
   useMemo,
   useState,
-} from "react";
-import * as fakeAuth from "./fakeAuth";
+} from 'react'
+import api from '../services/api'
 
-const AuthContext = createContext(null);
+const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => fakeAuth.getCurrentUser());
+  const [user, setUser] = useState(() => {
+    try {
+      const raw = localStorage.getItem('vibehub_user')
+      return raw ? JSON.parse(raw) : null
+    } catch {
+      return null
+    }
+  })
 
-  const login = useCallback((role) => {
-    const next = fakeAuth.login(role);
-    setUser(next);
-    return next;
-  }, []);
+  // LOGIN — calls real API
+  const login = useCallback(async (email, mot_de_passe) => {
+    const res = await api.post('/api/auth/login', { email, mot_de_passe })
+    const { token, user } = res.data
 
-  const logout = useCallback(() => {
-    fakeAuth.logout();
-    setUser(null);
-  }, []);
+    // save token and user in localStorage
+    localStorage.setItem('vibehub_token', token)
+    localStorage.setItem('vibehub_user', JSON.stringify(user))
+
+    setUser(user)
+    return user
+  }, [])
+
+  // LOGOUT
+  const logout = useCallback(async () => {
+    try {
+      await api.post('/api/auth/logout')
+    } catch {}
+    localStorage.removeItem('vibehub_token')
+    localStorage.removeItem('vibehub_user')
+    setUser(null)
+  }, [])
 
   const value = useMemo(
     () => ({
@@ -32,17 +51,17 @@ export function AuthProvider({ children }) {
       logout,
     }),
     [user, login, logout]
-  );
+  )
 
   return (
     <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-  );
+  )
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext);
+  const ctx = useContext(AuthContext)
   if (!ctx) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error('useAuth must be used within AuthProvider')
   }
-  return ctx;
+  return ctx
 }

@@ -9,7 +9,7 @@ const checkRole = (role) => {
       return res.status(403).json({ message: `Access denied. ${role}s only.` })
     }
 
-    // if role matches → continue
+    // if role matches then continue
     next()
   }
 }

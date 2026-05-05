@@ -14,7 +14,7 @@ function ProfilePage() {
     return <Navigate to="/admin" replace />;
   }
 
-  if (user.role === "member") {
+  if (user.role === "membre") {
     return (
       <div className="container-custom section-padding">
         <MemberDashboard user={user} />

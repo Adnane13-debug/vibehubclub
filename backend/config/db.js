@@ -1,5 +1,3 @@
-
-
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -18,7 +16,7 @@ db.connect((err) => {
   if (err) {
     console.log('DB connection failed:', err)
   } else {
-    console.log('MySQL connected ✅')
+    console.log('MySQL connected ')
   }
 })
 

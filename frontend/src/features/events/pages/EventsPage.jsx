@@ -1,21 +1,32 @@
-import { useState } from "react";
-import EventsHeroSection from "../components/EventsHeroSection";
-import EventsFilterSection from "../components/EventsFilterSection";
-import EventCard from "../components/EventCard";
-import EventsFeaturedSection from "../components/EventsFeaturedSection";
-import { EVENTS } from "../data/eventsData";
+import { useState, useEffect } from 'react'
+import api from '../../../services/api'
+import EventsHeroSection from '../components/EventsHeroSection'
+import EventsFilterSection from '../components/EventsFilterSection'
+import EventCard from '../components/EventCard'
+import EventsFeaturedSection from '../components/EventsFeaturedSection'
 
 function EventsPage() {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState('all')
+  const [events, setEvents] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredEvents =
-    activeFilter === "all"
-      ? EVENTS
-      : EVENTS.filter(
-          (e) =>
-            e.category.toLowerCase() === activeFilter ||
-            (activeFilter === "sport" && e.category === "Sports")
-        );
+  useEffect(() => {
+    api.get('/api/public/events')
+      .then(res => {
+        setEvents(res.data)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
+  }, [])
+
+  const filteredEvents = activeFilter === 'all'
+    ? events
+    : events.filter(e => e.categorie?.toLowerCase() === activeFilter)
+
+  if (loading) return <div className="p-8 text-center">Chargement...</div>
 
   return (
     <div className="flex flex-1 justify-center px-6 py-10 md:px-20">
@@ -26,23 +37,17 @@ function EventsPage() {
           onFilterChange={setActiveFilter}
         />
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+          {events.length === 0
+            ? <p className="text-slate-500">Aucun événement disponible.</p>
+            : filteredEvents.map(event => (
+                <EventCard key={event.id} event={event} />
+              ))
+          }
         </div>
         <EventsFeaturedSection />
-        <div className="mb-10 mt-16 flex justify-center">
-          <button
-            type="button"
-            className="flex items-center gap-2 rounded-full border-2 border-primary px-8 py-3 text-sm font-bold text-slate-900 transition-all hover:bg-primary/20 dark:text-slate-100"
-          >
-            View All Upcoming Events
-            <span className="material-symbols-outlined">expand_more</span>
-          </button>
-        </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default EventsPage;
+export default EventsPage

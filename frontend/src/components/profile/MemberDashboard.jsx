@@ -1,149 +1,87 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import MemberHeader from "./MemberHeader";
-import MemberStatsPanel from "./MemberStatsPanel";
-import UpcomingEventCard from "./UpcomingEventCard";
-import PastExperienceList from "./PastExperienceList";
-import VisitorProfileEdit from "./VisitorProfileEdit";
+import { useState, useEffect } from 'react'
+import api from '../../services/api'
 
-const UPCOMING = [
-  {
-    id: "1",
-    title: "Neon Nights Curated",
-    day: "14",
-    month: "Oct",
-    badge: "Confirmed",
-    badgeStyle: "text-primary",
-    desc: "Join our monthly deep-dive into digital art trends and immersive projection mapping.",
-    time: "19:00 - 22:00",
-    place: "Studio 5, Downtown",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuD-inXCbeObZoKnSCRa0wUx9HgpIq0D1rFbY52j8OVIYqREw9JyIWDV7JVg3uvaniT8noIZj5nzt11sCwtozSNRN9sY6cTUkeZ0cpIYHEbAJbtvNSBiW09CWXiTqt3Cmu0kO9RsQj2aEXzizQ8gm8HKYnqnH7BMimhFhJ__mJ9B5bZfgLqWgtC-Bprh8euopAnvUfmT9YjqI4AwH5sSHmxX12j6HZbW3ogQHVD6GFrs_0ruQEYJoX7tFs1OE5Yo8x-siIL71yH_w1k",
-  },
-  {
-    id: "2",
-    title: "Rooftop Mindmeld",
-    day: "22",
-    month: "Oct",
-    badge: "Waitlist",
-    badgeStyle: "text-sky-700",
-    desc: "Collaborative brainstorming sessions overlooking the city skyline. Bring your boldest ideas.",
-    time: "18:30 - 21:00",
-    place: "Sky Garden",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAx81jiaSuHERhr_U6aGW2O834ZCC7KeOyljfKA9UQ_X-C0vcOqomO4DiC7rl9LaEiPSet6h6ZSPnywarD1jkiWwj0eK7LeqYXG0JJPc3m5ERpf2_wS5FAEItz5iR8zJG-4zvonyYatSI3g5YEKjTU5_qiKVOXzL_dbYMO-yMz2BnRlrGi9FsNbV9H3alQGZ_eJCUW-4KYofl4mO_MIScGQYA0IbUtE3vLj98fBdu7uL3lUYVjE5yod_uLqjnxOLxiHhzRwFSlRMLI",
-  },
-];
+function MemberDashboard() {
+  const [dashboard, setDashboard] = useState(null)
+  const [events, setEvents] = useState([])
+  const [notifications, setNotifications] = useState([])
+  const [loading, setLoading] = useState(true)
 
-const PAST = [
-  {
-    id: "p1",
-    title: "Creative Brunch Mix",
-    meta: "September 28, 2024 • Attended",
-    thumb:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCv5OCig23fusElW5choU8Ul30jQM63o2WbblScvOjOXpT0z2gSonPZD1W-N8l9zwfjVAilebaSz-0_QBny5Qqi4toCsgROjwSgo4RgcnzwmVRcjOxBfLafopUJgiQXiGpURgxAJ4LEiUoThywb31uLz45haupLfGnaZcsf-7ZSOEJnfZ7wum509fomwHDH_j5q6rJRqyegQFiHcYxaNMhzx0q-iQ7lFhaESkx_LcHHhBuwLy50Ga_B2PeTCfe8nqJ9JG788dqLro8",
-  },
-  {
-    id: "p2",
-    title: "Synthesis Workshop",
-    meta: "September 15, 2024 • Attended",
-    thumb:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA9ZplDrezClcp_xsOOp2u9zOPva6Yqyavg1k4HBdQDj8ll48X02tzyD8AgubBt71E5EJV-P9AIpxsMN1IGeZqYaUEdqyNj2bPlNpCrAiowvyNZWWAnyuy6iiSRLdid7p-Qxs5DDk0Q6WVwdzvSowi0DiJ3TKbLNkWAVczECxnfF1JpFHUz9h8gGrwXWLbBuxH1iSJdq-oDPJZJkO4D9oSLE3oe0ljTtkS_jhiQoGfLApP8Rgb1-5G7jQyNaZXfuf095jy7EA-7llQ",
-  },
-];
+  useEffect(() => {
+    // fetch all data at once
+    Promise.all([
+      api.get('/api/member/dashboard'),
+      api.get('/api/member/events'),
+      api.get('/api/member/notifications')
+    ])
+      .then(([dashRes, eventsRes, notifRes]) => {
+        setDashboard(dashRes.data)
+        setEvents(eventsRes.data)
+        setNotifications(notifRes.data)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
+  }, [])
 
-/**
- * MemberDashboard - Refactored orchestrator component.
- */
-function MemberDashboard({ user }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState(user || {});
-
-  const handleSave = (updatedData) => {
-    setUserData(prev => ({ ...prev, ...updatedData }));
-    setIsEditing(false);
-  };
-
-  const first = userData?.name ?? "Member";
-  const mbti = userData?.mbti ?? "INTJ";
-  const mbtiBlurb =
-    userData?.mbtiBlurb ??
-    "The Architect: Imaginative and strategic thinkers with a plan for everything.";
-  const attended = userData?.eventsAttended ?? 12;
-  const tests = userData?.testsTaken ?? 4;
-  const xp = userData?.xpCurrent ?? 240;
-  const xpGoal = userData?.xpGoal ?? 500;
-  const tier = userData?.tier ?? "Silver Tier";
-  const pct = Math.min(100, Math.round((xp / xpGoal) * 100));
-  const avatar =
-    userData?.avatarUrl ??
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuCnXEFypmfE2zm7XkpmzJuD-Im1sxaSlArAVc69QQ1FEguvOi0Oin6CQThtEqJxxdQE0-eLyYaw26faFpjXFEPfa7MTqTR-2am03zzlZ57SHQ64agFGp7SMN-oIUlNDZ6n4FhHhZpFS0-H8PB6qZMa818KqwvFS6EDbC-WDxWjQe19UI0zOnRPukCnFwUiDUHHi0BQxx1iYwNBgMi_j6gYFTx4RP1j6MkMa3bPOCM-3S6fSIGrtwsld9OXIm13fobnJChus0LcAt6o";
-
-  if (isEditing) {
-    return <VisitorProfileEdit user={userData} onSave={handleSave} onCancel={() => setIsEditing(false)} />;
-  }
+  if (loading) return <div className="p-8 text-center">Chargement...</div>
+  if (!dashboard) return <div className="p-8 text-center">Erreur de chargement.</div>
 
   return (
-    <div className="pb-16 pt-4 max-w-[1280px] mx-auto px-6 md:px-8">
-      <div className="flex justify-end mb-4">
-        <button 
-          onClick={() => setIsEditing(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-lg font-semibold transition-colors shadow-sm"
-        >
-          <span className="material-symbols-outlined text-[18px]">settings</span>
-          Profile Settings
-        </button>
+    <div className="flex flex-col gap-6 p-6">
+
+      {/* Welcome */}
+      <div className="rounded-2xl bg-primary/10 p-6">
+        <h1 className="text-2xl font-bold text-slate-900">
+          Bonjour, {dashboard.user.prenom} 👋
+        </h1>
+        <p className="text-slate-600">Bienvenue sur votre espace membre</p>
       </div>
 
-      <MemberHeader 
-        first={first} 
-        tier={tier} 
-        xp={xp} 
-        xpGoal={xpGoal} 
-        pct={pct} 
-      />
-
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-        <MemberStatsPanel 
-          attended={attended} 
-          tests={tests} 
-          mbti={mbti} 
-          mbtiBlurb={mbtiBlurb} 
-        />
-
-        <div className="flex flex-col gap-8 md:col-span-9">
-          <div>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-heading text-2xl font-bold text-slate-900">
-                Upcoming Events
-              </h2>
-              <Link
-                to="/events"
-                className="flex items-center gap-1 text-sm font-bold text-primary transition-all hover:gap-2"
-              >
-                View Calendar
-                <span className="material-symbols-outlined text-sm">
-                  arrow_forward
-                </span>
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              {UPCOMING.map((ev) => (
-                <UpcomingEventCard key={ev.id} event={ev} />
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h2 className="mb-6 font-heading text-2xl font-bold text-slate-900">
-              Recent Experiences
-            </h2>
-            <PastExperienceList pastEvents={PAST} avatar={avatar} />
-          </div>
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="rounded-xl border bg-white p-4 shadow-sm text-center">
+          <p className="text-3xl font-bold text-primary">{dashboard.totalEvents}</p>
+          <p className="text-sm text-slate-500">Événements rejoints</p>
+        </div>
+        <div className="rounded-xl border bg-white p-4 shadow-sm text-center">
+          <p className="text-3xl font-bold text-primary">{dashboard.unreadNotifications}</p>
+          <p className="text-sm text-slate-500">Notifications non lues</p>
         </div>
       </div>
+
+      {/* My events */}
+      <div>
+        <h2 className="mb-4 text-xl font-bold text-slate-900">Mes événements</h2>
+        {events.length === 0
+          ? <p className="text-slate-500">Vous n'êtes inscrit à aucun événement.</p>
+          : events.map(event => (
+            <div key={event.id} className="mb-3 rounded-xl border bg-white p-4 shadow-sm">
+              <p className="font-semibold text-slate-900">{event.titre}</p>
+              <p className="text-sm text-slate-500">{event.lieu} — {new Date(event.date_debut).toLocaleDateString('fr-FR')}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Notifications */}
+      <div>
+        <h2 className="mb-4 text-xl font-bold text-slate-900">Notifications</h2>
+        {notifications.length === 0
+          ? <p className="text-slate-500">Aucune notification.</p>
+          : notifications.map(notif => (
+            <div key={notif.id} className={`mb-3 rounded-xl border p-4 shadow-sm ${notif.lu === 0 ? 'bg-primary/5 border-primary/20' : 'bg-white'}`}>
+              <p className="text-sm text-slate-700">{notif.message}</p>
+              <p className="text-xs text-slate-400 mt-1">{new Date(notif.created_at).toLocaleDateString('fr-FR')}</p>
+            </div>
+          ))
+        }
+      </div>
+
     </div>
-  );
+  )
 }
 
-export default MemberDashboard;
+export default MemberDashboard
