@@ -24,7 +24,7 @@ function EventsFilterSection({ activeFilter, onFilterChange }) {
             className={`flex h-10 items-center justify-center gap-2 rounded-xl px-5 text-sm transition-colors ${
               isActive
                 ? "bg-primary font-semibold text-slate-900 shadow-sm"
-                : "border border-slate-200 bg-white px-5 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                : "border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-50"
             }`}
           >
             <span className="material-symbols-outlined text-[18px]">
