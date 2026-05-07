@@ -175,9 +175,9 @@ export const markAsRead = (req, res) => {
 // called after member completes the external test
 
 export const saveMbtiResult = (req, res) => {
-  const { extraversion, agreableness, conscientiousness, neuroticism, openness } = req.body
+  const { extraversion, agreeableness, conscientiousness, neuroticism, openness } = req.body
 
-  if (!extraversion || !agreableness || !conscientiousness || !neuroticism || !openness) {
+  if (!extraversion || !agreeableness || !conscientiousness || !neuroticism || !openness) {
     return res.status(400).json({ message: 'All scores are required' })
   }
 
@@ -191,8 +191,8 @@ export const saveMbtiResult = (req, res) => {
       if (results.length > 0) {
         // update existing result
         db.query(
-          'UPDATE resultats_test SET extraversion = ?, agreableness = ?, conscientiousness = ?, neuroticism = ?, openness = ? WHERE utilisateur_id = ?',
-          [extraversion, agreableness, conscientiousness, neuroticism, openness, req.user.id],
+          'UPDATE resultats_test SET extraversion = ?, agreeableness = ?, conscientiousness = ?, neuroticism = ?, openness = ? WHERE utilisateur_id = ?',
+          [extraversion, agreeableness, conscientiousness, neuroticism, openness, req.user.id],
           (err, result) => {
             if (err) return res.status(500).json({ message: 'Server error' })
             res.json({ message: 'Test result updated' })
@@ -201,8 +201,8 @@ export const saveMbtiResult = (req, res) => {
       } else {
         // insert new result
         db.query(
-          'INSERT INTO resultats_test (utilisateur_id, extraversion, agreableness, conscientiousness, neuroticism, openness) VALUES (?, ?, ?, ?, ?, ?)',
-          [req.user.id, extraversion, agreableness, conscientiousness, neuroticism, openness],
+          'INSERT INTO resultats_test (utilisateur_id, extraversion, agreeableness, conscientiousness, neuroticism, openness) VALUES (?, ?, ?, ?, ?, ?)',
+          [req.user.id, extraversion, agreeableness, conscientiousness, neuroticism, openness],
           (err, result) => {
             if (err) return res.status(500).json({ message: 'Server error' })
             res.status(201).json({ message: 'Test result saved' })
@@ -223,7 +223,7 @@ export const getMbtiResult = (req, res) => {
       if (err) return res.status(500).json({ message: 'Server error' })
 
       if (results.length === 0) {
-        return res.status(404).json({ message: 'No test result found' })
+        return res.json(null)
       }
 
       res.json(results[0])

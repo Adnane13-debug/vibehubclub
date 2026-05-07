@@ -15,23 +15,37 @@ function MemberDashboard() {
 
   useEffect(() => {
     // fetch all data at once
-    Promise.all([
+    Promise.allSettled([
       api.get('/api/member/dashboard'),
       api.get('/api/member/events'),
       api.get('/api/member/notifications'),
       api.get('/api/member/mbti/results')
     ])
-      .then(([dashRes, eventsRes, notifRes, mbtiRes]) => {
-        setDashboard(dashRes.data)
-        setEvents(eventsRes.data)
-        setNotifications(notifRes.data)
-        setMbti(mbtiRes.data)
-        setLoading(false)
-      })
-      .catch(err => {
-        console.log(err)
-        setLoading(false)
-      })
+    .then((results) => {
+      const [dashRes, eventsRes, notifRes, mbtiRes] = results
+
+      if (dashRes.status === 'fulfilled') {
+        setDashboard(dashRes.value.data)
+      }
+
+      if (eventsRes.status === 'fulfilled') {
+        setEvents(eventsRes.value.data)
+      }
+
+      if (notifRes.status === 'fulfilled') {
+        setNotifications(notifRes.value.data)
+      }
+
+      if (mbtiRes.status === 'fulfilled') {
+        setMbti(mbtiRes.value.data)
+      }
+
+      setLoading(false)
+    })
+    .catch(err => {
+      console.log(err)
+      setLoading(false)
+    })
   }, [])
 
   const markRead = async (id) => {
