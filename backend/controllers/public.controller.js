@@ -53,15 +53,18 @@ export const getAnnouncements = (req, res) => {
 // SEND CONTACT MESSAGE
 // saves name, email, message
 
-export const sendContact = (req, res) => {
+export const sendContact = async (req, res) => {
   const { nom, email, message } = req.body
-
-  // check if all fields are filled
   if (!nom || !email || !message) {
     return res.status(400).json({ message: 'All fields are required' })
   }
-
-  // for now we just send a success response
-  // later you can add email sending here
-  res.json({ message: 'Message sent successfully' })
+  try {
+    await db.query(
+      'INSERT INTO contacts (nom, email, message) VALUES (?, ?, ?)',
+      [nom, email, message]
+    )
+    res.json({ message: 'Message sent successfully' })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
 }
