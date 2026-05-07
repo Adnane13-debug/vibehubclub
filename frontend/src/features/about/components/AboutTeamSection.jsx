@@ -27,12 +27,12 @@ const TEAM = [
 
 function AboutTeamSection() {
   return (
-    <section className="border-t border-primary/10 bg-background-light px-6 py-24 dark:bg-background-dark">
+    <section className="border-t border-primary/10 bg-background-light px-6 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
           <div className="max-w-xl">
             <h2 className="mb-4 text-3xl font-bold">The Leadership Team</h2>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-slate-600">
               Meet the dedicated students steering the VibeHub ship towards a
               brighter future.
             </p>

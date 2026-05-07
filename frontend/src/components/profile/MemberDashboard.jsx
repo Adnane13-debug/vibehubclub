@@ -32,6 +32,8 @@ function MemberDashboard() {
         console.log(err)
         setLoading(false)
       })
+  }, [])
+
   const markRead = async (id) => {
     try {
       await api.patch(`/api/member/notifications/${id}/read`)

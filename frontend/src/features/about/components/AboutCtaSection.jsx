@@ -8,7 +8,7 @@ function AboutCtaSection() {
           <h2 className="mb-6 text-3xl font-black md:text-4xl">
             Ready to find your vibe?
           </h2>
-          <p className="mx-auto mb-10 max-w-xl text-lg text-slate-600 dark:text-slate-400">
+          <p className="mx-auto mb-10 max-w-xl text-lg text-slate-600">
             Join the largest student community on campus and start building your
             legacy today.
           </p>

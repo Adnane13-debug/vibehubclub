@@ -1,18 +1,10 @@
 function AboutStorySection() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 -top-40 mx-auto h-72 max-w-3xl rounded-full bg-gradient-to-b from-primary/15 via-primary/0 to-transparent blur-3xl" />
-      <div className="container-custom section-padding relative">
-        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
+    <section className="max-w-7xl mx-auto px-6 py-20">
+      <div>
+        <div className="grid items-center gap-16 lg:grid-cols-2">
           <div>
-            <div className="section-eyebrow mb-5">
-              <span className="material-symbols-outlined text-sm">history</span>
-              <span>Our Story</span>
-            </div>
-
-            <h2 className="section-title">
-              Built by students. Designed for campus life.
-            </h2>
+            <h2 className="mb-6 text-3xl font-bold">Our Story</h2>
 
             <p className="mb-6 max-w-xl leading-relaxed text-slate-600">
               Founded by a group of visionary students who saw the need for a
@@ -21,37 +13,31 @@ function AboutStorySection() {
               education happens when you apply your energy to the things you
               love.
             </p>
-            <p className="mb-10 max-w-xl leading-relaxed text-slate-600">
+            <p className="mb-8 max-w-xl leading-relaxed text-slate-600">
               From organized sports tournaments to high-stakes entrepreneurship
               pitching sessions, we provide the platform, the resources, and
               the community to make big ideas happen.
             </p>
 
             <div className="grid grid-cols-3 gap-4">
-              <div className="card-soft rounded-2xl border-primary/20 bg-primary/5 p-5 text-center">
+              <div className="rounded-xl border border-primary/20 bg-primary/10 p-6 text-center">
                 <div className="mb-1 text-3xl font-black text-primary">500+</div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                  Members
-                </div>
+                <div className="text-xs font-bold uppercase tracking-wider opacity-70">Members</div>
               </div>
-              <div className="card-soft rounded-2xl border-primary/20 bg-primary/5 p-5 text-center">
+              <div className="rounded-xl border border-primary/20 bg-primary/10 p-6 text-center">
                 <div className="mb-1 text-3xl font-black text-primary">40+</div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                  Events yearly
-                </div>
+                <div className="text-xs font-bold uppercase tracking-wider opacity-70">Events Yearly</div>
               </div>
-              <div className="card-soft rounded-2xl border-primary/20 bg-primary/5 p-5 text-center">
+              <div className="rounded-xl border border-primary/20 bg-primary/10 p-6 text-center">
                 <div className="mb-1 text-3xl font-black text-primary">3</div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                  Domains
-                </div>
+                <div className="text-xs font-bold uppercase tracking-wider opacity-70">Domains</div>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-4 pt-10 md:pt-12">
-              <div className="group relative aspect-square overflow-hidden rounded-3xl bg-primary/5 shadow-sm">
+            <div className="space-y-4 pt-12">
+              <div className="group relative aspect-square overflow-hidden rounded-2xl bg-primary/5">
                 <img
                   alt="Student sports activity"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -59,7 +45,7 @@ function AboutStorySection() {
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
-              <div className="group relative aspect-[3/4] overflow-hidden rounded-3xl bg-primary/5 shadow-sm">
+              <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-primary/5">
                 <img
                   alt="Student workshop"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -70,7 +56,7 @@ function AboutStorySection() {
             </div>
 
             <div className="space-y-4">
-              <div className="group relative aspect-[3/4] overflow-hidden rounded-3xl bg-primary/5 shadow-sm">
+              <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-primary/5">
                 <img
                   alt="Cultural event"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -78,7 +64,7 @@ function AboutStorySection() {
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
-              <div className="group relative aspect-square overflow-hidden rounded-3xl bg-primary/5 shadow-sm">
+              <div className="group relative aspect-square overflow-hidden rounded-2xl bg-primary/5">
                 <img
                   alt="Entrepreneurship team"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
