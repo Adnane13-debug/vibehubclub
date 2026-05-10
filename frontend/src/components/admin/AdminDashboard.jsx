@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import api from "../../services/api";
 
@@ -8,7 +8,9 @@ import AnalyticsTab from "./AnalyticsTab";
 import MembersTab from "./MembersTab";
 import EventsTab from "./EventsTab";
 import CreateEventModal from "./CreateEventModal";
-import VisitorProfileEdit from "../profile/VisitorProfileEdit";
+import AdminProfileSettings from "./AdminProfileSettings";
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function categoryClass(category) {
   if (category === "sport") return "bg-emerald-100 text-emerald-800";
@@ -16,261 +18,743 @@ function categoryClass(category) {
   return "bg-amber-100 text-amber-900";
 }
 
+function formatEvent(e) {
+  return {
+    id: e.id,
+    dateLabel: new Date(e.date_debut)
+      .toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
+      .toUpperCase(),
+    title: e.titre,
+    subtitle: `${e.lieu}`,
+    category: e.categorie,
+    categoryClass: categoryClass(e.categorie),
+    status: e.statut === "publie" ? "Confirmed" : "Draft",
+    statusTone: e.statut === "publie" ? "emerald" : "primary",
+    raw: e,
+  };
+}
+
+function formatMember(m) {
+  return {
+    id: m.id,
+    name: `${m.prenom} ${m.nom}`,
+    role: m.role,
+    tier: m.statut === "actif" ? "Active" : "Inactive",
+    tierClass:
+      m.statut === "actif"
+        ? "bg-emerald-100 text-emerald-800"
+        : "bg-red-100 text-red-800",
+    avatar:
+      m.photo ||
+      `https://ui-avatars.com/api/?name=${m.prenom}+${m.nom}&background=F59E0B&color=1E293B&bold=true`,
+    statut: m.statut,
+  };
+}
+
+// ─── Toast component ─────────────────────────────────────────────────────────
+
+function Toast({ message, type, onDismiss }) {
+  useEffect(() => {
+    const t = setTimeout(onDismiss, 3500);
+    return () => clearTimeout(t);
+  }, [onDismiss]);
+
+  const colors = {
+    success: "bg-emerald-600 text-white",
+    error: "bg-red-600 text-white",
+    info: "bg-slate-800 text-white",
+  };
+
+  const icons = {
+    success: "check_circle",
+    error: "error",
+    info: "info",
+  };
+
+  return (
+    <div
+      className={`animate-slide-up flex items-center gap-3 rounded-xl px-5 py-3.5 shadow-2xl ${colors[type] || colors.info}`}
+      style={{ animation: "slideUp .35s cubic-bezier(.16,1,.3,1)" }}
+    >
+      <span className="material-symbols-outlined text-[20px]">
+        {icons[type] || icons.info}
+      </span>
+      <span className="text-sm font-medium">{message}</span>
+      <button
+        onClick={onDismiss}
+        className="ml-2 opacity-60 hover:opacity-100 transition-opacity"
+      >
+        <span className="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+  );
+}
+
+// ─── Loading skeleton ────────────────────────────────────────────────────────
+
+function DashboardSkeleton() {
+  const pulse = "animate-pulse rounded-xl bg-slate-200/60";
+  return (
+    <div className="flex min-h-[calc(100vh-5rem)] bg-background-light">
+      {/* Sidebar skeleton */}
+      <aside className="fixed bottom-0 left-0 top-[4.5rem] z-40 hidden w-64 flex-col gap-2 border-r border-slate-200 bg-slate-50 p-4 md:flex">
+        <div className="mb-4 px-4 py-6">
+          <div className={`${pulse} mb-2 h-5 w-32`} />
+          <div className={`${pulse} h-3 w-24`} />
+        </div>
+        <div className="space-y-2">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className={`${pulse} h-11 w-full`} />
+          ))}
+        </div>
+        <div className={`${pulse} mt-auto h-12 w-full`} />
+      </aside>
+
+      {/* Main content skeleton */}
+      <main className="flex-1 pb-8 md:ml-64">
+        {/* Top bar skeleton */}
+        <div className="sticky top-[4.5rem] z-30 border-b border-slate-200/60 bg-white/80 px-6 py-4 backdrop-blur-xl lg:px-8">
+          <div className="mx-auto flex max-w-screen-2xl items-center justify-between">
+            <div>
+              <div className={`${pulse} mb-2 h-4 w-48`} />
+              <div className={`${pulse} h-3 w-32`} />
+            </div>
+            <div className="flex items-center gap-3">
+              <div className={`${pulse} h-10 w-10 rounded-full`} />
+              <div className={`${pulse} h-10 w-10 rounded-full`} />
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-screen-2xl px-6 py-8 lg:px-8">
+          {/* Stats skeleton */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className={`${pulse} h-32 w-full`} />
+            ))}
+          </div>
+          {/* Content skeleton */}
+          <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="lg:col-span-2 space-y-6">
+              <div className={`${pulse} h-64 w-full`} />
+              <div className={`${pulse} h-48 w-full`} />
+            </div>
+            <div className="space-y-6">
+              <div className={`${pulse} h-40 w-full`} />
+              <div className={`${pulse} h-40 w-full`} />
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// ─── Top header bar ──────────────────────────────────────────────────────────
+
+const TAB_TITLES = {
+  overview: { title: "Overview", subtitle: "Dashboard summary & quick actions" },
+  analytics: { title: "Analytics", subtitle: "Engagement and growth metrics" },
+  members: { title: "Members", subtitle: "Manage community & requests" },
+  events: { title: "Events", subtitle: "Create and manage events" },
+  profile: { title: "Profile", subtitle: "Your account settings" },
+};
+
+const FAKE_NOTIFICATIONS = [
+  { id: "n1", icon: "person_add", iconBg: "bg-emerald-100 text-emerald-600", title: "New member joined", desc: "Sarah Jenkins just signed up and is awaiting approval.", time: "2 min ago", read: false },
+  { id: "n2", icon: "event_available", iconBg: "bg-sky-100 text-sky-600", title: "Event RSVP milestone", desc: "\"Summer Rooftop Gala\" hit 50 confirmed attendees.", time: "18 min ago", read: false },
+  { id: "n3", icon: "campaign", iconBg: "bg-amber-100 text-amber-700", title: "Announcement published", desc: "Your latest announcement was sent to 124 members.", time: "1 hour ago", read: false },
+  { id: "n4", icon: "warning", iconBg: "bg-red-100 text-red-500", title: "System alert", desc: "Storage usage has reached 85% of the allocated quota.", time: "3 hours ago", read: true },
+  { id: "n5", icon: "trending_up", iconBg: "bg-violet-100 text-violet-600", title: "Weekly report ready", desc: "Club analytics for this week are now available.", time: "5 hours ago", read: true },
+  { id: "n6", icon: "group", iconBg: "bg-primary/15 text-primary", title: "Role change request", desc: "Marcus Thorne requested an upgrade to Curator role.", time: "1 day ago", read: true },
+];
+
+function AdminTopBar({ activeTab, user, unreadCount, onRefresh, refreshing }) {
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [fakeNotifs, setFakeNotifs] = useState(FAKE_NOTIFICATIONS);
+  const notifRef = useRef(null);
+
+  const tabInfo = TAB_TITLES[activeTab] || TAB_TITLES.overview;
+  const now = new Date();
+  const greeting =
+    now.getHours() < 12 ? "Good morning" : now.getHours() < 18 ? "Good afternoon" : "Good evening";
+
+  const fakeUnread = fakeNotifs.filter((n) => !n.read).length;
+
+  // Click outside to close
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    }
+    if (notifOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [notifOpen]);
+
+  const markOneRead = (id) => {
+    setFakeNotifs((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+  };
+
+  const markAllRead = () => {
+    setFakeNotifs((prev) => prev.map((n) => ({ ...n, read: true })));
+  };
+
+  return (
+    <div className="sticky top-[4.5rem] z-30 border-b border-slate-200/60 bg-white/80 px-6 py-4 backdrop-blur-xl lg:px-8">
+      <div className="mx-auto flex max-w-screen-2xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-extrabold tracking-tight text-slate-900">
+            {tabInfo.title}
+          </h1>
+          <p className="text-sm text-slate-500">
+            {greeting}, <span className="font-semibold text-slate-700">{user?.prenom || user?.name || "Admin"}</span> · {tabInfo.subtitle}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* Refresh button */}
+          <button
+            onClick={onRefresh}
+            disabled={refreshing}
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:opacity-50"
+            title="Refresh data"
+          >
+            <span
+              className={`material-symbols-outlined text-[20px] ${refreshing ? "animate-spin" : ""}`}
+            >
+              refresh
+            </span>
+          </button>
+
+          {/* Notifications bell + dropdown */}
+          <div className="relative" ref={notifRef}>
+            <button
+              onClick={() => setNotifOpen((prev) => !prev)}
+              className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${
+                notifOpen
+                  ? "bg-slate-100 text-slate-900"
+                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+              }`}
+            >
+              <span className="material-symbols-outlined text-[20px]">notifications</span>
+            </button>
+            {fakeUnread > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm pointer-events-none">
+                {fakeUnread > 9 ? "9+" : fakeUnread}
+              </span>
+            )}
+
+            {/* ── Notification dropdown ── */}
+            {notifOpen && (
+              <div
+                className="absolute right-0 top-full mt-2 w-[380px] overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-2xl"
+                style={{ animation: "slideUp .25s cubic-bezier(.16,1,.3,1)" }}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-heading text-sm font-bold text-slate-900">Notifications</h3>
+                    {fakeUnread > 0 && (
+                      <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                        {fakeUnread}
+                      </span>
+                    )}
+                  </div>
+                  {fakeUnread > 0 && (
+                    <button
+                      onClick={markAllRead}
+                      className="text-xs font-semibold text-primary hover:underline"
+                    >
+                      Mark all read
+                    </button>
+                  )}
+                </div>
+
+                {/* Notification list */}
+                <div className="max-h-[400px] overflow-y-auto divide-y divide-slate-50">
+                  {fakeNotifs.map((n) => (
+                    <div
+                      key={n.id}
+                      className={`flex gap-3 px-5 py-4 transition-colors cursor-pointer hover:bg-slate-50 ${
+                        !n.read ? "bg-primary/[0.03]" : ""
+                      }`}
+                      onClick={() => markOneRead(n.id)}
+                    >
+                      <div
+                        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${n.iconBg}`}
+                      >
+                        <span className="material-symbols-outlined text-[18px]">{n.icon}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <p
+                            className={`text-sm leading-snug ${
+                              !n.read ? "font-semibold text-slate-900" : "font-medium text-slate-700"
+                            }`}
+                          >
+                            {n.title}
+                          </p>
+                          {!n.read && (
+                            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                          )}
+                        </div>
+                        <p className="mt-0.5 text-xs text-slate-500 line-clamp-2">{n.desc}</p>
+                        <p className="mt-1 text-[10px] font-medium text-slate-400">{n.time}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Footer */}
+                <div className="border-t border-slate-100 px-5 py-3 text-center">
+                  <button className="text-xs font-semibold text-primary hover:underline">
+                    View all notifications
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* User avatar */}
+          <div className="ml-1 flex items-center gap-3 rounded-xl bg-slate-50 px-3 py-1.5 transition-colors hover:bg-slate-100">
+            <img
+              src={
+                user?.photo ||
+                `https://ui-avatars.com/api/?name=${user?.prenom || "A"}+${user?.nom || "D"}&background=F59E0B&color=1E293B&bold=true&size=80`
+              }
+              alt=""
+              className="h-8 w-8 rounded-full border-2 border-white object-cover shadow-sm"
+            />
+            <div className="hidden sm:block">
+              <p className="text-xs font-semibold text-slate-800 leading-tight">
+                {user?.prenom || user?.name || "Admin"}
+              </p>
+              <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+                {user?.role || "Administrateur"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main orchestrator ───────────────────────────────────────────────────────
+
 function AdminDashboard() {
   const { logout, user } = useAuth();
 
+  // Navigation
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Profile Edit state
   const [userData, setUserData] = useState(user || {});
+
+  // Create Event Modal
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
 
   // Real data from API
-  const [events, setEvents] = useState([])
-  const [members, setMembers] = useState([])
+  const [events, setEvents] = useState([]);
+  const [members, setMembers] = useState([]);
   const [stats, setStats] = useState({
     totalMembers: 0,
     totalEvents: 0,
-    totalParticipations: 0
-  })
-  const [loading, setLoading] = useState(true)
+    totalParticipations: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
 
   // Announcements
-  const [announcements, setAnnouncements] = useState([])
-  const [annSubject, setAnnSubject] = useState("")
-  const [annBody, setAnnBody] = useState("")
+  const [announcements, setAnnouncements] = useState([]);
+  const [annSubject, setAnnSubject] = useState("");
+  const [annBody, setAnnBody] = useState("");
 
   // Notifications
-  const [notifications, setNotifications] = useState([])
+  const [notifications, setNotifications] = useState([]);
 
   // Test results
-  const [testResults, setTestResults] = useState([])
+  const [testResults, setTestResults] = useState([]);
 
   // Edit event state
-  const [editingId, setEditingId] = useState(null)
-  const [draft, setDraft] = useState({ title: "", subtitle: "", category: "sport" })
+  const [editingId, setEditingId] = useState(null);
+  const [draft, setDraft] = useState({ title: "", subtitle: "", category: "sport" });
 
-  // Fetch all data on mount
+  // Toast notifications
+  const [toasts, setToasts] = useState([]);
+
+  const showToast = useCallback((message, type = "success") => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+  }, []);
+
+  const dismissToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  // ── Fetch all data ──
+  const fetchData = useCallback(
+    async (isRefresh = false) => {
+      if (isRefresh) setRefreshing(true);
+      try {
+        const [statsRes, eventsRes, membersRes, annRes, notifRes, testRes] =
+          await Promise.all([
+            api.get("/api/admin/dashboard/stats"),
+            api.get("/api/admin/events"),
+            api.get("/api/admin/members"),
+            api.get("/api/admin/announcements"),
+            api.get("/api/admin/notifications"),
+            api.get("/api/admin/tests/results"),
+          ]);
+
+        setStats(statsRes.data);
+        setEvents(eventsRes.data.map(formatEvent));
+        setMembers(membersRes.data.map(formatMember));
+        setAnnouncements(
+          annRes.data.map((a) => ({ id: a.id, subject: a.titre, body: a.contenu }))
+        );
+        setNotifications(notifRes.data);
+        setTestResults(testRes.data);
+        setError(null);
+
+        if (isRefresh) showToast("Dashboard data refreshed");
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load dashboard data");
+        if (isRefresh) showToast("Failed to refresh data", "error");
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [showToast]
+  );
+
   useEffect(() => {
-    Promise.all([
-      api.get('/api/admin/dashboard/stats'),
-      api.get('/api/admin/events'),
-      api.get('/api/admin/members'),
-      api.get('/api/admin/announcements'),
-      api.get('/api/admin/notifications'),
-      api.get('/api/admin/tests/results'),
-    ])
-      .then(([statsRes, eventsRes, membersRes, annRes, notifRes, testRes]) => {
-        setStats(statsRes.data)
+    fetchData();
+  }, [fetchData]);
 
-        // format events to match what sub-components expect
-        setEvents(eventsRes.data.map(e => ({
-          id: e.id,
-          dateLabel: new Date(e.date_debut).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }).toUpperCase(),
-          title: e.titre,
-          subtitle: `${e.lieu}`,
-          category: e.categorie,
-          categoryClass: categoryClass(e.categorie),
-          status: e.statut === 'publie' ? 'Confirmed' : 'Draft',
-          statusTone: e.statut === 'publie' ? 'emerald' : 'primary',
-          raw: e
-        })))
+  // ── Stats cards (reactive) ──
+  const statsCards = useMemo(
+    () => [
+      {
+        label: "Total Members",
+        value: String(stats.totalMembers),
+        delta: "membres",
+        icon: "group",
+      },
+      {
+        label: "Total Events",
+        value: String(stats.totalEvents),
+        delta: "événements",
+        icon: "calendar_month",
+      },
+      {
+        label: "Participations",
+        value: String(stats.totalParticipations),
+        delta: "inscriptions",
+        icon: "bolt",
+      },
+    ],
+    [stats]
+  );
 
-        // format members
-        setMembers(membersRes.data.map(m => ({
-          id: m.id,
-          name: `${m.prenom} ${m.nom}`,
-          role: m.role,
-          tier: m.statut === 'actif' ? 'Active' : 'Inactive',
-          tierClass: m.statut === 'actif' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800',
-          avatar: m.photo || `https://ui-avatars.com/api/?name=${m.prenom}+${m.nom}&background=random`,
-          statut: m.statut
-        })))
+  // ── Event handlers ──
+  const startEdit = useCallback((ev) => {
+    setEditingId(ev.id);
+    setDraft({ title: ev.title, subtitle: ev.subtitle, category: ev.category });
+  }, []);
 
-        setAnnouncements(annRes.data.map(a => ({
-          id: a.id,
-          subject: a.titre,
-          body: a.contenu
-        })))
-
-        setNotifications(notifRes.data)
-
-        setTestResults(testRes.data)
-
-        setLoading(false)
-      })
-      .catch(err => {
-        console.log(err)
-        setLoading(false)
-      })
-  }, [])
-
-  const statsCards = useMemo(() => [
-    { label: "Total Members", value: String(stats.totalMembers), delta: "membres", icon: "group" },
-    { label: "Total Events", value: String(stats.totalEvents), delta: "événements", icon: "calendar_month" },
-    { label: "Participations", value: String(stats.totalParticipations), delta: "inscriptions", icon: "bolt" },
-  ], [stats])
-
-  // Event handlers
-  const startEdit = (ev) => {
-    setEditingId(ev.id)
-    setDraft({ title: ev.title, subtitle: ev.subtitle, category: ev.category })
-  }
-
-  const saveEdit = async () => {
-    if (!editingId) return
+  const saveEdit = useCallback(async () => {
+    if (!editingId) return;
     try {
+      const target = events.find((e) => e.id === editingId);
       await api.put(`/api/admin/events/${editingId}`, {
         titre: draft.title,
         lieu: draft.subtitle,
         categorie: draft.category,
-        description: events.find(e => e.id === editingId)?.raw?.description || '',
-        date_debut: events.find(e => e.id === editingId)?.raw?.date_debut || new Date()
-      })
-      setEvents(prev => prev.map(e =>
-        e.id === editingId
-          ? { ...e, title: draft.title, subtitle: draft.subtitle, category: draft.category, categoryClass: categoryClass(draft.category) }
-          : e
-      ))
-      setEditingId(null)
+        description: target?.raw?.description || "",
+        date_debut: target?.raw?.date_debut || new Date(),
+      });
+      setEvents((prev) =>
+        prev.map((e) =>
+          e.id === editingId
+            ? {
+                ...e,
+                title: draft.title,
+                subtitle: draft.subtitle,
+                category: draft.category,
+                categoryClass: categoryClass(draft.category),
+              }
+            : e
+        )
+      );
+      setEditingId(null);
+      showToast("Event updated successfully");
     } catch (err) {
-      console.log(err)
+      console.error(err);
+      showToast("Failed to update event", "error");
     }
-  }
+  }, [editingId, draft, events, showToast]);
 
-  const handleSaveNewEvent = async (newDraft) => {
-    try {
-      const res = await api.post('/api/admin/events', {
-        titre: newDraft.title,
-        description: newDraft.subtitle || 'Description',
-        date_debut: newDraft.date || new Date(),
-        lieu: newDraft.subtitle || 'CMC OFPPT',
-        categorie: newDraft.category?.toLowerCase() || 'sport'
-      })
-      const newEvent = {
-        id: res.data.id,
-        dateLabel: new Date(newDraft.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }).toUpperCase(),
-        title: newDraft.title,
-        subtitle: newDraft.subtitle,
-        category: newDraft.category,
-        categoryClass: categoryClass(newDraft.category),
-        status: 'Draft',
-        statusTone: 'primary',
-        raw: { description: newDraft.subtitle, date_debut: newDraft.date }
+  const handleSaveNewEvent = useCallback(
+    async (newDraft) => {
+      try {
+        const res = await api.post("/api/admin/events", {
+          titre: newDraft.title,
+          description: newDraft.subtitle || "Description",
+          date_debut: newDraft.date || new Date(),
+          lieu: newDraft.subtitle || "CMC OFPPT",
+          categorie: newDraft.category?.toLowerCase() || "sport",
+        });
+        const newEvent = {
+          id: res.data.id,
+          dateLabel: new Date(newDraft.date)
+            .toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
+            .toUpperCase(),
+          title: newDraft.title,
+          subtitle: newDraft.subtitle,
+          category: newDraft.category,
+          categoryClass: categoryClass(newDraft.category),
+          status: "Draft",
+          statusTone: "primary",
+          raw: { description: newDraft.subtitle, date_debut: newDraft.date },
+        };
+        setEvents((prev) => [...prev, newEvent]);
+        setIsCreateEventOpen(false);
+        showToast("Event created successfully");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to create event", "error");
       }
-      setEvents(prev => [...prev, newEvent])
-      setIsCreateEventOpen(false)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+    },
+    [showToast]
+  );
 
-  const deleteEvent = async (id) => {
+  const deleteEvent = useCallback(
+    async (id) => {
+      try {
+        await api.delete(`/api/admin/events/${id}`);
+        setEvents((prev) => prev.filter((e) => e.id !== id));
+        if (editingId === id) setEditingId(null);
+        showToast("Event deleted");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete event", "error");
+      }
+    },
+    [editingId, showToast]
+  );
+
+  const toggleEventStatus = useCallback(
+    async (id, currentStatus) => {
+      const newStatus = currentStatus === "publie" ? "brouillon" : "publie";
+      try {
+        await api.patch(`/api/admin/events/${id}/status`, { statut: newStatus });
+        setEvents((prev) =>
+          prev.map((e) =>
+            e.id === id
+              ? {
+                  ...e,
+                  status: newStatus === "publie" ? "Confirmed" : "Draft",
+                  statusTone: newStatus === "publie" ? "emerald" : "primary",
+                  raw: { ...e.raw, statut: newStatus },
+                }
+              : e
+          )
+        );
+        showToast(`Event ${newStatus === "publie" ? "published" : "set to draft"}`);
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update event status", "error");
+      }
+    },
+    [showToast]
+  );
+
+  // ── Member handlers ──
+  const updateMemberStatus = useCallback(
+    async (id, newStatus) => {
+      try {
+        await api.patch(`/api/admin/members/${id}/status`, { statut: newStatus });
+        setMembers((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, statut: newStatus } : m))
+        );
+        showToast("Member status updated");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update member status", "error");
+      }
+    },
+    [showToast]
+  );
+
+  const removeMember = useCallback(
+    (id) => setMembers((prev) => prev.filter((m) => m.id !== id)),
+    []
+  );
+
+  const updateMemberRole = useCallback(
+    (id, newRole) =>
+      setMembers((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, role: newRole } : m))
+      ),
+    []
+  );
+
+  const acceptMemberRequest = useCallback(
+    (newMemberObj) => setMembers((prev) => [newMemberObj, ...prev]),
+    []
+  );
+
+  const notifyInactiveMembers = useCallback(async () => {
     try {
-      await api.delete(`/api/admin/events/${id}`)
-      setEvents(prev => prev.filter(e => e.id !== id))
-      if (editingId === id) setEditingId(null)
+      await api.post("/api/admin/notifications/inactive-members");
+      showToast("Notifications sent to inactive members");
     } catch (err) {
-      console.log(err)
+      console.error(err);
+      showToast("Failed to send notifications", "error");
     }
-  }
+  }, [showToast]);
 
-  const toggleEventStatus = async (id, currentStatus) => {
-    const newStatus = currentStatus === 'publie' ? 'brouillon' : 'publie'
-    try {
-      await api.patch(`/api/admin/events/${id}/status`, { statut: newStatus })
-      setEvents(prev => prev.map(e => e.id === id ? {
-        ...e,
-        status: newStatus === 'publie' ? 'Confirmed' : 'Draft',
-        statusTone: newStatus === 'publie' ? 'emerald' : 'primary',
-        raw: { ...e.raw, statut: newStatus }
-      } : e))
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // ── Announcement handlers ──
+  const postAnnouncement = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!annSubject.trim() && !annBody.trim()) return;
+      try {
+        const res = await api.post("/api/admin/announcements", {
+          titre: annSubject,
+          contenu: annBody,
+        });
+        setAnnouncements((prev) => [
+          { id: res.data.id, subject: annSubject, body: annBody },
+          ...prev,
+        ]);
+        setAnnSubject("");
+        setAnnBody("");
+        showToast("Announcement posted");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to post announcement", "error");
+      }
+    },
+    [annSubject, annBody, showToast]
+  );
 
-  const updateMemberStatus = async (id, newStatus) => {
-    try {
-      await api.patch(`/api/admin/members/${id}/status`, { statut: newStatus })
-      setMembers(prev => prev.map(m => m.id === id ? { ...m, statut: newStatus } : m))
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const editAnnouncement = useCallback(
+    async (id, subject, body) => {
+      try {
+        await api.put(`/api/admin/announcements/${id}`, {
+          titre: subject,
+          contenu: body,
+        });
+        setAnnouncements((prev) =>
+          prev.map((a) => (a.id === id ? { ...a, subject, body } : a))
+        );
+        showToast("Announcement updated");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update announcement", "error");
+      }
+    },
+    [showToast]
+  );
 
-  const removeMember = (id) => setMembers(prev => prev.filter(m => m.id !== id))
-  const updateMemberRole = (id, newRole) => setMembers(prev => prev.map(m => m.id === id ? { ...m, role: newRole } : m))
-  const acceptMemberRequest = (newMemberObj) => setMembers(prev => [newMemberObj, ...prev])
+  const deleteAnnouncement = useCallback(
+    async (id) => {
+      try {
+        await api.delete(`/api/admin/announcements/${id}`);
+        setAnnouncements((prev) => prev.filter((a) => a.id !== id));
+        showToast("Announcement deleted");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete announcement", "error");
+      }
+    },
+    [showToast]
+  );
 
-  const postAnnouncement = async (e) => {
-    e.preventDefault()
-    if (!annSubject.trim() && !annBody.trim()) return
-    try {
-      const res = await api.post('/api/admin/announcements', {
-        titre: annSubject,
-        contenu: annBody
-      })
-      setAnnouncements(prev => [
-        { id: res.data.id, subject: annSubject, body: annBody },
-        ...prev
-      ])
-      setAnnSubject('')
-      setAnnBody('')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const editAnnouncement = async (id, subject, body) => {
-    try {
-      await api.put(`/api/admin/announcements/${id}`, {
-        titre: subject,
-        contenu: body
-      })
-      setAnnouncements(prev => prev.map(a => a.id === id ? { ...a, subject, body } : a))
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const deleteAnnouncement = async (id) => {
-    try {
-      await api.delete(`/api/admin/announcements/${id}`)
-      setAnnouncements(prev => prev.filter(a => a.id !== id))
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
+  // ── Shared props bundles ──
   const announcementProps = {
-    annSubject, setAnnSubject,
-    annBody, setAnnBody,
+    annSubject,
+    setAnnSubject,
+    annBody,
+    setAnnBody,
     onPost: postAnnouncement,
     announcements,
     onEdit: editAnnouncement,
-    onDelete: deleteAnnouncement
-  }
+    onDelete: deleteAnnouncement,
+  };
 
   const eventsTableProps = {
-    events, editingId, draft, setDraft,
+    events,
+    editingId,
+    draft,
+    setDraft,
     onStartEdit: startEdit,
     onSaveEdit: saveEdit,
     onCancelEdit: () => setEditingId(null),
     onDeleteEvent: deleteEvent,
-    onToggleStatus: toggleEventStatus
-  }
+    onToggleStatus: toggleEventStatus,
+  };
 
-  if (loading) return <div className="p-8 text-center">Chargement du dashboard...</div>
+  const unreadNotifications = notifications.filter((n) => !n.lu).length;
+
+  // ── Loading state ──
+  if (loading) return <DashboardSkeleton />;
+
+  // ── Error state ──
+  if (error && events.length === 0 && members.length === 0) {
+    return (
+      <div className="flex min-h-[calc(100vh-5rem)] items-center justify-center bg-background-light">
+        <div className="card-soft mx-auto max-w-md rounded-2xl p-12 text-center shadow-lg">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+            <span className="material-symbols-outlined text-3xl text-red-500">cloud_off</span>
+          </div>
+          <h2 className="font-heading text-xl font-bold text-slate-900">Connection Error</h2>
+          <p className="mt-2 text-sm text-slate-500">{error}</p>
+          <button
+            onClick={() => {
+              setLoading(true);
+              fetchData();
+            }}
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-slate-900 shadow-sm transition-transform hover:scale-[1.02]"
+          >
+            <span className="material-symbols-outlined text-[18px]">refresh</span>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-5rem)] bg-background-light">
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onCreateEvent={() => { setActiveTab("events"); setIsCreateEventOpen(true) }}
+        onCreateEvent={() => {
+          setActiveTab("events");
+          setIsCreateEventOpen(true);
+        }}
         onLogout={logout}
       />
 
-      <main className="flex-1 pb-8 md:ml-64">
+      <main className="flex-1 md:ml-64">
+        {/* ── Top bar ── */}
+        <AdminTopBar
+          activeTab={activeTab}
+          user={user}
+          unreadCount={unreadNotifications}
+          onRefresh={() => fetchData(true)}
+          refreshing={refreshing}
+        />
+
+        {/* ── Tab content ── */}
         <div className="mx-auto max-w-screen-2xl px-6 py-8 lg:px-8">
           {activeTab === "overview" && (
             <OverviewTab
@@ -282,33 +766,31 @@ function AdminDashboard() {
               {...announcementProps}
             />
           )}
+
           {activeTab === "analytics" && <AnalyticsTab stats={statsCards} />}
+
           {activeTab === "members" && (
-            <div className="mb-4">
-              <button
-                onClick={async () => {
-                  try {
-                    await api.post('/api/admin/notifications/inactive-members')
-                    alert('Notifications sent to inactive members')
-                  } catch (err) {
-                    console.log(err)
-                  }
-                }}
-                className="btn-primary"
-              >
-                Notifier membres inactifs
-              </button>
-            </div>
+            <>
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <div />
+                <button
+                  onClick={notifyInactiveMembers}
+                  className="inline-flex items-center gap-2 rounded-xl bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-200"
+                >
+                  <span className="material-symbols-outlined text-[18px]">campaign</span>
+                  Notify inactive members
+                </button>
+              </div>
+              <MembersTab
+                members={members}
+                onUpdateRole={updateMemberRole}
+                onUpdateStatus={updateMemberStatus}
+                onRemoveMember={removeMember}
+                onAcceptRequest={acceptMemberRequest}
+              />
+            </>
           )}
-          {activeTab === "members" && (
-            <MembersTab
-              members={members}
-              onUpdateRole={updateMemberRole}
-              onUpdateStatus={updateMemberStatus}
-              onRemoveMember={removeMember}
-              onAcceptRequest={acceptMemberRequest}
-            />
-          )}
+
           {activeTab === "events" && (
             <EventsTab
               onAddEvent={() => setIsCreateEventOpen(true)}
@@ -316,12 +798,14 @@ function AdminDashboard() {
               {...announcementProps}
             />
           )}
+
           {activeTab === "profile" && (
-            <VisitorProfileEdit
+            <AdminProfileSettings
               user={userData}
               onSave={(updatedData) => {
-                setUserData(prev => ({ ...prev, ...updatedData }))
-                setActiveTab("overview")
+                setUserData((prev) => ({ ...prev, ...updatedData }));
+                setActiveTab("overview");
+                showToast("Profile updated successfully");
               }}
               onCancel={() => setActiveTab("overview")}
             />
@@ -329,13 +813,36 @@ function AdminDashboard() {
         </div>
       </main>
 
+      {/* ── Modals ── */}
       <CreateEventModal
         isOpen={isCreateEventOpen}
         onClose={() => setIsCreateEventOpen(false)}
         onSave={handleSaveNewEvent}
       />
+
+      {/* ── Toast notifications ── */}
+      {toasts.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
+          {toasts.map((t) => (
+            <Toast
+              key={t.id}
+              message={t.message}
+              type={t.type}
+              onDismiss={() => dismissToast(t.id)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Toast slide-up animation */}
+      <style>{`
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(16px) scale(.96); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
     </div>
-  )
+  );
 }
 
-export default AdminDashboard
+export default AdminDashboard;
