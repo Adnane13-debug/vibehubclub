@@ -35,33 +35,38 @@ function VisitorProfile({ user }) {
   }
 
   return (
-    <div className="pb-16 pt-8 max-w-[1280px] mx-auto">
-      <div className="flex justify-end mb-4">
-        <button 
-          onClick={() => setIsEditing(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-lg font-semibold transition-colors"
-        >
-          <span className="material-symbols-outlined text-[18px]">edit</span>
-          Edit Profile
-        </button>
-      </div>
-
-      <VisitorHeader 
-        avatar={avatar} 
-        displayName={displayName} 
-        bio={bio} 
-      />
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
-        <CuratorProfileCard 
-          email={email} 
-          joined={joined} 
-          interests={interests} 
+    <div className="min-h-[calc(100vh-4.5rem)] bg-gradient-to-b from-white to-slate-50/50 pb-16 pt-6 sm:pt-10">
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <VisitorHeader 
+          avatar={avatar} 
+          displayName={displayName} 
+          bio={bio} 
+          onEdit={() => setIsEditing(true)}
         />
 
-        <UpgradeCTA />
+        {/* 
+          Main Grid 
+          - Compact top row: Profile Info + CTA
+          - Bottom row: Empty state / Activities
+        */}
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-12">
+          <div className="md:col-span-5 h-full">
+            <CuratorProfileCard 
+              email={email} 
+              joined={joined} 
+              interests={interests} 
+            />
+          </div>
 
-        <EmptyActivities />
+          <div className="md:col-span-7 h-full">
+            <UpgradeCTA />
+          </div>
+
+          <div className="md:col-span-12">
+            <EmptyActivities />
+          </div>
+        </div>
       </div>
     </div>
   );

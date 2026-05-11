@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
 /**
@@ -6,12 +6,18 @@ import { useAuth } from "../../auth/AuthContext";
  */
 function ProtectedRoute({ children, roles }) {
   const { user, isAuthenticated } = useAuth();
+  const location = useLocation();
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;
   }
 
+  if (user.role === 'visiteur' && location.pathname === '/profile') {
+    return <Navigate to="/visitor" replace />;
+  }
+
   if (roles && !roles.includes(user.role)) {
+    if (user.role === 'visiteur') return <Navigate to="/visitor" replace />;
     return <Navigate to="/profile" replace />;
   }
 

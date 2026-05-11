@@ -4,7 +4,14 @@ function AboutStorySection() {
       <div>
         <div className="grid items-center gap-16 lg:grid-cols-2">
           <div>
-            <h2 className="mb-6 text-3xl font-bold">Our Story</h2>
+            <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-3 py-1 text-slate-900">
+              <span className="material-symbols-outlined text-sm">
+                history_edu
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider">
+                Our Story
+              </span>
+            </div>
 
             <p className="mb-6 max-w-xl leading-relaxed text-slate-600">
               Founded by a group of visionary students who saw the need for a

@@ -1,3 +1,5 @@
+import React from "react";
+
 const images = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBj2KDXPAmcWsTtBy-OFDE0QgaC6GhvQdgiZ7_7jOP3qGjpqlVyritfUPNwuucWxpEJNnJBPm9Q3-OoszmIGrZca2XI8Nd7LEKRCj7s0Mq7rP-faE7DicDkt1yn2jOKTgjnUbj4yTBfE9UZjYQeL55UKdl4jHw4A-8JvbJukNU15upihMc3Imxh4lSc7ciZ_-7zxDxACR-WmtN8f3bX60mFugrs6MGLeWcCDASHbOl04yAp5EFvFoFdJ8d-j2lPEyi16VxbV_jKFDbB",
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCo6wUEJu2rIcJCyh5szyQ8bXOAT4RD8a5QUFKFN6673Q23TmN5CvOMEYcalfgfJn_dgB5pOY52RJ2C66IQYA0GHI8i38Z9fK-cT7Upw7fBU_ijg16lR_uuy7-47Mc6EL4s4ci3KIQlSPuW20NQnDsQiHsLmW4VkImnRywRLvvBq2LbBhNADHLHJ0T-bRTxDfZXV2--KiV-NKOr-bJI0JIIGLSuRequUsTN8rLi_qLYrdhXEzl42KrE_p3mdq8YxYbeekFAFEdYuF7K",
@@ -7,28 +9,32 @@ const images = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBFyufQkpTO5GyPnT2KFT_vXZLVa07e0JfCfTnbaUyUyYzFtuPE5uJXDHDiblj217z6DN2tDsmC_szk_Ikb640NpiBi3ISDI6dcwDjzFiYUoJAz5b_ydK8-Sy5zNU1hlWeT11gRKErpXqjFJoeF2JZ18a54o0PYUPGpiVcWHaU67dFHPOLjItqzci0yM42RlCAiqYAuBSiWVEq1lAJI5VeHcGORUTPxyM1-qeYIFV5kk5kMXldpZ-C1ceC0roX2_h8WsQHYUbu-9LJU",
 ];
 
+function ScrollRow({ items, reverse = false }) {
+  const doubled = [...items, ...items];
+  return (
+    <div className="gallery-scroll-container">
+      <div className={`gallery-track ${reverse ? "gallery-track--reverse" : ""}`}>
+        {doubled.map((src, i) => (
+          <div key={i} className="gallery-card">
+            <img src={src} alt={`Community moment ${i + 1}`} loading="lazy" />
+            <div className="gallery-card__overlay" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function GallerySection() {
   return (
-    <section className="bg-slate-50 px-6 py-24 lg:px-20">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="mb-16 text-center">
-          <h2 className="section-title">Community Moments</h2>
-          <p className="section-subtitle">
-            Glimpses into our vibrant club life
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {images.map((image, index) => (
-            <div key={index} className="overflow-hidden rounded-xl shadow-sm">
-              <img
-                src={image}
-                alt={`Gallery ${index + 1}`}
-                className="h-full w-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
+    <section className="gallery-section">
+      <div className="gallery-header">
+        <h2 className="section-title">Community Moments</h2>
+        <p className="section-subtitle">Glimpses into our vibrant club life</p>
+      </div>
+      <div className="gallery-rows">
+        <ScrollRow items={images} />
+        <ScrollRow items={[...images].reverse()} reverse />
       </div>
     </section>
   );

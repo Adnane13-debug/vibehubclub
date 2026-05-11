@@ -1,51 +1,67 @@
 const activities = [
   {
-    icon: "sports_basketball",
+    num: "01",
     title: "Sports & Fitness",
-    desc: "From competitive leagues to casual weekend matches, we promote physical excellence and teamwork.",
+    tag: "Movement",
+    desc: "Competitive leagues, recovery culture, discipline, and a strong team mindset.",
   },
   {
-    icon: "theater_comedy",
+    num: "02",
     title: "Arts & Culture",
-    desc: "Celebrating diversity through music, dance, theater, and fine arts. Express your creative soul.",
+    tag: "Expression",
+    desc: "Music, visual arts, theater, and creative collaborations across communities.",
   },
   {
-    icon: "rocket_launch",
+    num: "03",
     title: "Entrepreneurship",
-    desc: "Incubating ideas and fostering leadership. Build your startup with the support of a like-minded community.",
+    tag: "Innovation",
+    desc: "Building startups, leading projects, and connecting ambitious founders.",
   },
-];
+]
 
 function ActivitySection() {
   return (
-    <section className="bg-orange-50 px-6 py-24 lg:px-20">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="mb-16 text-center">
-          <h2 className="section-title">Our Focus Areas</h2>
-          <p className="section-subtitle">
-            Find your tribe and explore your interests
-          </p>
-        </div>
+    <section className="focus">
+      <div className="focus__top">
+        <span className="focus__eyebrow">Explore communities</span>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {activities.map((item) => (
-            <div key={item.title} className="card-soft group p-8">
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-orange-100 text-orange-600 transition-transform group-hover:scale-110">
-                <span className="material-symbols-outlined text-3xl">
-                  {item.icon}
-                </span>
-              </div>
-              <h3 className="heading-font mb-4 text-2xl">{item.title}</h3>
-              <p className="mb-6 leading-relaxed text-muted">{item.desc}</p>
-              <button className="text-sm font-bold transition-colors hover:text-[var(--color-primary)]">
-                Learn More
-              </button>
+        <h2 className="focus__title">
+          Spaces built around
+          <br />
+          passion & ambition
+        </h2>
+
+        <p className="focus__subtitle">
+          Find the environment that matches your energy, creativity,
+          and long-term goals.
+        </p>
+      </div>
+
+      <div className="focus__grid">
+        {activities.map((item, i) => (
+          <article
+            key={item.title}
+            className={`focus-card ${i === 0 ? "focus-card--featured" : ""}`}
+          >
+            <span className="focus-card__number">{item.num}</span>
+
+            <div className="focus-card__content">
+              <span className="focus-card__tag">{item.tag}</span>
+
+              <h3>{item.title}</h3>
+
+              <p>{item.desc}</p>
+
+              <a href="/">
+                Discover space
+                <span>↗</span>
+              </a>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default ActivitySection;
+export default ActivitySection

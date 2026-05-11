@@ -23,8 +23,8 @@ export const register = async (req, res) => {
 
     // save user in database
     db.query(
-      'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)',
-      [nom, prenom, email, hash],
+      'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)',
+      [nom, prenom, email, hash, 'visiteur'],
       (err, result) => {
         if (err) {
           // if email already exists

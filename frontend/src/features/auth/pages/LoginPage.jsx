@@ -22,8 +22,10 @@ function LoginPage() {
       // redirect based on role
       if (user.role === 'admin') {
         navigate('/admin', { replace: true })
-      } else {
+      } else if (user.role === 'membre') {
         navigate('/profile', { replace: true })
+      } else {
+        navigate('/visitor', { replace: true })
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Email ou mot de passe incorrect')
