@@ -175,13 +175,12 @@ export const markAsRead = (req, res) => {
 // called after member completes the external test
 
 export const saveMbtiResult = (req, res) => {
-  const { extraversion, agreeableness, conscientiousness, neuroticism, openness } = req.body
+  const { type } = req.body
 
-  if (!extraversion || !agreeableness || !conscientiousness || !neuroticism || !openness) {
-    return res.status(400).json({ message: 'All scores are required' })
+  if (!type) {
+    return res.status(400).json({ message: 'Type is required' })
   }
 
-  // check if result already exists
   db.query(
     'SELECT * FROM resultats_test WHERE utilisateur_id = ?',
     [req.user.id],
@@ -189,23 +188,21 @@ export const saveMbtiResult = (req, res) => {
       if (err) return res.status(500).json({ message: 'Server error' })
 
       if (results.length > 0) {
-        // update existing result
         db.query(
-          'UPDATE resultats_test SET extraversion = ?, agreeableness = ?, conscientiousness = ?, neuroticism = ?, openness = ? WHERE utilisateur_id = ?',
-          [extraversion, agreeableness, conscientiousness, neuroticism, openness, req.user.id],
-          (err, result) => {
+          'UPDATE resultats_test SET type = ? WHERE utilisateur_id = ?',
+          [type, req.user.id],
+          (err) => {
             if (err) return res.status(500).json({ message: 'Server error' })
-            res.json({ message: 'Test result updated' })
+            res.json({ message: 'MBTI result updated', type })
           }
         )
       } else {
-        // insert new result
         db.query(
-          'INSERT INTO resultats_test (utilisateur_id, extraversion, agreeableness, conscientiousness, neuroticism, openness) VALUES (?, ?, ?, ?, ?, ?)',
-          [req.user.id, extraversion, agreeableness, conscientiousness, neuroticism, openness],
-          (err, result) => {
+          'INSERT INTO resultats_test (utilisateur_id, type, extraversion, agreeableness, conscientiousness, neuroticism, openness) VALUES (?, ?, 0, 0, 0, 0, 0)',
+          [req.user.id, type],
+          (err) => {
             if (err) return res.status(500).json({ message: 'Server error' })
-            res.status(201).json({ message: 'Test result saved' })
+            res.status(201).json({ message: 'MBTI result saved', type })
           }
         )
       }
@@ -221,11 +218,7 @@ export const getMbtiResult = (req, res) => {
     [req.user.id],
     (err, results) => {
       if (err) return res.status(500).json({ message: 'Server error' })
-
-      if (results.length === 0) {
-        return res.json(null)
-      }
-
+      if (results.length === 0) return res.json(null)
       res.json(results[0])
     }
   )

@@ -1,10 +1,34 @@
+import { useState, useEffect } from 'react'
+import api from '../../../services/api'
+
 function StatsSection() {
-  const stats = [
-    { value: "500+", label: "Active Members" },
-    { value: "25+", label: "Annual Events" },
-    { value: "15+", label: "Skill Workshops" },
-    { value: "2k+", label: "Participants" },
-  ];
+  const [stats, setStats] = useState([
+    { value: '...', label: 'Active Members' },
+    { value: '...', label: 'Annual Events' },
+    { value: '15+', label: 'Skill Workshops' },
+    { value: '2k+', label: 'Participants' },
+  ])
+
+  useEffect(() => {
+    api.get('/api/admin/dashboard/stats')
+      .then(res => {
+        const { totalMembers, totalEvents } = res.data
+        setStats([
+          { value: `${totalMembers}+`, label: 'Active Members' },
+          { value: `${totalEvents}+`, label: 'Annual Events' },
+          { value: '15+', label: 'Skill Workshops' },
+          { value: '2k+', label: 'Participants' },
+        ])
+      })
+      .catch(() => {
+        setStats([
+          { value: '500+', label: 'Active Members' },
+          { value: '25+', label: 'Annual Events' },
+          { value: '15+', label: 'Skill Workshops' },
+          { value: '2k+', label: 'Participants' },
+        ])
+      })
+  }, [])
 
   return (
     <section className="bg-slate-900 py-12 text-white">
@@ -19,7 +43,7 @@ function StatsSection() {
         ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default StatsSection;
+export default StatsSection

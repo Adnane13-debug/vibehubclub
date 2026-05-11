@@ -352,3 +352,15 @@ export const getUserTestResult = (req, res) => {
     }
   )
 }
+
+// GET ALL CONTACTS
+
+export const getContacts = (req, res) => {
+  db.query(
+    'SELECT * FROM contacts ORDER BY created_at DESC',
+    (err, results) => {
+      if (err) return res.status(500).json({ message: 'Server error' })
+      res.json(results)
+    }
+  )
+}

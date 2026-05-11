@@ -41,4 +41,7 @@ router.post('/notifications/inactive-members',admin, ctrl.notifyInactiveMembers)
 router.get('/tests/results',                  admin, ctrl.getAllTestResults)
 router.get('/tests/results/:userId',          admin, ctrl.getUserTestResult)
 
+// contacts
+router.get('/contacts',                       admin, ctrl.getContacts)
+
 export default router

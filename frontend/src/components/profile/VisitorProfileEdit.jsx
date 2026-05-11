@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import api from '../../services/api';
 import IdentityCard from './edit/IdentityCard';
 import InterestsCard from './edit/InterestsCard';
 import AvatarUploadCard from './edit/AvatarUploadCard';
@@ -7,56 +7,75 @@ import MembershipDetailsCard from './edit/MembershipDetailsCard';
 import SecurityCard from './edit/SecurityCard';
 
 function VisitorProfileEdit({ user, onSave, onCancel }) {
-    const [name, setName] = useState(user?.name ?? "Julian Vane");
-    const [email, setEmail] = useState(user?.email ?? "j.vane@athenaeum.org");
-    const [bio, setBio] = useState(user?.bio ?? "Senior Fellow at the Royal Society of Historical Inquiry. Curator of the 18th-century cartography collection. Dedicated to the preservation of rare manuscripts and the quiet pursuit of forgotten knowledge within the hallowed halls of The Athenaeum.");
-    const [interests, setInterests] = useState(user?.interests?.length ? user.interests : ["Cartography", "Manuscripts", "Numismatics"]);
-    const [isSaving, setIsSaving] = useState(false);
-    const [error, setError] = useState(null);
-    
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [bio, setBio] = useState('')
+    const [interests, setInterests] = useState([])
+    const [avatar, setAvatar] = useState('')
+    const [joined, setJoined] = useState('')
+    const [isSaving, setIsSaving] = useState(false)
+    const [error, setError] = useState(null)
+
+    const tier = 'Membre'
+    const renewal = 'N/A'
+
+    // Load real user data from API
+    useEffect(() => {
+        api.get('/api/member/profile')
+            .then(res => {
+                const u = res.data
+                setName(`${u.prenom || ''} ${u.nom || ''}`.trim())
+                setEmail(u.email || '')
+                setBio(u.bio || '')
+                setInterests(u.interests || [])
+                setAvatar(u.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent((u.prenom || '') + '+' + (u.nom || ''))}&background=1e293b&color=f59f0a&bold=true&size=200`)
+                setJoined(u.created_at
+                    ? new Date(u.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                    : 'N/A'
+                )
+            })
+            .catch(() => {
+                // fallback to user from props
+                if (user) {
+                    setName(`${user.prenom || ''} ${user.nom || ''}`.trim())
+                    setEmail(user.email || '')
+                }
+            })
+    }, [])
+
     const handleRemoveInterest = (tag) => {
-        setInterests(prev => prev.filter(i => i !== tag));
-    };
-    
+        setInterests(prev => prev.filter(i => i !== tag))
+    }
+
     const handleAddInterest = () => {
-        const newInterest = prompt("Add a new interest:");
+        const newInterest = prompt("Add a new interest:")
         if (newInterest && !interests.includes(newInterest)) {
-            setInterests(prev => [...prev, newInterest]);
+            setInterests(prev => [...prev, newInterest])
         }
-    };
+    }
 
     const handleSave = async () => {
-        setIsSaving(true);
-        setError(null);
+        setIsSaving(true)
+        setError(null)
         try {
-            const token = localStorage.getItem('vibehub_token');
-            const nameParts = name.trim().split(' ');
-            const nom = nameParts[0] || '';
-            const prenom = nameParts.slice(1).join(' ') || '';
+            const nameParts = name.trim().split(' ')
+            const prenom = nameParts[0] || ''
+            const nom = nameParts.slice(1).join(' ') || ''
 
-            await axios.put('http://localhost:5000/api/auth/profile', 
-                { nom, prenom }, 
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            await api.put('/api/member/profile', { nom, prenom })
 
             // update localStorage
-            const storedUser = JSON.parse(localStorage.getItem('vibehub_user') || '{}');
-            const updatedUser = { ...storedUser, nom, prenom };
-            localStorage.setItem('vibehub_user', JSON.stringify(updatedUser));
+            const storedUser = JSON.parse(localStorage.getItem('vibehub_user') || '{}')
+            const updatedUser = { ...storedUser, nom, prenom }
+            localStorage.setItem('vibehub_user', JSON.stringify(updatedUser))
 
-            // update local state
-            onSave({ name, email, bio, interests });
+            onSave({ name, email, bio, interests })
         } catch (err) {
-            setError(err.response?.data?.message || 'Erreur lors de la sauvegarde');
+            setError(err.response?.data?.message || 'Erreur lors de la sauvegarde')
         } finally {
-            setIsSaving(false);
+            setIsSaving(false)
         }
-    };
-
-    const avatar = user?.avatarUrl ?? "https://lh3.googleusercontent.com/aida-public/AB6AXuDYV2LKd_sq_cj9XqVyuvFBHyq-8OXbweWkhqVjpDwRm0PkH9_s3haM0Q6gsU03IO9ZZ07gGTSVSuEfY0p8uQ3pYB2gAC_FUjTE3ODYJBZpfpKmcVHUV8oXozdOoWZepeNbpkX7wjzXfFiFVT7RcyetFxUsDgpZVauScAvbif3YWALXBCDAQZ3OEX6yEabpPXGeg_nGPkN8OxKHJAss27I4HDlEE-3jhEY0PwxBfwcWGGD7PS9M-vgyR1Wwf7yKGpjBshTHguD_4og";
-    const tier = user?.tier ?? "Premier Fellow";
-    const joined = user?.joinedAt ?? "September 2018";
-    const renewal = user?.renewalDate ?? "Oct 12, 2024";
+    }
 
     return (
         <div className="max-w-[1280px] mx-auto pb-16 pt-8">
@@ -82,19 +101,14 @@ function VisitorProfileEdit({ user, onSave, onCancel }) {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Left Column */}
                 <div className="lg:col-span-8 flex flex-col gap-6">
                     <IdentityCard name={name} setName={setName} email={email} setEmail={setEmail} bio={bio} setBio={setBio} />
                     <InterestsCard interests={interests} onRemove={handleRemoveInterest} onAdd={handleAddInterest} />
                 </div>
-                
-                {/* Right Column */}
                 <div className="lg:col-span-4 flex flex-col gap-6">
                     <AvatarUploadCard avatar={avatar} name={name} />
                     <MembershipDetailsCard tier={tier} joined={joined} renewal={renewal} />
                 </div>
-                
-                {/* Full Width */}
                 <div className="lg:col-span-12">
                     <SecurityCard />
                 </div>
@@ -115,7 +129,7 @@ function VisitorProfileEdit({ user, onSave, onCancel }) {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default VisitorProfileEdit;
+export default VisitorProfileEdit
