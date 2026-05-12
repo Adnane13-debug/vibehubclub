@@ -59,7 +59,7 @@ export const sendContact = async (req, res) => {
     return res.status(400).json({ message: 'All fields are required' })
   }
   try {
-    await db.query(
+    await db.promise().query(
       'INSERT INTO contacts (nom, email, message) VALUES (?, ?, ?)',
       [nom, email, message]
     )
