@@ -52,7 +52,12 @@ app.use('/api/admin', adminRoutes)
 // member routes
 app.use('/api/member', memberRoutes)
 
-// start the server
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT} ✅`)
-})
+// Export app so tests can import it without starting the server
+export default app
+ 
+// Only start listening when run directly — not during tests
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT} ✅`)
+  })
+}
