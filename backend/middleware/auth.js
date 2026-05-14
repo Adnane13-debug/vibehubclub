@@ -8,7 +8,7 @@ dotenv.config()
 
 const verifyToken = (req, res, next) => {
 
-  // get the token from the header
+  // get the token from the Authorization header
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
@@ -17,12 +17,16 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'No token, access denied' })
   }
 
-  // if token exists then verify it
+  // FIX: distinguish expired tokens from invalid ones
+  // This way the frontend knows whether to re-login or just refresh
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = decoded // save user info for next steps
-    next() // continue to the route
+    req.user = decoded // save user info for the next steps
+    next()
   } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expired, please log in again' })
+    }
     return res.status(403).json({ message: 'Invalid token' })
   }
 }
