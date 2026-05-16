@@ -1,42 +1,92 @@
+import { useTranslation } from "react-i18next";
+
 function AboutSection() {
+  const { t } = useTranslation();
   return (
     <section className="container-custom section-padding">
-      <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+
+        {/* ── IMAGE COMPOSITION ────────────────────────────── */}
+        <div className="relative">
+
+          {/* Ambient glow — bottom left */}
           <div
-            className="aspect-square rounded-2xl bg-orange-100"
-            style={{
-              backgroundImage:
-                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsVSxoJCRDO0Ru65Ws-y_RY2Z7n-yaJF476K2m8mG5MdL__h8mVRn1SIJYyaDXCH4ipYiEYCDfOCaton5XcZX2CKI9m7aEAt1DA5sce0CZ4pTSYQKKQ_COAQVPN5ta84QLS_U5BLJ6xlzfZi6Flfp77N0uzNU6ZPlzVG821tLy49x9eIUdpCWysjfLnRL7bE4b8ARTYV9GNesdXnFOX3vjiBhcvWFD1F7CUZ-q8EQnXxW85KK4M-P2rOj68VM1S5HFaChZQlg0xGw5')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
+            aria-hidden
+            className="pointer-events-none absolute -bottom-10 -left-10 h-56 w-56 rounded-full bg-primary/15 blur-3xl"
           />
+
+          {/* Dominant image — full width, taller */}
           <div
-            className="mt-8 aspect-square rounded-2xl bg-orange-100"
-            style={{
-              backgroundImage:
-                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYTlemtU1p185pUAgy8YRv0w5QFmIuTeqFZcC48UcOkSxt5jXUd1ZbAGF1PRQ1bF-4alpFWkxRXV9aBvZ4AwAFsR5-VCsEBk8rXEKppgo0eTiyIzSyAuTnvp1wTcaTDzRJouvMjMF6MjeGTnrKFBq66t6p-AKUJjCAn-z4_eNWF-BD-Afqu7HnjYuUnBON1mlC2OPkxzBthwn14EpgGJEDVnW2wm7RQEcRtuASW0VuiBtOLnDjBPLhjdIOT-r__slpWA88jAgc_ZOF')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
+            className="group relative z-10 overflow-hidden rounded-2xl"
+            style={{ aspectRatio: '4/3' }}
+          >
+            <div
+              className="h-full w-full bg-cover bg-center transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.03]"
+              style={{
+                backgroundImage:
+                  "url('/about_main.png')",
+              }}
+              aria-hidden
+            />
+            {/* Subtle bottom fade */}
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          </div>
+
+          {/* Secondary image — offset bottom-right, smaller */}
+          <div
+            className="group absolute -bottom-6 -right-4 z-20 w-2/5 overflow-hidden rounded-xl shadow-lg md:-right-8"
+          >
+            <div
+              className="aspect-square w-full bg-cover bg-center transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.04]"
+              style={{
+                backgroundImage:
+                  "url('/about_secondary.png')",
+              }}
+              aria-hidden
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col gap-6">
-          <h2 className="section-title">About VibeHub Club</h2>
-          <div className="h-1.5 w-20 rounded-full bg-primary-custom" />
-          <p className="text-lg leading-relaxed text-muted">
-            VibeHub is more than just a club; it&apos;s a movement within the
-            university. We bridge the gap between passion and professional
-            growth by providing a platform for students to excel in sports,
-            culture, and entrepreneurship.
-          </p>
-          <p className="text-lg leading-relaxed text-muted">
-            Founded on the pillars of inclusivity and excellence, we empower
-            students to step out of their comfort zones and lead the next
-            generation of campus life.
-          </p>
+        {/* ── TEXT CONTENT ─────────────────────────────────── */}
+        <div className="flex flex-col gap-6 pb-8 lg:pb-0">
+
+          {/* Eyebrow */}
+          <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-primary/80">
+            <span aria-hidden className="inline-block h-px w-5 rounded-full bg-primary/50" />
+            {t("about.eyebrow")}
+          </span>
+
+          {/* Title */}
+          <h2 className="section-title max-w-sm leading-[1.1] tracking-tight">
+            {t("about.title")}
+          </h2>
+
+          {/* Body copy */}
+          <div className="flex flex-col gap-4">
+            <p className="max-w-[48ch] text-base leading-[1.85] text-muted">
+              {t("about.paragraph1")}
+            </p>
+            <p className="max-w-[48ch] text-base leading-[1.85] text-muted">
+              {t("about.paragraph2")}
+            </p>
+          </div>
+
+          {/* Stats row — small human detail */}
+          <div className="mt-2 flex flex-wrap gap-6 border-t border-slate-100 pt-6 dark:border-white/[0.06]">
+            <div>
+              <p className="text-2xl font-black text-primary">{t("about.stat1Value")}</p>
+              <p className="text-xs font-medium text-slate-400">{t("about.stat1Label")}</p>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-primary">{t("about.stat2Value")}</p>
+              <p className="text-xs font-medium text-slate-400">{t("about.stat2Label")}</p>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-primary">{t("about.stat3Value")}</p>
+              <p className="text-xs font-medium text-slate-400">{t("about.stat3Label")}</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

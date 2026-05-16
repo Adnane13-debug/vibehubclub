@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import AuthLayout from "../../layouts/AuthLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import ScrollToTop from "./ScrollToTop";
 
 import HomePage from "../../features/home/pages/HomePage";
 import AboutPage from "../../features/about/pages/AboutPage";
@@ -17,6 +18,7 @@ import VisitorPage from "../../features/visitor/pages/VisitorPage";
 function AppRouter() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />

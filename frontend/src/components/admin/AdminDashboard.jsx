@@ -51,7 +51,7 @@ function formatMember(m) {
   };
 }
 
-// ─── Toast component ─────────────────────────────────────────────────────────
+// ─── Toast component (top-center, slide-down) ────────────────────────────────
 
 function Toast({ message, type, onDismiss }) {
   useEffect(() => {
@@ -59,33 +59,83 @@ function Toast({ message, type, onDismiss }) {
     return () => clearTimeout(t);
   }, [onDismiss]);
 
-  const colors = {
-    success: "bg-emerald-600 text-white",
-    error: "bg-red-600 text-white",
-    info: "bg-slate-800 text-white",
+  const styles = {
+    success: { bar: "bg-emerald-500", bg: "bg-white border-emerald-200", icon: "check_circle", iconColor: "text-emerald-500", text: "text-slate-800" },
+    error:   { bar: "bg-red-500",     bg: "bg-white border-red-200",     icon: "error",        iconColor: "text-red-500",     text: "text-slate-800" },
+    info:    { bar: "bg-sky-500",     bg: "bg-white border-sky-200",     icon: "info",         iconColor: "text-sky-500",    text: "text-slate-800" },
+    warning: { bar: "bg-amber-400",   bg: "bg-white border-amber-200",   icon: "warning",      iconColor: "text-amber-500",  text: "text-slate-800" },
   };
-
-  const icons = {
-    success: "check_circle",
-    error: "error",
-    info: "info",
-  };
+  const s = styles[type] || styles.info;
 
   return (
     <div
-      className={`animate-slide-up flex items-center gap-3 rounded-xl px-5 py-3.5 shadow-2xl ${colors[type] || colors.info}`}
-      style={{ animation: "slideUp .35s cubic-bezier(.16,1,.3,1)" }}
+      className={`relative flex items-center gap-3 rounded-2xl border px-5 py-3.5 shadow-xl backdrop-blur-sm min-w-[280px] max-w-[420px] ${s.bg}`}
+      style={{ animation: "slideDown .4s cubic-bezier(.16,1,.3,1)" }}
     >
-      <span className="material-symbols-outlined text-[20px]">
-        {icons[type] || icons.info}
+      {/* coloured left bar */}
+      <span className={`absolute left-0 top-3 bottom-3 w-1 rounded-full ${s.bar}`} />
+      <span className={`material-symbols-outlined text-[22px] ml-2 ${s.iconColor}`}>
+        {s.icon}
       </span>
-      <span className="text-sm font-medium">{message}</span>
+      <span className={`text-sm font-semibold flex-1 ${s.text}`}>{message}</span>
       <button
         onClick={onDismiss}
-        className="ml-2 opacity-60 hover:opacity-100 transition-opacity"
+        className="ml-1 opacity-40 hover:opacity-80 transition-opacity"
       >
-        <span className="material-symbols-outlined text-[18px]">close</span>
+        <span className="material-symbols-outlined text-[18px] text-slate-500">close</span>
       </button>
+    </div>
+  );
+}
+
+// ─── Confirm dialog ───────────────────────────────────────────────────────────
+
+function ConfirmDialog({ open, title, message, confirmLabel = "Confirm", danger = true, onConfirm, onCancel }) {
+  if (!open) return null;
+  return (
+    <div
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4"
+      style={{ animation: "fadeIn .2s ease" }}
+    >
+      {/* backdrop */}
+      <div
+        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+        onClick={onCancel}
+      />
+      {/* card */}
+      <div
+        className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-7 shadow-2xl"
+        style={{ animation: "scaleIn .25s cubic-bezier(.16,1,.3,1)" }}
+      >
+        {/* icon */}
+        <div className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full ${
+          danger ? "bg-red-100" : "bg-amber-100"
+        }`}>
+          <span className={`material-symbols-outlined text-3xl ${
+            danger ? "text-red-500" : "text-amber-500"
+          }`}>
+            {danger ? "delete_forever" : "warning"}
+          </span>
+        </div>
+        <h3 className="text-center font-heading text-lg font-extrabold text-slate-900">{title}</h3>
+        <p className="mt-2 text-center text-sm text-slate-500 leading-relaxed">{message}</p>
+        <div className="mt-6 flex gap-3">
+          <button
+            onClick={onCancel}
+            className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-bold text-white transition-transform hover:scale-[1.02] active:scale-[.98] ${
+              danger ? "bg-red-500 hover:bg-red-600" : "bg-amber-500 hover:bg-amber-600"
+            }`}
+          >
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -395,6 +445,17 @@ function AdminDashboard() {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
+  // Confirm dialog
+  const [confirm, setConfirm] = useState({ open: false, title: "", message: "", confirmLabel: "Confirm", danger: true, onConfirm: null });
+
+  const openConfirm = useCallback(({ title, message, confirmLabel = "Confirm", danger = true, onConfirm }) => {
+    setConfirm({ open: true, title, message, confirmLabel, danger, onConfirm });
+  }, []);
+
+  const closeConfirm = useCallback(() => {
+    setConfirm((prev) => ({ ...prev, open: false, onConfirm: null }));
+  }, []);
+
   // ── Fetch all data ──
   const fetchData = useCallback(
     async (isRefresh = false) => {
@@ -535,18 +596,28 @@ function AdminDashboard() {
   );
 
   const deleteEvent = useCallback(
-    async (id) => {
-      try {
-        await api.delete(`/api/admin/events/${id}`);
-        setEvents((prev) => prev.filter((e) => e.id !== id));
-        if (editingId === id) setEditingId(null);
-        showToast("Event deleted");
-      } catch (err) {
-        console.error(err);
-        showToast("Failed to delete event", "error");
-      }
+    (id) => {
+      const ev = events.find((e) => e.id === id);
+      openConfirm({
+        title: "Delete Event",
+        message: `Are you sure you want to permanently delete "${ev?.title || "this event"}"? This action cannot be undone.`,
+        confirmLabel: "Delete Event",
+        danger: true,
+        onConfirm: async () => {
+          closeConfirm();
+          try {
+            await api.delete(`/api/admin/events/${id}`);
+            setEvents((prev) => prev.filter((e) => e.id !== id));
+            if (editingId === id) setEditingId(null);
+            showToast("Event deleted successfully");
+          } catch (err) {
+            console.error(err);
+            showToast("Failed to delete event", "error");
+          }
+        },
+      });
     },
-    [editingId, showToast]
+    [events, editingId, openConfirm, closeConfirm, showToast]
   );
 
   const toggleEventStatus = useCallback(
@@ -577,24 +648,59 @@ function AdminDashboard() {
 
   // ── Member handlers ──
   const updateMemberStatus = useCallback(
-    async (id, newStatus) => {
-      try {
-        await api.patch(`/api/admin/members/${id}/status`, { statut: newStatus });
-        setMembers((prev) =>
-          prev.map((m) => (m.id === id ? { ...m, statut: newStatus } : m))
-        );
-        showToast("Member status updated");
-      } catch (err) {
-        console.error(err);
-        showToast("Failed to update member status", "error");
+    (id, newStatus) => {
+      const member = members.find((m) => m.id === id);
+      const isSuspend = newStatus === "suspendu" || newStatus === "Suspended";
+      if (isSuspend) {
+        openConfirm({
+          title: "Suspend Member",
+          message: `Suspend "${member?.name || "this member"}"? They will lose access until reactivated.`,
+          confirmLabel: "Suspend",
+          danger: true,
+          onConfirm: async () => {
+            closeConfirm();
+            try {
+              await api.patch(`/api/admin/members/${id}/status`, { statut: newStatus });
+              setMembers((prev) => prev.map((m) => (m.id === id ? { ...m, statut: newStatus } : m)));
+              showToast(`${member?.name || "Member"} suspended`);
+            } catch (err) {
+              console.error(err);
+              showToast("Failed to update member status", "error");
+            }
+          },
+        });
+      } else {
+        // Non-destructive — apply directly
+        api.patch(`/api/admin/members/${id}/status`, { statut: newStatus })
+          .then(() => {
+            setMembers((prev) => prev.map((m) => (m.id === id ? { ...m, statut: newStatus } : m)));
+            showToast("Member status updated");
+          })
+          .catch((err) => {
+            console.error(err);
+            showToast("Failed to update member status", "error");
+          });
       }
     },
-    [showToast]
+    [members, openConfirm, closeConfirm, showToast]
   );
 
   const removeMember = useCallback(
-    (id) => setMembers((prev) => prev.filter((m) => m.id !== id)),
-    []
+    (id) => {
+      const member = members.find((m) => m.id === id);
+      openConfirm({
+        title: "Remove Member",
+        message: `Remove "${member?.name || "this member"}" from the club? This cannot be undone.`,
+        confirmLabel: "Remove Member",
+        danger: true,
+        onConfirm: () => {
+          closeConfirm();
+          setMembers((prev) => prev.filter((m) => m.id !== id));
+          showToast(`${member?.name || "Member"} removed`);
+        },
+      });
+    },
+    [members, openConfirm, closeConfirm, showToast]
   );
 
   const updateMemberRole = useCallback(
@@ -820,25 +926,45 @@ function AdminDashboard() {
         onSave={handleSaveNewEvent}
       />
 
-      {/* ── Toast notifications ── */}
+      {/* ── Top-center toast stack ── */}
       {toasts.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
+        <div className="fixed top-[5.5rem] left-1/2 z-[9999] flex -translate-x-1/2 flex-col items-center gap-2 pointer-events-none">
           {toasts.map((t) => (
-            <Toast
-              key={t.id}
-              message={t.message}
-              type={t.type}
-              onDismiss={() => dismissToast(t.id)}
-            />
+            <div key={t.id} className="pointer-events-auto">
+              <Toast
+                message={t.message}
+                type={t.type}
+                onDismiss={() => dismissToast(t.id)}
+              />
+            </div>
           ))}
         </div>
       )}
 
-      {/* Toast slide-up animation */}
+      {/* ── Confirm dialog ── */}
+      <ConfirmDialog
+        open={confirm.open}
+        title={confirm.title}
+        message={confirm.message}
+        confirmLabel={confirm.confirmLabel}
+        danger={confirm.danger}
+        onConfirm={confirm.onConfirm}
+        onCancel={closeConfirm}
+      />
+
+      {/* Animations */}
       <style>{`
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(16px) scale(.96); }
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-20px) scale(.96); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(.92); }
+          to   { opacity: 1; transform: scale(1); }
         }
       `}</style>
     </div>

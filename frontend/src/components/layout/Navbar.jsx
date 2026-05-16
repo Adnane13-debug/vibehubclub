@@ -1,21 +1,61 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
+import { useTranslation } from "react-i18next";
+
+function LanguageSwitcher() {
+  const { i18n } = useTranslation();
+  const langs = [
+    { code: "en", label: "EN" },
+    { code: "fr", label: "FR" },
+  ];
+
+  return (
+    <div
+      className="flex items-center rounded-lg border border-slate-200/80 bg-slate-50/80 p-0.5"
+      role="group"
+      aria-label="Language selector"
+    >
+      {langs.map((lang, idx) => (
+        <button
+          key={lang.code}
+          type="button"
+          onClick={() => i18n.changeLanguage(lang.code)}
+          className={`
+            relative h-7 px-2.5 text-[11px] font-bold tracking-wide transition-all duration-200
+            ${idx === 0 ? "rounded-l-[5px]" : "rounded-r-[5px]"}
+            ${
+              i18n.language === lang.code
+                ? "bg-white text-slate-900 shadow-sm ring-1 ring-slate-200/60"
+                : "text-slate-400 hover:text-slate-600"
+            }
+          `}
+          aria-pressed={i18n.language === lang.code}
+        >
+          {lang.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+  const { t } = useTranslation();
 
   const navItems = [
-    { to: "/", label: "Home" },
-    { to: "/about", label: "About" },
-    { to: "/events", label: "Events" },
-    { to: "/contact", label: "Contact" },
+    { to: "/", label: t("navbar.home") },
+    { to: "/about", label: t("navbar.about") },
+    { to: "/events", label: t("navbar.events") },
+    { to: "/contact", label: t("navbar.contact") },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 backdrop-blur-xl">
       <div className="container-custom flex items-center justify-between py-4">
+
+        {/* ── Logo ── */}
         <Link to="/" className="flex flex-shrink-0 items-center gap-3 group">
           <img
             src="/logo vibe hub.svg"
@@ -27,11 +67,12 @@ function Navbar() {
               VibeHub
             </span>
             <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-slate-500">
-              University Club
+              {t("navbar.universityClub")}
             </span>
           </div>
         </Link>
 
+        {/* ── Desktop nav ── */}
         <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((item) => (
             <NavLink
@@ -46,44 +87,57 @@ function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        {/* ── Desktop actions ── */}
+        <div className="hidden items-center gap-2 md:flex">
+
+          {/* Language switcher */}
+          <LanguageSwitcher />
+
+          {/* Soft divider */}
+          <div
+            aria-hidden
+            className="mx-1.5 h-5 w-px bg-slate-200"
+          />
+
+          {/* Auth / profile */}
           {!isAuthenticated ? (
-            <>
+            <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="btn-secondary h-10 px-5 text-xs font-semibold"
+                className="btn-secondary h-9 px-4 text-xs font-semibold"
               >
-                Sign in
+                {t("navbar.signIn")}
               </Link>
               <Link
                 to="/register"
-                className="btn-primary h-10 px-5 text-xs font-bold"
+                className="btn-primary h-9 px-4 text-xs font-bold"
               >
-                Create account
+                {t("navbar.createAccount")}
               </Link>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="flex items-center gap-2">
               <Link
                 to={user?.role === "admin" ? "/admin" : "/profile"}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-slate-900 transition-colors hover:bg-primary/30"
-                title={user?.role === "admin" ? "Admin" : "Profile"}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-slate-800 transition-all hover:bg-primary/25 hover:scale-105"
+                title={user?.role === "admin" ? t("navbar.admin") : t("navbar.profile")}
               >
-                <span className="material-symbols-outlined text-[22px]">
+                <span className="material-symbols-outlined text-[20px]">
                   {user?.role === "admin" ? "admin_panel_settings" : "account_circle"}
                 </span>
               </Link>
               <button
                 type="button"
-                className="btn-secondary h-10 px-4 text-xs"
+                className="btn-secondary h-9 px-4 text-xs"
                 onClick={() => logout()}
               >
-                Log out
+                {t("navbar.logOut")}
               </button>
-            </>
+            </div>
           )}
         </div>
 
+        {/* ── Mobile burger ── */}
         <button
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-800 shadow-sm transition-colors hover:bg-slate-50 md:hidden"
@@ -97,61 +151,70 @@ function Navbar() {
         </button>
       </div>
 
+      {/* ── Mobile menu ── */}
       {isOpen && (
         <div className="border-t border-slate-200/80 bg-background-light/95 backdrop-blur-md md:hidden">
-          <div className="container-custom flex flex-col gap-2 py-4">
+          <div className="container-custom flex flex-col gap-1 py-4">
+
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `nav-link block py-2 ${isActive ? "nav-link-active" : ""}`
+                  `nav-link block py-2.5 ${isActive ? "nav-link-active" : ""}`
                 }
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}
               </NavLink>
             ))}
-            <div className="mt-2 flex flex-col gap-2 pt-2">
-              {!isAuthenticated ? (
-                <>
-                  <Link
-                    to="/login"
-                    className="btn-secondary w-full justify-center"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Sign in
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="btn-primary w-full justify-center"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Create account
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to={user?.role === "admin" ? "/admin" : "/profile"}
-                    className="btn-primary w-full justify-center"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {user?.role === "admin" ? "Admin" : "Profile"}
-                  </Link>
-                  <button
-                    type="button"
-                    className="btn-secondary w-full justify-center"
-                    onClick={() => {
-                      logout();
-                      setIsOpen(false);
-                    }}
-                  >
-                    Log out
-                  </button>
-                </>
-              )}
+
+            {/* Divider */}
+            <div className="my-2 h-px bg-slate-100" aria-hidden />
+
+            {/* Language + auth row */}
+            <div className="flex items-center justify-between gap-3">
+              <LanguageSwitcher />
+
+              <div className="flex flex-1 flex-col gap-2">
+                {!isAuthenticated ? (
+                  <div className="flex gap-2">
+                    <Link
+                      to="/login"
+                      className="btn-secondary flex-1 justify-center text-xs"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {t("navbar.signIn")}
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="btn-primary flex-1 justify-center text-xs"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {t("navbar.createAccount")}
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <Link
+                      to={user?.role === "admin" ? "/admin" : "/profile"}
+                      className="btn-primary flex-1 justify-center text-xs"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {user?.role === "admin" ? t("navbar.admin") : t("navbar.profile")}
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn-secondary flex-1 justify-center text-xs"
+                      onClick={() => { logout(); setIsOpen(false); }}
+                    >
+                      {t("navbar.logOut")}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
+
           </div>
         </div>
       )}

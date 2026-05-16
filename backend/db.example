@@ -1,0 +1,78 @@
+inject this code to your vibedb database using mysql workbench 
+
+-- ═══════════════════════════════════════════════
+--  VIBEHUB — FAKE DATA
+--  Password pour tous les membres: membre1234
+--  Password admin déjà inséré:     admin1234
+-- ═══════════════════════════════════════════════
+
+USE vibehub_db;
+
+-- ─── MEMBRES (password = membre1234) ──────────────────────────────────────
+INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role, statut) VALUES
+('Benali',   'Youssef',  'youssef@gmail.com',  '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'actif'),
+('El Fassi', 'Salma',    'salma@gmail.com',    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'actif'),
+('Rachidi',  'Amine',    'amine@gmail.com',    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'actif'),
+('Ouali',    'Nadia',    'nadia@gmail.com',    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'actif'),
+('Tazi',     'Mehdi',    'mehdi@gmail.com',    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'inactif');
+
+-- ─── ÉVÉNEMENTS (cree_par = 1 = Admin) ────────────────────────────────────
+INSERT INTO evenements (titre, description, date_debut, lieu, categorie, statut, cree_par) VALUES
+(
+  'Soirée Gaming VibeHub',
+  'Une soirée gaming entre membres avec tournoi FIFA et jeux en équipe. Snacks et boissons offerts !',
+  '2025-06-15 19:00:00', 'Casablanca - Maarif', 'Gaming', 'publié', 1
+),
+(
+  'Workshop Design UI/UX',
+  'Atelier pratique sur Figma : apprendre les bases du design d\'interface pour vos projets perso.',
+  '2025-06-22 10:00:00', 'Casablanca - Technopark', 'Tech', 'publié', 1
+),
+(
+  'Randonnée Ourika',
+  'Sortie nature dans la vallée de l\'Ourika avec pique-nique. Départ collectif depuis Casa.',
+  '2025-07-05 07:00:00', 'Vallée Ourika - Marrakech', 'Sport', 'publié', 1
+),
+(
+  'Meetup Startups Maroc',
+  'Rencontre entre jeunes entrepreneurs et porteurs de projets. Pitchs, networking et bonne ambiance.',
+  '2025-07-12 18:00:00', 'Rabat - Hub Maroc', 'Business', 'publié', 1
+),
+(
+  'Ciné Club Classiques',
+  'Projection de films cultes suivie d\'un débat. Ce mois-ci : The Social Network.',
+  '2025-07-20 20:00:00', 'Casablanca - Twin Center', 'Culture', 'brouillon', 1
+);
+
+-- ─── PARTICIPATIONS ────────────────────────────────────────────────────────
+-- Youssef (id=2) participe à event 1 et 2
+INSERT INTO participations (utilisateur_id, evenement_id) VALUES (2, 1), (2, 2);
+-- Salma (id=3) participe à event 1 et 3
+INSERT INTO participations (utilisateur_id, evenement_id) VALUES (3, 1), (3, 3);
+-- Amine (id=4) participe à event 2 et 4
+INSERT INTO participations (utilisateur_id, evenement_id) VALUES (4, 2), (4, 4);
+
+-- ─── ANNONCES ─────────────────────────────────────────────────────────────
+INSERT INTO annonces (titre, contenu, admin_id, visible) VALUES
+('Bienvenue sur VibeHub !', 'Salam à tous les membres, bienvenue sur la plateforme VibeHub. Explorez les événements et rejoignez la communauté !', 1, 1),
+('Nouveau : Profil personnalisable', 'Vous pouvez maintenant modifier votre photo de profil et vos infos personnelles depuis votre espace membre.', 1, 1),
+('Maintenance prévue', 'Le site sera en maintenance le 20 juin de 02h à 04h du matin. Merci de votre compréhension.', 1, 1);
+
+-- ─── NOTIFICATIONS ────────────────────────────────────────────────────────
+INSERT INTO notifications (utilisateur_id, message, lu) VALUES
+(2, 'Votre inscription à "Soirée Gaming VibeHub" est confirmée !', 0),
+(2, 'Nouvel événement disponible : Workshop Design UI/UX', 0),
+(3, 'Votre inscription à "Randonnée Ourika" est confirmée !', 1),
+(4, 'Rappel : Workshop Design UI/UX dans 3 jours.', 0);
+
+-- ─── CONTACTS ─────────────────────────────────────────────────────────────
+INSERT INTO contacts (nom, email, message, lu) VALUES
+('Karim Alaoui',  'karim@gmail.com',  'Bonjour, comment rejoindre le club VibeHub ?', 0),
+('Sara Idrissi',  'sara@gmail.com',   'Est-ce que les événements sont ouverts aux non-membres ?', 1),
+('Omar Cherkaoui','omar@gmail.com',   'Je voudrais proposer un événement, comment faire ?', 0);
+
+-- ─── TEST PERSONNALITÉ (quelques membres) ─────────────────────────────────
+INSERT INTO resultats_test (utilisateur_id, extraversion, agreableness, conscientiousness, neuroticism, openness) VALUES
+(2, 72, 65, 80, 30, 88),
+(3, 55, 78, 70, 45, 75),
+(4, 40, 60, 90, 25, 65);

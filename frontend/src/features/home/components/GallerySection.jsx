@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const images = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBj2KDXPAmcWsTtBy-OFDE0QgaC6GhvQdgiZ7_7jOP3qGjpqlVyritfUPNwuucWxpEJNnJBPm9Q3-OoszmIGrZca2XI8Nd7LEKRCj7s0Mq7rP-faE7DicDkt1yn2jOKTgjnUbj4yTBfE9UZjYQeL55UKdl4jHw4A-8JvbJukNU15upihMc3Imxh4lSc7ciZ_-7zxDxACR-WmtN8f3bX60mFugrs6MGLeWcCDASHbOl04yAp5EFvFoFdJ8d-j2lPEyi16VxbV_jKFDbB",
@@ -9,14 +10,14 @@ const images = [
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBFyufQkpTO5GyPnT2KFT_vXZLVa07e0JfCfTnbaUyUyYzFtuPE5uJXDHDiblj217z6DN2tDsmC_szk_Ikb640NpiBi3ISDI6dcwDjzFiYUoJAz5b_ydK8-Sy5zNU1hlWeT11gRKErpXqjFJoeF2JZ18a54o0PYUPGpiVcWHaU67dFHPOLjItqzci0yM42RlCAiqYAuBSiWVEq1lAJI5VeHcGORUTPxyM1-qeYIFV5kk5kMXldpZ-C1ceC0roX2_h8WsQHYUbu-9LJU",
 ];
 
-function ScrollRow({ items, reverse = false }) {
+function ScrollRow({ items, reverse = false, altText = "Community moment" }) {
   const doubled = [...items, ...items];
   return (
     <div className="gallery-scroll-container">
       <div className={`gallery-track ${reverse ? "gallery-track--reverse" : ""}`}>
         {doubled.map((src, i) => (
           <div key={i} className="gallery-card">
-            <img src={src} alt={`Community moment ${i + 1}`} loading="lazy" />
+            <img src={src} alt={`${altText} ${i + 1}`} loading="lazy" />
             <div className="gallery-card__overlay" />
           </div>
         ))}
@@ -26,15 +27,16 @@ function ScrollRow({ items, reverse = false }) {
 }
 
 function GallerySection() {
+  const { t } = useTranslation();
   return (
     <section className="gallery-section">
       <div className="gallery-header">
-        <h2 className="section-title">Community Moments</h2>
-        <p className="section-subtitle">Glimpses into our vibrant club life</p>
+        <h2 className="section-title">{t("gallery.title")}</h2>
+        <p className="section-subtitle">{t("gallery.subtitle")}</p>
       </div>
       <div className="gallery-rows">
-        <ScrollRow items={images} />
-        <ScrollRow items={[...images].reverse()} reverse />
+        <ScrollRow items={images} altText={t("gallery.imageAlt")} />
+        <ScrollRow items={[...images].reverse()} reverse altText={t("gallery.imageAlt")} />
       </div>
     </section>
   );

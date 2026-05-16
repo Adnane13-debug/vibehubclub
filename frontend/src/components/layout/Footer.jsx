@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-slate-950/98 py-14 text-white">
       <div className="container-custom grid grid-cols-1 gap-12 md:grid-cols-4">
@@ -25,8 +27,7 @@ function Footer() {
             </div>
           </Link>
           <p className="max-w-xs text-sm leading-relaxed text-slate-400">
-            The premier student-led organization for well-rounded university
-            experiences.
+            {t("footer.subtitle")}
           </p>
         </div>
 
@@ -123,7 +124,7 @@ function Footer() {
       </div>
 
       <div className="container-custom mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800/80 pt-6 text-xs text-slate-500 md:flex-row md:text-[11px]">
-        <p>© 2024 VibeHub Club. All rights reserved.</p>
+        <p>{t("footer.rights")}</p>
         <div className="flex gap-4">
           <a
             className="text-slate-500 transition-colors hover:text-white"

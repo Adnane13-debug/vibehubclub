@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import api from '../../../services/api'
 
 function RegisterPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate()
   const [form, setForm] = useState({
     nom: '', prenom: '', email: '', mot_de_passe: ''
@@ -47,7 +49,7 @@ function RegisterPage() {
           </p>
         </div>
         <div className="flex gap-6 text-center">
-          {[['500+', 'Members'], ['40+', 'Events/yr'], ['3', 'Domains']].map(([num, label]) => (
+          {[['500+', t("register.members")], ['40+', t("register.eventsYr")], ['3', t("register.domains")]].map(([num, label]) => (
             <div key={label} className="flex flex-col">
               <span className="text-2xl font-black text-slate-900">{num}</span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-800/60">{label}</span>

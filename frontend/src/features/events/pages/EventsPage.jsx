@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useEffect } from 'react'
 import api from '../../../services/api'
 import EventsHeroSection from '../components/EventsHeroSection'
@@ -6,6 +7,7 @@ import EventCard from '../components/EventCard'
 import EventsFeaturedSection from '../components/EventsFeaturedSection'
 
 function EventsPage() {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all')
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,7 +28,7 @@ function EventsPage() {
     ? events
     : events.filter(e => e.categorie?.toLowerCase() === activeFilter)
 
-  if (loading) return <div className="p-8 text-center">Chargement...</div>
+  if (loading) return <div className="p-8 text-center">{t("eventsPage.loading")}</div>
 
   return (
     <div className="flex flex-1 justify-center px-6 py-10 md:px-20">
@@ -38,7 +40,7 @@ function EventsPage() {
         />
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {events.length === 0
-            ? <p className="text-slate-500">Aucun événement disponible.</p>
+            ? <p className="text-slate-500">{t("eventsPage.empty")}</p>
             : filteredEvents.map(event => (
                 <EventCard key={event.id} event={event} />
               ))

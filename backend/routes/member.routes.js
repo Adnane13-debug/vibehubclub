@@ -9,6 +9,7 @@ const router = express.Router()
 
 // shortcut — every member route needs these 2
 const member = [verifyToken, checkRole('membre')]
+const memberOrVisiteur = [verifyToken, checkRole('membre', 'visiteur')]
 
 // dashboard
 router.get('/dashboard',                    member, ctrl.getDashboard)
@@ -18,9 +19,9 @@ router.get('/profile',                      member, ctrl.getProfile)
 router.put('/profile',                      member, ctrl.updateProfile)
 
 // events
-router.get('/events',                       member, ctrl.getEvents)
-router.post('/events/:eventId/join',        member, ctrl.joinEvent)
-router.delete('/events/:eventId/cancel',    member, ctrl.cancelEvent)
+router.get('/events',                       memberOrVisiteur, ctrl.getEvents)
+router.post('/events/:eventId/join',        memberOrVisiteur, ctrl.joinEvent)
+router.delete('/events/:eventId/cancel',    memberOrVisiteur, ctrl.cancelEvent)
 
 // notifications
 router.get('/notifications',                member, ctrl.getNotifications)

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../../../services/api'
@@ -24,6 +25,7 @@ const UNSPLASH_IMAGES = [
 ]
 
 function EventCard({ event, featured = false, index }) {
+  const { t } = useTranslation();
   const formattedDate = new Date(event.date_debut).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -79,6 +81,7 @@ function EventCard({ event, featured = false, index }) {
 }
 
 function EventsPreviewSection() {
+  const { t } = useTranslation();
   const [events, setEvents] = useState([])
 
   useEffect(() => {
@@ -108,17 +111,17 @@ function EventsPreviewSection() {
       <div className="flex flex-col items-start justify-between gap-4 mb-10 md:flex-row md:items-end">
         <div>
           <h2 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
-            Curated experiences
+            {t("eventsPreview.title")}
           </h2>
           <p className="mt-2 text-[15px] text-slate-500 leading-relaxed max-w-md">
-            Handpicked events to inspire, connect, and elevate our community.
+            {t("eventsPreview.subtitle")}
           </p>
         </div>
         <Link
           to="/events"
           className="group inline-flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-5 py-2.5 text-[13px] font-semibold text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 whitespace-nowrap"
         >
-          View calendar
+          {t("eventsPreview.viewCalendar")}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5"

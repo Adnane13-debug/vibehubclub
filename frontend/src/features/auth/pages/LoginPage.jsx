@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../auth/AuthContext'
 
 function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate()
   const { login } = useAuth()
 
@@ -122,7 +124,7 @@ function LoginPage() {
           </p>
         </div>
         <div className="flex gap-6 text-center">
-          {[['500+', 'Members'], ['40+', 'Events/yr'], ['3', 'Domains']].map(([num, label]) => (
+          {[['500+', t("login.members")], ['40+', t("login.eventsYr")], ['3', t("login.domains")]].map(([num, label]) => (
             <div key={label} className="flex flex-col">
               <span className="text-2xl font-black text-slate-900">{num}</span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-800/60">{label}</span>
@@ -134,4 +136,4 @@ function LoginPage() {
   )
 }
 
-export default LoginPage
+export default LoginPage

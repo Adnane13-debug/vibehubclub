@@ -1,0 +1,300 @@
+{
+  "navbar": {
+    "home": "Accueil",
+    "about": "À propos",
+    "events": "Événements",
+    "contact": "Contact",
+    "signIn": "Se connecter",
+    "createAccount": "Créer un compte",
+    "logOut": "Se déconnecter",
+    "universityClub": "Club Universitaire",
+    "admin": "Admin",
+    "profile": "Profil"
+  },
+  "hero": {
+    "eyebrow": "Pouls Universitaire · 2024",
+    "title1": "Connecter,",
+    "title2": "Créer",
+    "title3": "Compétir.",
+    "title4": "à VibeHub",
+    "subtitle": "Ce n'est pas un annuaire de clubs — c'est là que les étudiants se rencontrent vraiment. Sports, culture, startups : de vrais événements, de vraies personnes, un vrai élan. Votre vie sur le campus compte enfin.",
+    "stat1Value": "1.2k",
+    "stat1Label": "membres",
+    "stat2Value": "48",
+    "stat2Label": "événements/an",
+    "stat3Value": "↑12%",
+    "stat3Label": "ce semestre",
+    "exploreEvents": "Explorer les événements",
+    "joinMember": "Rejoindre",
+    "joinedWeek": "38 ont rejoint cette semaine",
+    "membershipOpen": "inscriptions ouvertes"
+  },
+  "stats": {
+    "title": "Les chiffres parlent",
+    "subtitle": "Créé par des étudiants, pour des étudiants.",
+    "items": [
+      {
+        "value": "1.2k+",
+        "label": "Membres actifs"
+      },
+      {
+        "value": "48",
+        "label": "Événements annuels"
+      },
+      {
+        "value": "3",
+        "label": "Domaines"
+      },
+      {
+        "value": "100%",
+        "label": "Géré par les étudiants"
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "Qui sommes-nous",
+    "title": "À propos de VibeHub",
+    "paragraph1": "VibeHub est plus qu'un simple club — c'est un mouvement au sein de l'université. Nous comblons le fossé entre passion et croissance professionnelle en donnant aux étudiants une plateforme pour exceller dans le sport, la culture et l'entrepreneuriat.",
+    "paragraph2": "Fondés sur des piliers d'inclusivité et d'excellence, nous permettons aux étudiants de sortir de leur zone de confort et de diriger la prochaine génération de vie sur le campus.",
+    "stat1Value": "3+",
+    "stat1Label": "Années d'activité",
+    "stat2Value": "500+",
+    "stat2Label": "Étudiants",
+    "stat3Value": "3",
+    "stat3Label": "Domaines"
+  },
+  "activity": {
+    "eyebrow": "Explorer les communautés",
+    "title1": "Espaces construits autour",
+    "title2": "de la passion",
+    "subtitle": "Trouvez l'environnement qui correspond à votre énergie, votre créativité et vos objectifs à long terme.",
+    "discoverSpace": "Découvrir l'espace",
+    "items": [
+      {
+        "num": "01",
+        "title": "Sport & Fitness",
+        "tag": "Mouvement",
+        "desc": "Ligues compétitives, culture de récupération, discipline et un fort esprit d'équipe."
+      },
+      {
+        "num": "02",
+        "title": "Arts & Culture",
+        "tag": "Expression",
+        "desc": "Musique, arts visuels, théâtre et collaborations créatives entre communautés."
+      },
+      {
+        "num": "03",
+        "title": "Entrepreneuriat",
+        "tag": "Innovation",
+        "desc": "Créer des startups, diriger des projets et connecter des fondateurs ambitieux."
+      }
+    ]
+  },
+  "eventsPreview": {
+    "eyebrow": "Événements à venir",
+    "title": "Expériences sélectionnées",
+    "subtitle": "Des événements triés sur le volet pour inspirer, connecter et élever notre communauté.",
+    "viewCalendar": "Voir le calendrier",
+    "viewAll": "Voir tous les événements",
+    "viewEvent": "Voir l'événement",
+    "loading": "Chargement...",
+    "empty": "Aucun événement disponible."
+  },
+  "gallery": {
+    "title": "Moments de la communauté",
+    "subtitle": "Aperçus de notre vie de club dynamique",
+    "imageAlt": "Moment de la communauté"
+  },
+  "aboutHero": {
+    "badge": "Est. 2021",
+    "title": "Au-delà de l'amphithéâtre",
+    "subtitle": "VibeHub est plus qu'un club ; c'est un tremplin pour la prochaine génération d'athlètes, d'artistes et d'innovateurs."
+  },
+  "aboutStory": {
+    "eyebrow": "Notre Histoire",
+    "title": "Construit par des étudiants, ",
+    "titleAccent": "pour les étudiants.",
+    "paragraph1": "VibeHub a commencé parce que nous rations toujours des choses — l'essai de foot que personne n'avait posté, la soirée de pitch qui s'est remplie en un jour. Nous ne cherchions pas à construire une plateforme. Nous voulions simplement savoir ce qui se passait réellement sur le campus.",
+    "paragraph2": "Maintenant, c'est l'endroit où les équipes sportives recrutent, les groupes culturels font leur promotion et les étudiants fondateurs trouvent leurs premiers coéquipiers. Trois communautés, un seul flux.",
+    "stat1Value": "500+",
+    "stat1Label": "Membres actifs",
+    "stat2Value": "40+",
+    "stat2Label": "Événements par an",
+    "stat3Value": "3",
+    "stat3Label": "Domaines de club",
+    "membershipOpen": "Inscriptions ouvertes",
+    "joinForFree": "Rejoindre gratuitement"
+  },
+  "aboutMission": {
+    "eyebrow": "Objectif",
+    "title": "Animé par l'action et la communauté.",
+    "missionTitle": "Notre Mission",
+    "missionText": "Fournir à chaque étudiant les ressources, le réseau et l'environnement pour poursuivre ses passions au-delà des études.",
+    "visionTitle": "Notre Vision",
+    "visionText": "Devenir le pôle de référence pour les talents étudiants, où les idées sont construites, les compétences sont testées et des connexions à vie sont créées.",
+    "valuesTitle": "Valeurs Fondamentales",
+    "valuesText": "Nous croyons au dépassement des limites, au soutien mutuel et à l'amélioration de notre campus.",
+    "values": ["Excellence", "Inclusivité", "Innovation", "Résilience"]
+  },
+  "aboutDomains": {
+    "eyebrow": "Le Cadre",
+    "title": "Trois domaines. Un écosystème.",
+    "subtitle": "Nous organisons nos activités en trois piliers principaux, conçus pour développer des leaders complets et des créateurs.",
+    "sports": {
+      "title": "Sport",
+      "tag": "Mouvement",
+      "description": "Ligues compétitives, tournois occasionnels et un accent sur l'endurance physique et mentale."
+    },
+    "culture": {
+      "title": "Culture",
+      "tag": "Expression",
+      "description": "Musique, art, débat et événements qui célèbrent la diversité et l'expression créative."
+    },
+    "entrepreneurship": {
+      "title": "Entrepreneuriat",
+      "tag": "Innovation",
+      "description": "Hackathons, journées de pitch et réseautage pour transformer les idées des étudiants en réalité."
+    }
+  },
+  "aboutTeam": {
+    "title": "Rencontrez le Bureau",
+    "subtitle": "Les étudiants travaillant dans l'ombre pour rendre tout cela possible.",
+    "viewAll": "Voir tous les membres",
+    "members": [
+      { "name": "Sarah Chen", "role": "Présidente & Fondatrice" },
+      { "name": "Marcus Johnson", "role": "Chef de l'Entrepreneuriat" },
+      { "name": "Elena Rodriguez", "role": "Directrice Culturelle" },
+      { "name": "David Park", "role": "Coordinateur Sportif" }
+    ]
+  },
+  "aboutCta": {
+    "badge": "Rejoignez le mouvement",
+    "title": "Prêt à passer à l'étape supérieure ?",
+    "subtitle": "Que vous vouliez compétitionner, créer ou simplement trouver vos amis — il y a une place pour vous ici.",
+    "getStarted": "Commencez gratuitement",
+    "talkToUs": "Parlez-nous",
+    "footnote": "Prend 2 minutes. Annulez à tout moment."
+  },
+  "contact": {
+    "eyebrow": "Contactez-nous",
+    "title1": "Nous serions ravis de",
+    "title2": "vous entendre.",
+    "subtitle": "Une question, une idée de partenariat, ou simplement envie de dire bonjour — notre équipe est là et heureuse de vous aider.",
+    "formTitle": "Envoyez-nous un message",
+    "formSubtitle": "Nous répondrons dans les 24 heures.",
+    "fullName": "Nom Complet",
+    "fullNamePlaceholder": "Alex Rivera",
+    "emailAddress": "Adresse Email",
+    "emailPlaceholder": "alex@vibe.com",
+    "message": "Message",
+    "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+    "sendMessage": "Envoyer le message",
+    "sending": "Envoi en cours…",
+    "successMessage": "Message envoyé ! Nous vous répondrons bientôt.",
+    "errorMessage": "Un problème est survenu. Réessayez.",
+    "emailSupportLabel": "Support Email",
+    "emailSupportValue": "support@vibehubclub.ma",
+    "locationLabel": "Siège",
+    "locationValue": "CMC OFPPT, Casablanca, Maroc",
+    "followUs": "Suivez-nous",
+    "studentsFirst": "Les étudiants d'abord",
+    "ctaTitle": "Vos amis sont déjà là.",
+    "ctaSubtitle": "Des centaines d'étudiants ont trouvé leur équipe, leurs projets et leur confiance grâce à cette plateforme. Votre histoire commence de la même manière.",
+    "ctaGetStarted": "Commencer",
+    "ctaTalkToUs": "Parlez-nous →",
+    "ctaFootnote": "Pas de carte de crédit. Pas de pression. Juste votre campus, en mieux."
+  },
+  "eventsPage": {
+    "loading": "Chargement...",
+    "empty": "Aucun événement disponible."
+  },
+  "eventsHero": {
+    "eyebrow": "La vie sur le campus, tout en un",
+    "title1": "Trouvez votre prochain",
+    "title2": "grand moment.",
+    "subtitle": "Sessions sportives, soirées culturelles, ateliers de création d'entreprise — de vrais événements, de vraies personnes, en ce moment même sur votre campus."
+  },
+  "eventsFilter": {
+    "browseByCategory": "Parcourir par catégorie",
+    "allEvents": "Tous",
+    "sport": "Sport",
+    "culture": "Culture",
+    "entrepreneurship": "Entrepreneuriat",
+    "dateRange": "Date"
+  },
+  "eventCard": {
+    "viewEvent": "Voir l'événement"
+  },
+  "eventsFeatured": {
+    "sportChip": "Sport",
+    "label": "Événement Phare",
+    "title": "Championnat d'Athlétisme Inter-Universitaire",
+    "description": "Le plus grand événement sportif de l'année. Représentez VibeHub dans 15 disciplines — les entraînements spéciaux commencent la semaine prochaine.",
+    "date": "20 - 25 Fév",
+    "registered": "500+ Inscrits",
+    "registerNow": "S'inscrire",
+    "learnMore": "En savoir plus"
+  },
+  "login": {
+    "welcomeBack": "Bon retour",
+    "subtitle": "Entrez vos identifiants pour accéder à votre compte.",
+    "email": "Adresse email",
+    "emailPlaceholder": "alex@exemple.com",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion en cours...",
+    "notMember": "Pas encore membre ?",
+    "createAccount": "Créer un compte",
+    "errorDefault": "Un problème est survenu.",
+    "brandTitle": "Connecter. Créer. Compétir.",
+    "brandSubtitle": "La plateforme ultime pour la vie universitaire.",
+    "members": "Membres",
+    "eventsYr": "Événements/an",
+    "domains": "Domaines"
+  },
+  "register": {
+    "title": "Créez votre compte",
+    "subtitle": "Rejoignez VibeHub et débloquez votre expérience sur le campus.",
+    "lastName": "Nom",
+    "lastNamePlaceholder": "Rivera",
+    "firstName": "Prénom",
+    "firstNamePlaceholder": "Alex",
+    "email": "Adresse email",
+    "emailPlaceholder": "alex@exemple.com",
+    "password": "Mot de passe",
+    "registerFree": "S'inscrire",
+    "registering": "Inscription en cours...",
+    "alreadyMember": "Déjà membre ?",
+    "signIn": "Se connecter",
+    "errorDefault": "Un problème est survenu.",
+    "brandTitle": "Connecter. Créer. Compétir.",
+    "brandSubtitle": "La plateforme ultime pour la vie universitaire.",
+    "members": "Membres",
+    "eventsYr": "Événements/an",
+    "domains": "Domaines"
+  },
+  "footer": {
+    "about": "À propos",
+    "story": "Histoire",
+    "mission": "Mission",
+    "team": "Équipe",
+    "contact": "Contact",
+    "domains": "Domaines",
+    "sports": "Sports",
+    "culture": "Culture",
+    "entrepreneurship": "Entrepreneuriat",
+    "platform": "Plateforme",
+    "events": "Événements",
+    "dashboard": "Tableau de bord",
+    "signIn": "Se connecter",
+    "register": "S'inscrire",
+    "legal": "Légal",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "universityClub": "Club Universitaire",
+    "subtitle": "Une plateforme communautaire qui donne du pouvoir aux étudiants à travers le sport, la culture et l'entrepreneuriat.",
+    "rights": "© 2024 VibeHub Club. Tous droits réservés.",
+    "madeWith": "Fait avec",
+    "by": "par VibeHub Team"
+  }
+}
