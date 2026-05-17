@@ -11,4 +11,7 @@ router.get('/events/:id',      ctrl.getEventDetail)
 router.get('/announcements',   ctrl.getAnnouncements)
 router.post('/contact',        ctrl.sendContact)
 
+// membership application — public, no auth needed
+router.post('/apply',          ctrl.applyForMembership)
+
 export default router

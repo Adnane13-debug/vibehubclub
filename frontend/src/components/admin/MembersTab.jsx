@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../services/api';
 import MembersStats from './members/MembersStats';
 import JoinRequests from './members/JoinRequests';
 import MembersFilterBar from './members/MembersFilterBar';
@@ -11,10 +12,9 @@ function MembersTab({ members, onUpdateRole, onUpdateStatus, onRemoveMember, onA
   const [filterRole, setFilterRole] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
 
-  const [joinRequests, setJoinRequests] = useState([
-    { id: 'req1', name: 'Sarah Jenkins', email: 's.jenkins@example.com', date: '2 hours ago', message: 'I am a local historian interested in your archives.', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAseRUwLXfqJBmQA3yYlNVM6wM05OQj08P9pSymYDXXEHhPK8a9TjEH4v-0r1wLUHY3UgMS0OvnfemPViJgNw5J00IMe6gxFmvuzspi86d6v3XMh5tbjdUGRpurnEteCKdYE-jWQgLGxuvMTSLXtrWHzM6fcS5j5IcxCHeRAbcfiPlFBHCP0u--yupWhrzpWb8WrGr14ttHoSrHQwk9WQvFL8zriX8YbU9hTKXbJZCEecr8nQOcAaFkfYtbkl68ur_bL2F9ycU5GgE' },
-    { id: 'req2', name: 'David Cho', email: 'd.cho@example.com', date: '1 day ago', message: 'Would love to network with other entrepreneurs.', avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC6iv7qux9O7LgpKQpz9LuzsdZ0mbi461U5nCmghMxD2WQ41o4yBzWxyY7CH1M21sQBPyN2SWhwtxyN8BxNyojaQofXxUwPhR64swI0E-6XrI1h-ibzm3Th5mFxVqAMnRDtVk1Ef40hqKd24gLleywQDdnKveg_aDCJmNmANpueiRr-GcefF4DuAVGCaGH1eVvYLyy5L2yxggcQOnuWMrbqNnHgdA2pBv9aq5fYMvHRtqn1VrCU5pPfT9ty5SmrenGeX50TLFE0pKI' }
-  ]);
+  // Real membership requests from API
+  const [joinRequests, setJoinRequests] = useState([]);
+  const [loadingRequests, setLoadingRequests] = useState(true);
 
   const [activities, setActivities] = useState([
     { id: 'a1', user: 'Alex Rivera', action: 'updated profile picture', time: '10 min ago', type: 'update' },
@@ -22,23 +22,74 @@ function MembersTab({ members, onUpdateRole, onUpdateStatus, onRemoveMember, onA
     { id: 'a3', user: 'Marcus Thorne', action: 'joined the club', time: '1 day ago', type: 'join' },
   ]);
 
-  const handleAcceptRequest = (req) => {
-    onAcceptRequest({
-      id: `m${Date.now()}`,
-      name: req.name,
-      role: 'Member',
-      tier: 'Standard',
-      tierClass: 'bg-slate-100 text-slate-600',
-      avatar: req.avatar,
-      email: req.email,
-      status: 'Active'
-    });
-    setJoinRequests(prev => prev.filter(r => r.id !== req.id));
-    setActivities(prev => [{ id: `act${Date.now()}`, user: req.name, action: 'was accepted as Member', time: 'Just now', type: 'join' }, ...prev]);
+  // Fetch pending membership requests on mount
+  const fetchRequests = async () => {
+    try {
+      setLoadingRequests(true);
+      const res = await api.get('/api/admin/membership-requests?statut=en_attente');
+      const mapped = res.data.map(r => ({
+        id: r.id,
+        name: `${r.prenom} ${r.nom}`,
+        email: r.email,
+        date: new Date(r.created_at).toLocaleDateString(),
+        message: r.message || '',
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(r.prenom + '+' + r.nom)}&background=f59e0b&color=1e293b&bold=true`
+      }));
+      setJoinRequests(mapped);
+    } catch (err) {
+      console.error('Failed to fetch membership requests', err);
+    } finally {
+      setLoadingRequests(false);
+    }
   };
 
-  const handleRejectRequest = (id) => {
-    setJoinRequests(prev => prev.filter(r => r.id !== id));
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const handleAcceptRequest = async (req) => {
+    try {
+      const res = await api.patch(`/api/admin/membership-requests/${req.id}/accept`);
+      const tempPassword = res.data.tempPassword;
+
+      // Show temp password to admin
+      alert(`✅ Request accepted!\n\nTemporary password for ${req.name}:\n${tempPassword}\n\nPlease share this with the user so they can log in.`);
+
+      // Add to member list via parent callback
+      onAcceptRequest({
+        id: `m${Date.now()}`,
+        name: req.name,
+        role: 'Visitor',
+        tier: 'Standard',
+        tierClass: 'bg-slate-100 text-slate-600',
+        avatar: req.avatar,
+        email: req.email,
+        status: 'Active'
+      });
+
+      setActivities(prev => [{ id: `act${Date.now()}`, user: req.name, action: 'was accepted as Visitor', time: 'Just now', type: 'join' }, ...prev]);
+
+      // Refetch the list
+      fetchRequests();
+    } catch (err) {
+      console.error('Failed to accept request', err);
+      alert('Failed to accept request: ' + (err.response?.data?.message || 'Server error'));
+    }
+  };
+
+  const handleRejectRequest = async (id) => {
+    try {
+      await api.patch(`/api/admin/membership-requests/${id}/reject`);
+      setActivities(prev => {
+        const req = joinRequests.find(r => r.id === id);
+        return [{ id: `act${Date.now()}`, user: req?.name || 'Unknown', action: 'application was rejected', time: 'Just now', type: 'remove' }, ...prev];
+      });
+      // Refetch the list
+      fetchRequests();
+    } catch (err) {
+      console.error('Failed to reject request', err);
+      alert('Failed to reject request: ' + (err.response?.data?.message || 'Server error'));
+    }
   };
 
   const handleRemoveMember = (id) => {

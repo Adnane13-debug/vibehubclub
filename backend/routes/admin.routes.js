@@ -44,4 +44,9 @@ router.get('/tests/results/:userId',          admin, ctrl.getUserTestResult)
 // contacts
 router.get('/contacts',                       admin, ctrl.getContacts)
 
+// membership requests
+router.get('/membership-requests',            admin, ctrl.getMembershipRequests)
+router.patch('/membership-requests/:id/accept', admin, ctrl.acceptMembershipRequest)
+router.patch('/membership-requests/:id/reject', admin, ctrl.rejectMembershipRequest)
+
 export default router

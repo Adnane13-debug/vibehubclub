@@ -7,7 +7,8 @@ import verifyToken  from '../middleware/auth.js'
 const router = express.Router()
 
 // public routes — no token needed
-router.post('/register', ctrl.register)
+// NOTE: /register removed — public sign-up is disabled.
+// New users apply via POST /api/public/apply, admin approves, account is created automatically.
 router.post('/login',    ctrl.login)
 
 // protected routes — token required

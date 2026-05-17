@@ -1,6 +1,7 @@
 // admin controller — all functions here are admin only
 
 import db from '../config/db.js'
+import bcrypt from 'bcrypt'
 
 // GET DASHBOARD STATS
 export const getStats = async (req, res) => {
@@ -323,6 +324,95 @@ export const getContacts = async (req, res) => {
   try {
     const [results] = await db.query('SELECT * FROM contacts ORDER BY created_at DESC')
     res.json(results)
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  MEMBERSHIP REQUESTS
+// ═══════════════════════════════════════════════
+
+// GET ALL MEMBERSHIP REQUESTS
+export const getMembershipRequests = async (req, res) => {
+  try {
+    const { statut } = req.query
+    let query = 'SELECT * FROM demandes_adhesion'
+    const params = []
+
+    if (statut) {
+      query += ' WHERE statut = ?'
+      params.push(statut)
+    }
+
+    query += ' ORDER BY created_at DESC'
+    const [results] = await db.query(query, params)
+    res.json(results)
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// ACCEPT MEMBERSHIP REQUEST
+export const acceptMembershipRequest = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [rows] = await db.query('SELECT * FROM demandes_adhesion WHERE id = ?', [id])
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Request not found' })
+    }
+
+    const request = rows[0]
+
+    if (request.statut !== 'en_attente') {
+      return res.status(400).json({ message: 'Request already processed' })
+    }
+
+    // generate a random temp password
+    const tempPassword = Math.random().toString(36).slice(-10)
+    const hash = await bcrypt.hash(tempPassword, 10)
+
+    // create user account
+    await db.query(
+      "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role, statut) VALUES (?, ?, ?, ?, 'visiteur', 'actif')",
+      [request.nom, request.prenom, request.email, hash]
+    )
+
+    // update request status
+    await db.query(
+      "UPDATE demandes_adhesion SET statut = 'acceptee' WHERE id = ?",
+      [id]
+    )
+
+    res.json({ message: 'Request accepted', tempPassword })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// REJECT MEMBERSHIP REQUEST
+export const rejectMembershipRequest = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [rows] = await db.query('SELECT * FROM demandes_adhesion WHERE id = ?', [id])
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Request not found' })
+    }
+
+    if (rows[0].statut !== 'en_attente') {
+      return res.status(400).json({ message: 'Request already processed' })
+    }
+
+    await db.query(
+      "UPDATE demandes_adhesion SET statut = 'rejetee' WHERE id = ?",
+      [id]
+    )
+
+    res.json({ message: 'Request rejected' })
   } catch (err) {
     res.status(500).json({ message: 'Server error' })
   }

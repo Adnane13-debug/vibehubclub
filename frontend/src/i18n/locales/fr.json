@@ -6,6 +6,7 @@
     "contact": "Contact",
     "signIn": "Se connecter",
     "createAccount": "Créer un compte",
+    "applyMembership": "Demander l'adhésion",
     "logOut": "Se déconnecter",
     "universityClub": "Club Universitaire",
     "admin": "Admin",
@@ -272,6 +273,23 @@
     "members": "Membres",
     "eventsYr": "Événements/an",
     "domains": "Domaines"
+  },
+  "apply": {
+    "title": "Demander l'adhésion",
+    "subtitle": "Parlez-nous de vous et de votre motivation.",
+    "nom": "Nom",
+    "prenom": "Prénom",
+    "email": "Adresse email",
+    "message": "Motivation (optionnel)",
+    "messagePlaceholder": "Pourquoi voulez-vous rejoindre VibeHub ?",
+    "submit": "Soumettre la demande",
+    "submitting": "Envoi en cours...",
+    "successTitle": "Demande envoyée !",
+    "successBody": "Notre équipe va examiner votre demande et vous recontactera bientôt.",
+    "alreadyMember": "Déjà un compte ?",
+    "signIn": "Se connecter",
+    "brandTitle": "Rejoignez le Vibe.",
+    "brandSubtitle": "Votre demande prend 2 minutes. Chaque candidature est examinée personnellement."
   },
   "footer": {
     "about": "À propos",

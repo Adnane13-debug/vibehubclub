@@ -101,8 +101,8 @@ function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Pas encore membre ?{' '}
-            <Link to="/register" className="font-semibold text-primary hover:underline">
-              Créer un compte
+            <Link to="/apply" className="font-semibold text-primary hover:underline">
+              Demander l'adhésion
             </Link>
           </p>
         </div>

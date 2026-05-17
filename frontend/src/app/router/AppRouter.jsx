@@ -10,7 +10,9 @@ import EventsPage from "../../features/events/pages/EventsPage";
 import EventDetailsPage from "../../features/events/pages/EventDetailsPage";
 import ContactPage from "../../features/contact/pages/ContactPage";
 import LoginPage from "../../features/auth/pages/LoginPage";
-import RegisterPage from "../../features/auth/pages/RegisterPage";
+// RegisterPage route disabled — public sign-up replaced by membership application flow
+// import RegisterPage from "../../features/auth/pages/RegisterPage";
+import ApplyPage from "../../features/apply/pages/ApplyPage";
 import ProfilePage from "../../features/profile/pages/ProfilePage";
 import AdminPage from "../../features/admin/pages/AdminPage";
 import VisitorPage from "../../features/visitor/pages/VisitorPage";
@@ -54,7 +56,9 @@ function AppRouter() {
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          {/* RegisterPage route disabled — public sign-up replaced by membership application flow */}
+          {/* <Route path="/register" element={<RegisterPage />} /> */}
+          <Route path="/apply" element={<ApplyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

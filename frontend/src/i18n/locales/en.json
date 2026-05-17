@@ -6,6 +6,7 @@
     "contact": "Contact",
     "signIn": "Sign in",
     "createAccount": "Create account",
+    "applyMembership": "Apply for Membership",
     "logOut": "Log out",
     "universityClub": "University Club",
     "admin": "Admin",
@@ -272,6 +273,23 @@
     "members": "Members",
     "eventsYr": "Events/yr",
     "domains": "Domains"
+  },
+  "apply": {
+    "title": "Apply for Membership",
+    "subtitle": "Tell us about yourself and why you want to join.",
+    "nom": "Last Name",
+    "prenom": "First Name",
+    "email": "Email Address",
+    "message": "Motivation (optional)",
+    "messagePlaceholder": "Why do you want to join VibeHub?",
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "successTitle": "Application Submitted!",
+    "successBody": "Our team will review your request and get back to you soon.",
+    "alreadyMember": "Already have an account?",
+    "signIn": "Sign in",
+    "brandTitle": "Join the Vibe.",
+    "brandSubtitle": "Your application takes 2 minutes. Our team reviews every request personally."
   },
   "footer": {
     "about": "About",

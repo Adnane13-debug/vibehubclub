@@ -71,8 +71,26 @@ INSERT INTO contacts (nom, email, message, lu) VALUES
 ('Sara Idrissi',  'sara@gmail.com',   'Est-ce que les événements sont ouverts aux non-membres ?', 1),
 ('Omar Cherkaoui','omar@gmail.com',   'Je voudrais proposer un événement, comment faire ?', 0);
 
+-- ─── TABLE DEMANDES_ADHESION ────────────────────────────────────────────────
+-- Run this CREATE TABLE before inserting any data into demandes_adhesion
+CREATE TABLE IF NOT EXISTS demandes_adhesion (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  nom          VARCHAR(100)  NOT NULL,
+  prenom       VARCHAR(100)  NOT NULL,
+  email        VARCHAR(255)  NOT NULL UNIQUE,
+  message      TEXT,
+  statut       ENUM('en_attente', 'acceptee', 'rejetee') DEFAULT 'en_attente',
+  created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ─── TEST PERSONNALITÉ (quelques membres) ─────────────────────────────────
 INSERT INTO resultats_test (utilisateur_id, extraversion, agreableness, conscientiousness, neuroticism, openness) VALUES
 (2, 72, 65, 80, 30, 88),
 (3, 55, 78, 70, 45, 75),
 (4, 40, 60, 90, 25, 65);
+
+-- ─── DEMANDES D'ADHÉSION (exemples) ──────────────────────────────────────
+INSERT INTO demandes_adhesion (nom, prenom, email, message, statut) VALUES
+('Alaoui',  'Karim',  'karim.alaoui@example.com',  'Je suis passionné par le sport et je veux rejoindre la communauté VibeHub !', 'en_attente'),
+('Idrissi', 'Sara',   'sara.idrissi@example.com',  'J''aimerais participer aux événements culturels du club.', 'en_attente'),
+('Berrada', 'Omar',   'omar.berrada@example.com',  'Entrepreneur en herbe, je cherche un réseau motivant.', 'rejetee');

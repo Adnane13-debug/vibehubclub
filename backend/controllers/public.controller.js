@@ -79,3 +79,55 @@ export const sendContact = async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 }
+
+// APPLY FOR MEMBERSHIP — public, no auth needed
+export const applyForMembership = async (req, res) => {
+  const { nom, prenom, email, message } = req.body
+
+  // validate required fields
+  if (!nom || !prenom || !email) {
+    return res.status(400).json({ message: 'Nom, prénom, and email are required' })
+  }
+
+  // length limits
+  if (nom.length > 100) return res.status(400).json({ message: 'Nom is too long (max 100)' })
+  if (prenom.length > 100) return res.status(400).json({ message: 'Prénom is too long (max 100)' })
+  if (email.length > 255) return res.status(400).json({ message: 'Email is too long' })
+  if (message && message.length > 1000) return res.status(400).json({ message: 'Message is too long (max 1000)' })
+
+  // email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email format' })
+  }
+
+  try {
+    // check if email already exists in utilisateurs
+    const [existingUsers] = await db.query(
+      'SELECT id FROM utilisateurs WHERE email = ?',
+      [email]
+    )
+    if (existingUsers.length > 0) {
+      return res.status(400).json({ message: 'Email already registered' })
+    }
+
+    // check if a pending or accepted request already exists
+    const [existingRequests] = await db.query(
+      "SELECT id FROM demandes_adhesion WHERE email = ? AND statut IN ('en_attente', 'acceptee')",
+      [email]
+    )
+    if (existingRequests.length > 0) {
+      return res.status(400).json({ message: 'Request already submitted' })
+    }
+
+    // insert the application
+    await db.query(
+      'INSERT INTO demandes_adhesion (nom, prenom, email, message) VALUES (?, ?, ?, ?)',
+      [nom, prenom, email, message || null]
+    )
+
+    res.status(201).json({ message: 'Application submitted successfully' })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}

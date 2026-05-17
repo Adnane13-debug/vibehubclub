@@ -109,10 +109,10 @@ function Navbar() {
                 {t("navbar.signIn")}
               </Link>
               <Link
-                to="/register"
+                to="/apply"
                 className="btn-primary h-9 px-4 text-xs font-bold"
               >
-                {t("navbar.createAccount")}
+                {t("navbar.applyMembership")}
               </Link>
             </div>
           ) : (
@@ -187,11 +187,11 @@ function Navbar() {
                       {t("navbar.signIn")}
                     </Link>
                     <Link
-                      to="/register"
+                      to="/apply"
                       className="btn-primary flex-1 justify-center text-xs"
                       onClick={() => setIsOpen(false)}
                     >
-                      {t("navbar.createAccount")}
+                      {t("navbar.applyMembership")}
                     </Link>
                   </div>
                 ) : (
