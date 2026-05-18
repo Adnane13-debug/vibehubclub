@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from '../../../services/api'
 
 function ApplyPage() {
   const { t } = useTranslation();
@@ -20,7 +20,7 @@ function ApplyPage() {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:5000/api/public/apply", {
+      await api.post("/api/public/apply", {
         nom,
         prenom,
         email,

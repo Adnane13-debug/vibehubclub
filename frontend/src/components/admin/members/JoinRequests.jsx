@@ -13,10 +13,9 @@ function JoinRequests({ requests, onAccept, onReject }) {
         {requests.map(req => (
           <li key={req.id} className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50 transition-colors">
             <div className="flex items-center gap-4">
-              <img src={req.avatar} alt={req.name} className="w-12 h-12 rounded-full object-cover ring-2 ring-slate-100" />
               <div>
-                <p className="font-bold text-slate-900">{req.name}</p>
-                <p className="text-sm text-slate-500">{req.email} • Applied {req.date}</p>
+                <p className="font-bold">{req.nom} {req.prenom}</p>
+                <p>{req.email} • Applied {new Date(req.created_at).toLocaleDateString()}</p>
                 <p className="text-sm text-slate-600 mt-1 italic">"{req.message}"</p>
               </div>
             </div>

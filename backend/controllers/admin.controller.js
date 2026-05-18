@@ -376,7 +376,7 @@ export const acceptMembershipRequest = async (req, res) => {
 
     // create user account
     await db.query(
-      "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role, statut) VALUES (?, ?, ?, ?, 'visiteur', 'actif')",
+      "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role, statut) VALUES (?, ?, ?, ?, 'membre', 'actif')",
       [request.nom, request.prenom, request.email, hash]
     )
 
