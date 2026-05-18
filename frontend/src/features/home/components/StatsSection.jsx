@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from 'react'
 import api from '../../../services/api'
+import { useAuth } from '../../../auth/AuthContext'
 
 function StatsSection() {
   const { t } = useTranslation();
+  const { isAuthenticated, role } = useAuth();
   const [stats, setStats] = useState([
     { value: '...', label: 'Active Members' },
     { value: '...', label: 'Annual Events' },
@@ -12,6 +14,8 @@ function StatsSection() {
   ])
 
   useEffect(() => {
+    if (!isAuthenticated || role !== 'admin') return;
+
     api.get('/api/admin/dashboard/stats')
       .then(res => {
         const { totalMembers, totalEvents } = res.data
@@ -30,7 +34,7 @@ function StatsSection() {
           { value: '2k+', label: 'Participants' },
         ])
       })
-  }, [])
+  }, [isAuthenticated, role])
 
   return (
     <section className="bg-slate-900 py-12 text-white">
