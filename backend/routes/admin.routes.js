@@ -49,4 +49,12 @@ router.get('/membership-requests',            admin, ctrl.getMembershipRequests)
 router.patch('/membership-requests/:id/accept', admin, ctrl.acceptMembershipRequest)
 router.patch('/membership-requests/:id/reject', admin, ctrl.rejectMembershipRequest)
 
+// export
+router.get('/export/members',                 admin, ctrl.exportMembers)
+router.get('/export/events',                  admin, ctrl.exportEvents)
+router.get('/export/contacts',                admin, ctrl.exportContacts)
+
+// import
+router.post('/import/events',                 admin, ctrl.importEvents)
+
 export default router
