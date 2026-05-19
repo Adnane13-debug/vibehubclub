@@ -15,7 +15,7 @@ function AdminFooter() {
           />
           <div>
             <p className="text-sm font-semibold text-slate-900">VibeHub Club</p>
-            <p className="text-xs text-slate-500">Admin console · © 2024</p>
+            <p className="text-xs text-slate-500">Admin console · © 2026</p>
           </div>
         </div>
         <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
