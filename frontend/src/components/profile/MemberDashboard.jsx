@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../../services/api'
+import SecurityCard from './edit/SecurityCard'
 
 // ─── Mini sub-components ────────────────────────────────────────────────────
 
@@ -357,6 +358,9 @@ function MemberDashboard() {
                 </div>
               </div>
             )}
+
+            {/* Security — Change Password */}
+            <SecurityCard />
 
             {/* Notifications */}
             <div className="fade-up fade-up-4 rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">

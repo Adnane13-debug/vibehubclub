@@ -1,6 +1,11 @@
 // member controller — all functions here are for logged in members only
 
 import db from '../config/db.js'
+import bcrypt from 'bcrypt'
+import { sendPasswordChangeCode } from '../services/email.service.js'
+
+// In-memory OTP store: { userId: { code, expiresAt } }
+const otpStore = new Map()
 
 // GET DASHBOARD
 export const getDashboard = async (req, res) => {
@@ -199,6 +204,89 @@ export const getMbtiResult = async (req, res) => {
     if (results.length === 0) return res.json(null)
     res.json(results[0])
   } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// REQUEST PASSWORD CHANGE — sends OTP to user's email
+export const requestPasswordChange = async (req, res) => {
+  const userId = req.user.id
+
+  try {
+    // Get user email and prenom
+    const [[user]] = await db.query(
+      'SELECT email, prenom FROM utilisateurs WHERE id = ?',
+      [userId]
+    )
+
+    if (!user) return res.status(404).json({ message: 'User not found' })
+
+    // Generate 6-digit code
+    const code = Math.floor(100000 + Math.random() * 900000).toString()
+    const expiresAt = Date.now() + 10 * 60 * 1000 // 10 minutes
+
+    // Store in memory
+    otpStore.set(userId, { code, expiresAt })
+
+    // Send email
+    try {
+      await sendPasswordChangeCode(user.email, user.prenom, code)
+    } catch (mailErr) {
+      console.error('📧 OTP email failed:', mailErr.message)
+      return res.status(500).json({ message: 'Failed to send verification email' })
+    }
+
+    res.json({ message: 'Verification code sent to your email' })
+  } catch (err) {
+    console.error('requestPasswordChange error:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// CONFIRM PASSWORD CHANGE — verifies OTP + updates password
+export const confirmPasswordChange = async (req, res) => {
+  const userId = req.user.id
+  const { code, newPassword, confirmPassword } = req.body
+
+  // Validate inputs
+  if (!code || !newPassword || !confirmPassword) {
+    return res.status(400).json({ message: 'All fields are required' })
+  }
+
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' })
+  }
+
+  if (newPassword.length < 8) {
+    return res.status(400).json({ message: 'Password must be at least 8 characters' })
+  }
+
+  // Check OTP
+  const stored = otpStore.get(userId)
+
+  if (!stored) {
+    return res.status(400).json({ message: 'No verification code found. Please request a new one.' })
+  }
+
+  if (Date.now() > stored.expiresAt) {
+    otpStore.delete(userId)
+    return res.status(400).json({ message: 'Verification code expired. Please request a new one.' })
+  }
+
+  if (stored.code !== code.trim()) {
+    return res.status(400).json({ message: 'Invalid verification code' })
+  }
+
+  try {
+    const hash = await bcrypt.hash(newPassword, 10)
+    await db.query('UPDATE utilisateurs SET mot_de_passe = ? WHERE id = ?', [hash, userId])
+
+    // Clean up OTP
+    otpStore.delete(userId)
+
+    res.json({ message: 'Password updated successfully' })
+  } catch (err) {
+    console.error('confirmPasswordChange error:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }

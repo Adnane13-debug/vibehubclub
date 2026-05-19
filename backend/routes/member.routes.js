@@ -31,4 +31,8 @@ router.patch('/notifications/:id/read',     member, ctrl.markAsRead)
 router.post('/mbti/results',                member, ctrl.saveMbtiResult)
 router.get('/mbti/results',                 member, ctrl.getMbtiResult)
 
+// password change (2-step: request OTP → confirm)
+router.post('/password/request-change',     memberOrVisiteur, ctrl.requestPasswordChange)
+router.post('/password/confirm-change',     memberOrVisiteur, ctrl.confirmPasswordChange)
+
 export default router

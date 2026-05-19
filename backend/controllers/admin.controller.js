@@ -2,6 +2,7 @@
 
 import db from '../config/db.js'
 import bcrypt from 'bcrypt'
+import { sendWelcomeEmail } from '../services/email.service.js'
 
 // GET DASHBOARD STATS
 export const getStats = async (req, res) => {
@@ -386,8 +387,16 @@ export const acceptMembershipRequest = async (req, res) => {
       [id]
     )
 
-    res.json({ message: 'Request accepted', tempPassword })
+    // Send welcome email — non-blocking (failure won't crash the response)
+    try {
+      await sendWelcomeEmail(request.email, request.prenom, tempPassword)
+    } catch (mailErr) {
+      console.error('📧 Email sending failed (non-blocking):', mailErr.message)
+    }
+
+    res.json({ message: 'Request accepted and email sent', tempPassword })
   } catch (err) {
+    console.error('acceptMembershipRequest error:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }
