@@ -92,7 +92,7 @@ export const createEvent = async (req, res) => {
 
   try {
     const [result] = await db.query(
-      'INSERT INTO evenements (titre, description, date_debut, lieu, categorie, image, cree_par) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      "INSERT INTO evenements (titre, description, date_debut, lieu, categorie, image, statut, cree_par) VALUES (?, ?, ?, ?, ?, ?, 'en_attente', ?)",
       [titre, description, date_debut, lieu, categorie, image || null, req.user.id]
     )
     res.status(201).json({ message: 'Event created', id: result.insertId })
@@ -138,9 +138,9 @@ export const updateEventStatus = async (req, res) => {
   const { statut } = req.body
 
   // FIX: validate event status values
-  const allowed = ['publie', 'brouillon', 'archive']
+  const allowed = ['publie', 'brouillon', 'archive', 'en_attente']
   if (!statut || !allowed.includes(statut)) {
-    return res.status(400).json({ message: 'Invalid status. Allowed: publie, brouillon, archive' })
+    return res.status(400).json({ message: 'Invalid status. Allowed: publie, brouillon, archive, en_attente' })
   }
 
   try {

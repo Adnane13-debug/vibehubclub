@@ -2,10 +2,12 @@
  * Editable events table with inline editing, category badges, status dropdown, and archive support.
  */
 
+// DB values: brouillon | publie | archive | en_attente
 const STATUS_CONFIG = {
-  publie:    { dot: 'bg-emerald-500',              label: 'Published', text: 'text-emerald-600' },
-  brouillon: { dot: 'bg-amber-400 animate-pulse',  label: 'Draft',     text: 'text-amber-600'  },
-  archive:   { dot: 'bg-slate-400',                label: 'Archived',  text: 'text-slate-500'  },
+  publie:     { dot: 'bg-emerald-500',              label: 'Published',  text: 'text-emerald-600' },
+  brouillon:  { dot: 'bg-amber-400 animate-pulse',  label: 'Draft',      text: 'text-amber-600'  },
+  archive:    { dot: 'bg-slate-400',                label: 'Archive',    text: 'text-slate-500'  },
+  en_attente: { dot: 'bg-sky-400 animate-pulse',    label: 'En attente', text: 'text-sky-600'    },
 }
 
 function EventsTable({
@@ -110,9 +112,9 @@ function EventsTable({
                     onChange={(e) => onToggleStatus(ev.raw.id, e.target.value)}
                     className="rounded-lg border border-slate-200 px-2 py-1 text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-primary"
                   >
-                    <option value="brouillon">Draft</option>
+                    <option value="en_attente">En attente</option>
                     <option value="publie">Published</option>
-                    <option value="archive">Archived</option>
+                    <option value="archive">Archive</option>
                   </select>
                 </td>
                 <td className="py-4 pl-4 text-right align-top opacity-0 transition-opacity group-hover:opacity-100">

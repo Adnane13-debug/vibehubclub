@@ -19,6 +19,13 @@ function categoryClass(category) {
 }
 
 function formatEvent(e) {
+  const statusMap = {
+    publie:     { status: "Published",  statusTone: "emerald" },
+    brouillon:  { status: "Draft",      statusTone: "primary" },
+    archive:    { status: "Archive",    statusTone: "slate"   },
+    en_attente: { status: "En attente", statusTone: "sky"     },
+  };
+  const s = statusMap[e.statut] || statusMap.brouillon;
   return {
     id: e.id,
     dateLabel: new Date(e.date_debut)
@@ -28,8 +35,8 @@ function formatEvent(e) {
     subtitle: `${e.lieu}`,
     category: e.categorie,
     categoryClass: categoryClass(e.categorie),
-    status: e.statut === "publie" ? "Confirmed" : "Draft",
-    statusTone: e.statut === "publie" ? "emerald" : "primary",
+    status: s.status,
+    statusTone: s.statusTone,
     raw: e,
   };
 }
@@ -566,25 +573,43 @@ function AdminDashboard() {
       try {
         const res = await api.post("/api/admin/events", {
           titre: newDraft.title,
-          description: newDraft.subtitle || "Description",
+          description: newDraft.description || newDraft.subtitle || "Description",
           date_debut: newDraft.date || new Date(),
-          lieu: newDraft.subtitle || "CMC OFPPT",
+          lieu: newDraft.lieu || newDraft.subtitle || "CMC OFPPT",
           categorie: newDraft.category?.toLowerCase() || "sport",
         });
-        const newEvent = {
-          id: res.data.id,
-          dateLabel: new Date(newDraft.date)
-            .toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
-            .toUpperCase(),
-          title: newDraft.title,
-          subtitle: newDraft.subtitle,
-          category: newDraft.category,
-          categoryClass: categoryClass(newDraft.category),
-          status: "Draft",
-          statusTone: "primary",
-          raw: { description: newDraft.subtitle, date_debut: newDraft.date },
-        };
-        setEvents((prev) => [...prev, newEvent]);
+        // Fetch the full event from the DB so `raw` is properly hydrated
+        // (includes statut, id, created_at, etc.)
+        const fullRes = await api.get(`/api/admin/events`);
+        const createdRaw = fullRes.data.find((e) => e.id === res.data.id);
+        if (createdRaw) {
+          setEvents((prev) => [formatEvent(createdRaw), ...prev]);
+        } else {
+          // Fallback: construct a minimal formatted event
+          setEvents((prev) => [
+            {
+              id: res.data.id,
+              dateLabel: new Date(newDraft.date)
+                .toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
+                .toUpperCase(),
+              title: newDraft.title,
+              subtitle: newDraft.lieu || newDraft.subtitle || "",
+              category: newDraft.category?.toLowerCase() || "sport",
+              categoryClass: categoryClass(newDraft.category?.toLowerCase() || "sport"),
+              status: "En attente",
+              statusTone: "sky",
+              raw: {
+                id: res.data.id,
+                titre: newDraft.title,
+                lieu: newDraft.lieu || newDraft.subtitle || "",
+                categorie: newDraft.category?.toLowerCase() || "sport",
+                date_debut: newDraft.date || new Date(),
+                statut: "en_attente",
+              },
+            },
+            ...prev,
+          ]);
+        }
         setIsCreateEventOpen(false);
         showToast("Event created successfully");
       } catch (err) {
@@ -621,8 +646,22 @@ function AdminDashboard() {
   );
 
   const toggleEventStatus = useCallback(
-    async (id, currentStatus) => {
-      const newStatus = currentStatus === "publie" ? "brouillon" : "publie";
+    async (id, newStatus) => {
+      // newStatus is the value selected in the dropdown: 'publie' | 'brouillon' | 'archive'
+      const allowed = ['publie', 'brouillon', 'archive', 'en_attente'];
+      if (!allowed.includes(newStatus)) return;
+      const statusMap = {
+        publie:     { status: "Published",  statusTone: "emerald" },
+        brouillon:  { status: "Draft",      statusTone: "primary" },
+        archive:    { status: "Archive",    statusTone: "slate"   },
+        en_attente: { status: "En attente", statusTone: "sky"     },
+      };
+      const labelMap = {
+        publie:     "published",
+        brouillon:  "set to draft",
+        archive:    "archived",
+        en_attente: "set to En attente",
+      };
       try {
         await api.patch(`/api/admin/events/${id}/status`, { statut: newStatus });
         setEvents((prev) =>
@@ -630,14 +669,14 @@ function AdminDashboard() {
             e.id === id
               ? {
                   ...e,
-                  status: newStatus === "publie" ? "Confirmed" : "Draft",
-                  statusTone: newStatus === "publie" ? "emerald" : "primary",
+                  status: statusMap[newStatus].status,
+                  statusTone: statusMap[newStatus].statusTone,
                   raw: { ...e.raw, statut: newStatus },
                 }
               : e
           )
         );
-        showToast(`Event ${newStatus === "publie" ? "published" : "set to draft"}`);
+        showToast(`Event ${labelMap[newStatus]}`);
       } catch (err) {
         console.error(err);
         showToast("Failed to update event status", "error");
