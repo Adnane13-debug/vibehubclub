@@ -205,7 +205,7 @@ export default function HeroSection() {
 
               {/* Secondary — pure text link, no box, confident typographic weight */}
               <Link
-                to="/register"
+                to="/apply"
                 className="group inline-flex items-center gap-1.5 text-[0.875rem] font-semibold text-slate-500 transition-colors duration-200 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-slate-400"
               >
                 {t("hero.joinMember")}
