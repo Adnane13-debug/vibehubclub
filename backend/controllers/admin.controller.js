@@ -92,7 +92,7 @@ export const createEvent = async (req, res) => {
 
   try {
     const [result] = await db.query(
-      'INSERT INTO evenements (titre, description, date_debut, lieu, categorie, image, cree_par) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      "INSERT INTO evenements (titre, description, date_debut, lieu, categorie, image, statut, cree_par) VALUES (?, ?, ?, ?, ?, ?, 'en_attente', ?)",
       [titre, description, date_debut, lieu, categorie, image || null, req.user.id]
     )
     res.status(201).json({ message: 'Event created', id: result.insertId })
@@ -138,9 +138,9 @@ export const updateEventStatus = async (req, res) => {
   const { statut } = req.body
 
   // FIX: validate event status values
-  const allowed = ['publie', 'brouillon']
+  const allowed = ['publie', 'brouillon', 'archive', 'en_attente']
   if (!statut || !allowed.includes(statut)) {
-    return res.status(400).json({ message: 'Invalid status. Allowed: publie, brouillon' })
+    return res.status(400).json({ message: 'Invalid status. Allowed: publie, brouillon, archive, en_attente' })
   }
 
   try {
@@ -423,6 +423,81 @@ export const rejectMembershipRequest = async (req, res) => {
 
     res.json({ message: 'Request rejected' })
   } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// EXPORT MEMBERS
+export const exportMembers = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT id, nom, prenom, email, role, statut, created_at FROM utilisateurs WHERE role = 'membre' ORDER BY created_at DESC"
+    )
+    res.json(rows)
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// EXPORT EVENTS
+export const exportEvents = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT id, titre, categorie, lieu, date_debut, date_fin, statut, description, created_at FROM evenements ORDER BY date_debut DESC'
+    )
+    res.json(rows)
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// EXPORT CONTACTS
+export const exportContacts = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT id, nom, email, sujet, message, created_at FROM contacts ORDER BY created_at DESC'
+    )
+    res.json(rows)
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// IMPORT EVENTS (bulk insert as archived)
+export const importEvents = async (req, res) => {
+  const { events } = req.body
+
+  if (!Array.isArray(events) || events.length === 0) {
+    return res.status(400).json({ message: 'events array is required and must not be empty' })
+  }
+
+  if (events.length > 500) {
+    return res.status(400).json({ message: 'Maximum 500 rows per import' })
+  }
+
+  let inserted = 0
+
+  try {
+    for (const row of events) {
+      if (!row.titre || !row.date_debut) continue
+
+      const titre       = String(row.titre).slice(0, 200)
+      const categorie   = row.categorie   || 'culture'
+      const lieu        = row.lieu        || ''
+      const date_debut  = row.date_debut
+      const date_fin    = row.date_fin    || row.date_debut
+      const description = row.description || ''
+
+      await db.query(
+        "INSERT INTO evenements (titre, categorie, lieu, date_debut, date_fin, description, statut) VALUES (?, ?, ?, ?, ?, ?, 'archive')",
+        [titre, categorie, lieu, date_debut, date_fin, description]
+      )
+      inserted++
+    }
+
+    res.status(201).json({ message: `${inserted} event(s) imported as archived` })
+  } catch (err) {
+    console.error('importEvents error:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }

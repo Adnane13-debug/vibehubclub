@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 import api from '../../services/api';
 import MembersStats from './members/MembersStats';
 import JoinRequests from './members/JoinRequests';
@@ -134,6 +135,28 @@ function MembersTab({ members, onUpdateRole, onUpdateStatus, onRemoveMember, onA
   const totalMembers = members.length;
   const visitorsCount = members.filter(m => m.role === 'Visitor').length;
 
+  const handleExportMembers = async () => {
+    try {
+      const res = await api.get('/api/admin/export/members');
+      const rows = res.data.map(m => ({
+        'ID': m.id,
+        'First Name': m.prenom,
+        'Last Name': m.nom,
+        'Email': m.email,
+        'Role': m.role,
+        'Status': m.statut,
+        'Joined At': m.created_at
+      }));
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Members');
+      const date = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(wb, `vibehub-members-${date}.xlsx`);
+    } catch (err) {
+      alert('Export failed: ' + (err.response?.data?.message || err.message));
+    }
+  };
+
   return (
     <div className="space-y-8">
 
@@ -191,9 +214,19 @@ function MembersTab({ members, onUpdateRole, onUpdateStatus, onRemoveMember, onA
         @keyframes shrink { from { width: 100% } to { width: 0% } }
       `}</style>
 
-      <div>
-        <h1 className="font-heading text-2xl font-black text-slate-900">Member Management</h1>
-        <p className="mt-1 text-sm text-slate-600">Review requests, update roles, and monitor community activity.</p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="font-heading text-2xl font-black text-slate-900">Member Management</h1>
+          <p className="mt-1 text-sm text-slate-600">Review requests, update roles, and monitor community activity.</p>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportMembers}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+        >
+          <span className="material-symbols-outlined text-[16px]">download</span>
+          Export to Excel
+        </button>
       </div>
 
       <MembersStats total={totalMembers} visitors={visitorsCount} pending={joinRequests.length} />

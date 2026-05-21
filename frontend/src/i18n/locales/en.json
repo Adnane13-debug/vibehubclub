@@ -310,9 +310,20 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "universityClub": "University Club",
-    "subtitle": "A community-driven platform empowering students through sports, culture, and entrepreneurship.",
-    "rights": "© 2024 VibeHub Club. All rights reserved.",
+    "subtitle": "Connecting students, fostering innovation, and building a vibrant university community together.",
+    "rights": "© 2025 VibeHub Club. All rights reserved.",
     "madeWith": "Made with",
-    "by": "by VibeHub Team"
+    "by": "by VibeHub Team",
+    "quickLinks": "Quick Links",
+    "aboutUs": "About Us",
+    "ourActivities": "Our Activities",
+    "upcomingEvents": "Upcoming Events",
+    "memberBenefits": "Member Benefits",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "contactUs": "Contact Us",
+    "stayConnected": "Stay Connected",
+    "reachOut": "Have a question or want to join? Reach out directly.",
+    "getInTouch": "Get in Touch"
   }
 }

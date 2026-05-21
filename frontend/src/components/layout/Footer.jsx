@@ -22,7 +22,7 @@ function Footer() {
                 VibeHub
               </span>
               <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-slate-400">
-                University Club
+                {t("footer.universityClub")}
               </span>
             </div>
           </Link>
@@ -33,12 +33,12 @@ function Footer() {
 
         <div>
           <h5 className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Quick Links
+            {t("footer.quickLinks")}
           </h5>
           <ul className="flex flex-col gap-3 text-sm text-slate-400">
             <li>
               <Link className="transition-colors hover:text-white" to="/about">
-                About Us
+                {t("footer.aboutUs")}
               </Link>
             </li>
             <li>
@@ -46,7 +46,7 @@ function Footer() {
                 className="transition-colors hover:text-white"
                 to="/events"
               >
-                Our Activities
+                {t("footer.ourActivities")}
               </Link>
             </li>
             <li>
@@ -54,7 +54,7 @@ function Footer() {
                 className="transition-colors hover:text-white"
                 to="/events"
               >
-                Upcoming Events
+                {t("footer.upcomingEvents")}
               </Link>
             </li>
             <li>
@@ -62,7 +62,7 @@ function Footer() {
                 className="transition-colors hover:text-white"
                 to="/contact"
               >
-                Member Benefits
+                {t("footer.memberBenefits")}
               </Link>
             </li>
           </ul>
@@ -70,83 +70,63 @@ function Footer() {
 
         <div>
           <h5 className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Support
+            {t("footer.support")}
           </h5>
           <ul className="flex flex-col gap-3 text-sm text-slate-400">
             <li>
               <Link className="transition-colors hover:text-white" to="/contact">
-                Help Center
+                {t("footer.helpCenter")}
               </Link>
             </li>
             <li>
               <Link className="transition-colors hover:text-white" to="/contact">
-                Contact Us
+                {t("footer.contactUs")}
               </Link>
-            </li>
-            <li>
-              <a className="transition-colors hover:text-white" href="#">
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a className="transition-colors hover:text-white" href="#">
-                Terms of Service
-              </a>
             </li>
           </ul>
         </div>
 
         <div>
           <h5 className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Newsletter
+            {t("footer.stayConnected")}
           </h5>
           <p className="mb-4 text-sm text-slate-400">
-            Stay updated with our latest vibes.
+            {t("footer.reachOut")}
           </p>
-          <form
-            className="flex gap-2"
-            onSubmit={(e) => e.preventDefault()}
-            aria-label="Newsletter subscription"
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-slate-900 shadow-md shadow-primary/40 transition-transform hover:-translate-y-0.5"
           >
-            <input
-              className="w-full rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-primary focus:ring-1 focus:ring-primary"
-              placeholder="Your email"
-              type="email"
-            />
-            <button
-              type="submit"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-slate-900 shadow-md shadow-primary/40 transition-transform hover:-translate-y-0.5"
-            >
-              <span className="material-symbols-outlined text-sm">send</span>
-            </button>
-          </form>
+            <span className="material-symbols-outlined text-[18px]">mail</span>
+            {t("footer.getInTouch")}
+          </Link>
         </div>
       </div>
 
       <div className="container-custom mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800/80 pt-6 text-xs text-slate-500 md:flex-row md:text-[11px]">
         <p>{t("footer.rights")}</p>
         <div className="flex gap-4">
-          <a
+          <Link
             className="text-slate-500 transition-colors hover:text-white"
-            href="#"
+            to="/about"
             aria-label="View our community"
           >
             <span className="material-symbols-outlined">social_leaderboard</span>
-          </a>
-          <a
+          </Link>
+          <Link
             className="text-slate-500 transition-colors hover:text-white"
-            href="#"
-            aria-label="Share"
+            to="/events"
+            aria-label="Browse events"
           >
             <span className="material-symbols-outlined">share</span>
-          </a>
-          <a
+          </Link>
+          <Link
             className="text-slate-500 transition-colors hover:text-white"
-            href="#"
+            to="/contact"
             aria-label="Email us"
           >
             <span className="material-symbols-outlined">alternate_email</span>
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
