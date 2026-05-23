@@ -330,6 +330,11 @@
     "reachOut": "Have a question or want to join? Reach out directly.",
     "getInTouch": "Get in Touch"
   },
+  "adminOverview": {
+    "upcoming": "Upcoming Events",
+    "showAllEvents": "Show all events",
+    "empty": "No upcoming events."
+  },
   "adminEvents": {
     "title": "Events",
     "subtitle": "Create, edit, and remove upcoming events.",

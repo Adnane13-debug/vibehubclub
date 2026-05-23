@@ -330,6 +330,11 @@
     "reachOut": "Une question ou envie de nous rejoindre ? Contactez-nous directement.",
     "getInTouch": "Prendre Contact"
   },
+  "adminOverview": {
+    "upcoming": "Événements à venir",
+    "showAllEvents": "Voir tous les événements",
+    "empty": "Aucun événement à venir."
+  },
   "adminEvents": {
     "title": "Événements",
     "subtitle": "Créer, modifier et supprimer les événements à venir.",
