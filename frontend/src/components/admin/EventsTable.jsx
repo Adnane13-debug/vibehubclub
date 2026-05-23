@@ -12,6 +12,7 @@ const STATUS_CONFIG = {
 
 function EventsTable({
   events,
+  stickyHeader = false,
   editingId,
   draft,
   setDraft,
@@ -21,15 +22,24 @@ function EventsTable({
   onDelete,
   onToggleStatus,
 }) {
+  const headCellClass = stickyHeader
+    ? 'bg-white/95 pb-4 pt-1 backdrop-blur-sm supports-[backdrop-filter]:bg-white/90'
+    : 'pb-4'
+
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead>
+    <table className="w-full text-left text-sm">
+        <thead
+          className={
+            stickyHeader
+              ? 'sticky top-0 z-10 border-b border-slate-100 shadow-[0_1px_0_0_rgb(241,245,249)]'
+              : ''
+          }
+        >
           <tr className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-            <th className="pb-4 pr-4">Event Details</th>
-            <th className="px-4 pb-4">Category</th>
-            <th className="px-4 pb-4">Status</th>
-            <th className="pb-4 pl-4 text-right">Actions</th>
+            <th className={`pr-4 ${headCellClass}`}>Event Details</th>
+            <th className={`px-4 ${headCellClass}`}>Category</th>
+            <th className={`px-4 ${headCellClass}`}>Status</th>
+            <th className={`pl-4 text-right ${headCellClass}`}>Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
@@ -139,8 +149,7 @@ function EventsTable({
             )
           })}
         </tbody>
-      </table>
-    </div>
+    </table>
   );
 }
 

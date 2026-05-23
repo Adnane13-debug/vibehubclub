@@ -132,6 +132,37 @@ export const deleteEvent = async (req, res) => {
   }
 }
 
+// SET EVENT FEATURED (only one featured event at a time)
+export const setEventFeatured = async (req, res) => {
+  const { id } = req.params
+  const { featured } = req.body
+
+  if (featured === undefined) {
+    return res.status(400).json({ message: 'featured (boolean) is required' })
+  }
+
+  const isFeatured = featured === true || featured === 1 || featured === '1'
+
+  try {
+    const [rows] = await db.query('SELECT id FROM evenements WHERE id = ?', [id])
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Event not found' })
+    }
+
+    if (isFeatured) {
+      await db.query('UPDATE evenements SET featured = 0')
+      await db.query('UPDATE evenements SET featured = 1 WHERE id = ?', [id])
+    } else {
+      await db.query('UPDATE evenements SET featured = 0 WHERE id = ?', [id])
+    }
+
+    res.json({ message: isFeatured ? 'Event marked as featured' : 'Event unfeatured' })
+  } catch (err) {
+    console.error('setEventFeatured error:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
 // UPDATE EVENT STATUS
 export const updateEventStatus = async (req, res) => {
   const { id } = req.params
@@ -431,22 +462,24 @@ export const rejectMembershipRequest = async (req, res) => {
 export const exportMembers = async (req, res) => {
   try {
     const [rows] = await db.query(
-      "SELECT id, nom, prenom, email, role, statut, created_at FROM utilisateurs WHERE role = 'membre' ORDER BY created_at DESC"
+      "SELECT id, nom, prenom, email, role, statut FROM utilisateurs WHERE role = 'membre' ORDER BY id DESC"
     )
     res.json(rows)
   } catch (err) {
+    console.error('exportMembers error:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }
 
-// EXPORT EVENTS
+// EXPORT EVENTS (schema has no date_fin — use date_debut only)
 export const exportEvents = async (req, res) => {
   try {
     const [rows] = await db.query(
-      'SELECT id, titre, categorie, lieu, date_debut, date_fin, statut, description, created_at FROM evenements ORDER BY date_debut DESC'
+      'SELECT id, titre, categorie, lieu, date_debut, statut, description, created_at FROM evenements ORDER BY date_debut DESC'
     )
     res.json(rows)
   } catch (err) {
+    console.error('exportEvents error:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }
@@ -463,6 +496,37 @@ export const exportContacts = async (req, res) => {
   }
 }
 
+const toMysqlDate = (value) => {
+  if (value == null || value === '') return null
+
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString().slice(0, 10)
+  }
+
+  const text = String(value).trim()
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text
+
+  const fr = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)
+  if (fr) {
+    const day = fr[1].padStart(2, '0')
+    const month = fr[2].padStart(2, '0')
+    return `${fr[3]}-${month}-${day}`
+  }
+
+  const parsed = new Date(text)
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.toISOString().slice(0, 10)
+  }
+
+  return null
+}
+
+const normalizeEventText = (value) => String(value || '').trim().toLowerCase()
+
+const eventsMatch = (existing, titre, description) =>
+  normalizeEventText(existing.titre) === normalizeEventText(titre) &&
+  normalizeEventText(existing.description) === normalizeEventText(description)
+
 // IMPORT EVENTS (bulk insert as archived)
 export const importEvents = async (req, res) => {
   const { events } = req.body
@@ -476,26 +540,63 @@ export const importEvents = async (req, res) => {
   }
 
   let inserted = 0
+  let skipped = 0
+  const skippedTitles = []
 
   try {
     for (const row of events) {
-      if (!row.titre || !row.date_debut) continue
+      const titre = String(row.titre || '').trim()
+      const date_debut = toMysqlDate(row.date_debut)
+      if (!titre || !date_debut) continue
 
-      const titre       = String(row.titre).slice(0, 200)
-      const categorie   = row.categorie   || 'culture'
-      const lieu        = row.lieu        || ''
-      const date_debut  = row.date_debut
-      const date_fin    = row.date_fin    || row.date_debut
-      const description = row.description || ''
+      const categorie   = String(row.categorie || 'culture').trim() || 'culture'
+      const lieu        = String(row.lieu || '').trim()
+      const description = String(row.description || '').trim() || 'Imported event'
+
+      const excelId = row.id != null && row.id !== '' ? Number(row.id) : null
+
+      if (excelId && Number.isInteger(excelId) && excelId > 0) {
+        const [existingRows] = await db.query(
+          'SELECT id, titre, description FROM evenements WHERE id = ?',
+          [excelId]
+        )
+
+        if (existingRows.length > 0) {
+          const existing = existingRows[0]
+          if (eventsMatch(existing, titre, description)) {
+            skipped++
+            skippedTitles.push(titre)
+            continue
+          }
+          // Same Excel ID but different title/description → insert with a new auto ID
+        }
+      }
 
       await db.query(
-        "INSERT INTO evenements (titre, categorie, lieu, date_debut, date_fin, description, statut) VALUES (?, ?, ?, ?, ?, ?, 'archive')",
-        [titre, categorie, lieu, date_debut, date_fin, description]
+        "INSERT INTO evenements (titre, categorie, lieu, date_debut, description, statut, cree_par) VALUES (?, ?, ?, ?, ?, 'archive', ?)",
+        [titre.slice(0, 200), categorie, lieu, date_debut, description, req.user.id]
       )
       inserted++
     }
 
-    res.status(201).json({ message: `${inserted} event(s) imported as archived` })
+    if (inserted === 0 && skipped === 0) {
+      return res.status(400).json({
+        message: 'No valid rows imported. Each row needs Name/Title and a valid Start Date.',
+        inserted: 0,
+        skipped: 0,
+      })
+    }
+
+    let message = ''
+    if (inserted > 0) message += `${inserted} event(s) imported as archived. `
+    if (skipped > 0) message += `${skipped} event(s) already exist (same ID, name and description).`
+
+    res.status(inserted > 0 ? 201 : 200).json({
+      message: message.trim(),
+      inserted,
+      skipped,
+      skippedTitles: skippedTitles.slice(0, 20),
+    })
   } catch (err) {
     console.error('importEvents error:', err)
     res.status(500).json({ message: 'Server error' })

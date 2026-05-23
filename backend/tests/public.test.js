@@ -24,6 +24,16 @@ describe('GET /api/public/events', () => {
     })
   })
 
+  it('accepts featured=1 query param and returns an array', async () => {
+    const res = await request(app).get('/api/public/events?featured=1')
+    expect(res.status).toBe(200)
+    expect(Array.isArray(res.body)).toBe(true)
+    if (res.body.length > 0) {
+      expect(res.body[0].featured).toBe(1)
+      expect(res.body[0].statut).toBe('publie')
+    }
+  })
+
 })
 
 // ─────────────────────────────────────────────

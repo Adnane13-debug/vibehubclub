@@ -232,9 +232,13 @@
     "title": "Championnat d'Athlétisme Inter-Universitaire",
     "description": "Le plus grand événement sportif de l'année. Représentez VibeHub dans 15 disciplines — les entraînements spéciaux commencent la semaine prochaine.",
     "date": "20 - 25 Fév",
-    "registered": "500+ Inscrits",
+    "registered": "Inscriptions ouvertes",
+    "registeredCount": "{{count}}+ inscrits",
     "registerNow": "S'inscrire",
-    "learnMore": "En savoir plus"
+    "learnMore": "En savoir plus",
+    "loading": "Chargement de l'événement à la une",
+    "fallbackHint": "Contenu par défaut affiché",
+    "liveBadge": "En direct"
   },
   "login": {
     "welcomeBack": "Bon retour",
@@ -325,5 +329,16 @@
     "stayConnected": "Restez Connectés",
     "reachOut": "Une question ou envie de nous rejoindre ? Contactez-nous directement.",
     "getInTouch": "Prendre Contact"
+  },
+  "adminEvents": {
+    "title": "Événements",
+    "subtitle": "Créer, modifier et supprimer les événements à venir.",
+    "upcoming": "Événements à venir",
+    "showMore": "Afficher plus",
+    "showLess": "Afficher moins",
+    "empty": "Aucun événement à venir. Importez ou créez-en un.",
+    "newEvent": "Nouvel événement",
+    "exportExcel": "Exporter Excel",
+    "importExcel": "Importer Excel"
   }
 }

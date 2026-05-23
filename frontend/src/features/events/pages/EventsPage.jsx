@@ -1,34 +1,52 @@
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from 'react'
-import api from '../../../services/api'
-import EventsHeroSection from '../components/EventsHeroSection'
-import EventsFilterSection from '../components/EventsFilterSection'
-import EventCard from '../components/EventCard'
-import EventsFeaturedSection from '../components/EventsFeaturedSection'
+import { useState, useEffect, useMemo } from "react";
+import api from "../../../services/api";
+import EventsHeroSection from "../components/EventsHeroSection";
+import EventsFilterSection from "../components/EventsFilterSection";
+import EventCard from "../components/EventCard";
+import EventsFeaturedSection from "../components/EventsFeaturedSection";
+
+function pickFeaturedEvent(list) {
+  if (!list.length) return null;
+  const flagged = list.find((e) => Number(e.featured) === 1);
+  return flagged ?? list[0];
+}
 
 function EventsPage() {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState('all')
-  const [events, setEvents] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [publishedEvents, setPublishedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
-    api.get('/api/public/events')
-      .then(res => {
-        setEvents(res.data)
-        setLoading(false)
+    api
+      .get("/api/public/events")
+      .then((res) => {
+        const list = Array.isArray(res.data) ? res.data : [];
+        setPublishedEvents(list);
+        setFetchError(false);
       })
-      .catch(err => {
-        console.log(err)
-        setLoading(false)
+      .catch((err) => {
+        console.error(err);
+        setFetchError(true);
       })
-  }, [])
+      .finally(() => setLoading(false));
+  }, []);
 
-  const filteredEvents = activeFilter === 'all'
-    ? events
-    : events.filter(e => e.categorie?.toLowerCase() === activeFilter)
+  const featuredEvent = useMemo(
+    () => pickFeaturedEvent(publishedEvents),
+    [publishedEvents]
+  );
 
-  if (loading) return <div className="p-8 text-center">{t("eventsPage.loading")}</div>
+  const filteredEvents =
+    activeFilter === "all"
+      ? publishedEvents
+      : publishedEvents.filter((e) => e.categorie?.toLowerCase() === activeFilter);
+
+  if (loading) {
+    return <div className="p-8 text-center">{t("eventsPage.loading")}</div>;
+  }
 
   return (
     <div className="flex flex-1 justify-center px-6 py-10 md:px-20">
@@ -39,17 +57,18 @@ function EventsPage() {
           onFilterChange={setActiveFilter}
         />
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {events.length === 0
-            ? <p className="text-slate-500">{t("eventsPage.empty")}</p>
-            : filteredEvents.map(event => (
-                <EventCard key={event.id} event={event} />
-              ))
-          }
+          {publishedEvents.length === 0 ? (
+            <p className="text-slate-500">{t("eventsPage.empty")}</p>
+          ) : (
+            filteredEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))
+          )}
         </div>
-        <EventsFeaturedSection />
+        <EventsFeaturedSection event={featuredEvent} apiFailed={fetchError} />
       </div>
     </div>
-  )
+  );
 }
 
-export default EventsPage
+export default EventsPage;

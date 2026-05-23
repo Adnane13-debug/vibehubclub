@@ -29,6 +29,15 @@ function EventCard({ event }) {
         {/* Atmospheric overlay — warmth from bottom */}
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
 
+        {Number(event.featured) === 1 && (
+          <div className="absolute left-4 top-3.5">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-900">
+              <span className="material-symbols-outlined text-[12px]">star</span>
+              {t("eventsFeatured.label")}
+            </span>
+          </div>
+        )}
+
         {/* Category chip — inside image, bottom-left */}
         <div className="absolute bottom-3.5 left-4">
           <span className="inline-block rounded-full bg-primary px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-slate-900">

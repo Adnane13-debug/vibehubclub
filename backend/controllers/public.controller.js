@@ -3,14 +3,57 @@
 
 import db from '../config/db.js'
 
+const PUBLISHED_WHERE = "e.statut IN ('publie', 'publié')"
+
+const participationSubquery = `
+  (SELECT COUNT(*) FROM participations p WHERE p.evenement_id = e.id) AS participation_count
+`
+
+async function listPublishedEvents({ featuredOnly = false, limit = null } = {}) {
+  let sql = `
+    SELECT e.*, ${participationSubquery}
+    FROM evenements e
+    WHERE ${PUBLISHED_WHERE}
+  `
+
+  if (featuredOnly) {
+    sql += ' AND e.featured = 1'
+  }
+
+  sql += ' ORDER BY e.date_debut DESC'
+
+  if (limit) {
+    sql += ` LIMIT ${Number(limit)}`
+  }
+
+  const [results] = await db.query(sql)
+  return results
+}
+
 // GET ALL EVENTS — returns only published events
+// Query: ?featured=1 — returns at most one featured published event (with participation count)
 export const getEvents = async (req, res) => {
+  const wantsFeatured = req.query.featured === '1' || req.query.featured === 'true'
+
   try {
-    const [results] = await db.query(
-      "SELECT * FROM evenements WHERE statut = 'publie' ORDER BY date_debut DESC"
-    )
-    res.json(results)
+    let results = await listPublishedEvents({ featuredOnly: wantsFeatured, limit: wantsFeatured ? 1 : null })
+
+    if (wantsFeatured && results.length === 0) {
+      results = await listPublishedEvents({ limit: 1 })
+    }
+
+    res.json(wantsFeatured ? results.slice(0, 1) : results)
   } catch (err) {
+    if (err.code === 'ER_BAD_FIELD_ERROR' && String(err.message).includes('featured')) {
+      try {
+        let results = await listPublishedEvents({ limit: wantsFeatured ? 1 : null })
+        res.json(wantsFeatured ? results.slice(0, 1) : results)
+        return
+      } catch (fallbackErr) {
+        console.error('getEvents fallback error:', fallbackErr)
+      }
+    }
+    console.error('getEvents error:', err)
     res.status(500).json({ message: 'Server error' })
   }
 }
@@ -20,7 +63,7 @@ export const getEventDetail = async (req, res) => {
   const { id } = req.params
   try {
     const [results] = await db.query(
-      "SELECT * FROM evenements WHERE id = ? AND statut = 'publie'",
+      `SELECT * FROM evenements WHERE id = ? AND ${PUBLISHED_WHERE.replace('e.', '')}`,
       [id]
     )
     if (results.length === 0) {

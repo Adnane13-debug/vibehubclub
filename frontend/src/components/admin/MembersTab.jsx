@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import * as XLSX from 'xlsx';
 import api from '../../services/api';
+import {
+  appendSheet,
+  downloadWorkbook,
+  jsonToSheet,
+  newWorkbook,
+} from '../../utils/excelExport';
 import MembersStats from './members/MembersStats';
 import JoinRequests from './members/JoinRequests';
 import MembersFilterBar from './members/MembersFilterBar';
@@ -135,26 +140,35 @@ function MembersTab({ members, onUpdateRole, onUpdateStatus, onRemoveMember, onA
   const totalMembers = members.length;
   const visitorsCount = members.filter(m => m.role === 'Visitor').length;
 
-  const handleExportMembers = async () => {
-    try {
-      const res = await api.get('/api/admin/export/members');
-      const rows = res.data.map(m => ({
-        'ID': m.id,
-        'First Name': m.prenom,
-        'Last Name': m.nom,
-        'Email': m.email,
-        'Role': m.role,
-        'Status': m.statut,
-        'Joined At': m.created_at
-      }));
-      const ws = XLSX.utils.json_to_sheet(rows);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Members');
-      const date = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(wb, `vibehub-members-${date}.xlsx`);
-    } catch (err) {
-      alert('Export failed: ' + (err.response?.data?.message || err.message));
-    }
+  const handleExportMembers = () => {
+    api
+      .get('/api/admin/export/members')
+      .then((res) => {
+        const members = Array.isArray(res.data) ? res.data : [];
+        if (members.length === 0) {
+          alert('No members to export.');
+          return;
+        }
+
+        const rows = members.map((m) => ({
+          ID: m.id,
+          'First Name': m.prenom,
+          'Last Name': m.nom,
+          Email: m.email,
+          Role: m.role,
+          Status: m.statut,
+          'Joined At': m.created_at ?? '',
+        }));
+
+        const ws = jsonToSheet(rows);
+        const wb = newWorkbook();
+        appendSheet(wb, ws, 'Members');
+        const date = new Date().toISOString().slice(0, 10);
+        downloadWorkbook(wb, `vibehub-members-${date}.xlsx`);
+      })
+      .catch((err) => {
+        alert('Export failed: ' + (err.response?.data?.message || err.message));
+      });
   };
 
   return (

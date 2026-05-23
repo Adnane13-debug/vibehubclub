@@ -939,6 +939,8 @@ function AdminDashboard() {
           {activeTab === "events" && (
             <EventsTab
               onAddEvent={() => setIsCreateEventOpen(true)}
+              onImportDone={() => fetchData(true)}
+              showToast={showToast}
               {...eventsTableProps}
               {...announcementProps}
             />

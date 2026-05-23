@@ -24,6 +24,7 @@ router.post('/events',                        admin, ctrl.createEvent)
 router.put('/events/:id',                     admin, ctrl.updateEvent)
 router.delete('/events/:id',                  admin, ctrl.deleteEvent)
 router.patch('/events/:id/status',            admin, ctrl.updateEventStatus)
+router.patch('/events/:id/featured',          admin, ctrl.setEventFeatured)
 
 // announcements
 router.get('/announcements',                  admin, ctrl.getAnnouncements)

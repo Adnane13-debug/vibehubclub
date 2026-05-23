@@ -16,32 +16,35 @@ INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role, statut) VALUES
 ('Ouali',    'Nadia',    'nadia@gmail.com',    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'actif'),
 ('Tazi',     'Mehdi',    'mehdi@gmail.com',    '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p5mCBP9cD5SmcLvCNMIIi2', 'membre', 'inactif');
 
+-- ─── FEATURED COLUMN (run once) ───────────────────────────────────────────
+-- ALTER TABLE evenements ADD COLUMN featured TINYINT(1) NOT NULL DEFAULT 0 AFTER statut;
+
 -- ─── ÉVÉNEMENTS (cree_par = 1 = Admin) ────────────────────────────────────
-INSERT INTO evenements (titre, description, date_debut, lieu, categorie, statut, cree_par) VALUES
+INSERT INTO evenements (titre, description, date_debut, lieu, categorie, statut, featured, cree_par) VALUES
 (
   'Soirée Gaming VibeHub',
   'Une soirée gaming entre membres avec tournoi FIFA et jeux en équipe. Snacks et boissons offerts !',
-  '2025-06-15 19:00:00', 'Casablanca - Maarif', 'Gaming', 'publié', 1
+  '2025-06-15 19:00:00', 'Casablanca - Maarif', 'Gaming', 'publie', 1, 1
 ),
 (
   'Workshop Design UI/UX',
   'Atelier pratique sur Figma : apprendre les bases du design d\'interface pour vos projets perso.',
-  '2025-06-22 10:00:00', 'Casablanca - Technopark', 'Tech', 'publié', 1
+  '2025-06-22 10:00:00', 'Casablanca - Technopark', 'Tech', 'publie', 0, 1
 ),
 (
   'Randonnée Ourika',
   'Sortie nature dans la vallée de l\'Ourika avec pique-nique. Départ collectif depuis Casa.',
-  '2025-07-05 07:00:00', 'Vallée Ourika - Marrakech', 'Sport', 'publié', 1
+  '2025-07-05 07:00:00', 'Vallée Ourika - Marrakech', 'Sport', 'publie', 0, 1
 ),
 (
   'Meetup Startups Maroc',
   'Rencontre entre jeunes entrepreneurs et porteurs de projets. Pitchs, networking et bonne ambiance.',
-  '2025-07-12 18:00:00', 'Rabat - Hub Maroc', 'Business', 'publié', 1
+  '2025-07-12 18:00:00', 'Rabat - Hub Maroc', 'Business', 'publie', 0, 1
 ),
 (
   'Ciné Club Classiques',
   'Projection de films cultes suivie d\'un débat. Ce mois-ci : The Social Network.',
-  '2025-07-20 20:00:00', 'Casablanca - Twin Center', 'Culture', 'brouillon', 1
+  '2025-07-20 20:00:00', 'Casablanca - Twin Center', 'Culture', 'brouillon', 0, 1
 );
 
 -- ─── PARTICIPATIONS ────────────────────────────────────────────────────────

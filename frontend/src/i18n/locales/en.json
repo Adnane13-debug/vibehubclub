@@ -232,9 +232,13 @@
     "title": "Inter-University Athletics Championship",
     "description": "The biggest sports event of the year. Represent VibeHub across 15 disciplines — special training sessions start next week.",
     "date": "Feb 20 – 25",
-    "registered": "500+ Registered",
+    "registered": "Open registration",
+    "registeredCount": "{{count}}+ registered",
     "registerNow": "Register Now",
-    "learnMore": "Learn more"
+    "learnMore": "Learn more",
+    "loading": "Loading featured event",
+    "fallbackHint": "Showing default featured content",
+    "liveBadge": "Live"
   },
   "login": {
     "welcomeBack": "Welcome back",
@@ -325,5 +329,16 @@
     "stayConnected": "Stay Connected",
     "reachOut": "Have a question or want to join? Reach out directly.",
     "getInTouch": "Get in Touch"
+  },
+  "adminEvents": {
+    "title": "Events",
+    "subtitle": "Create, edit, and remove upcoming events.",
+    "upcoming": "Upcoming Events",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "empty": "No upcoming events. Import or create one.",
+    "newEvent": "New event",
+    "exportExcel": "Export to Excel",
+    "importExcel": "Import Excel"
   }
 }
