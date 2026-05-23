@@ -264,6 +264,147 @@ export const updateAnnouncementStatus = async (req, res) => {
   }
 }
 
+// GET ADMIN NOTIFICATION FEED (bell dropdown)
+export const getAdminFeed = async (req, res) => {
+  try {
+    const feed = []
+
+    const [requests] = await db.query(
+      `SELECT id, nom, prenom, created_at
+       FROM demandes_adhesion
+       WHERE statut = 'en_attente'
+       ORDER BY created_at DESC`
+    )
+
+    for (const r of requests) {
+      feed.push({
+        id: `req-${r.id}`,
+        type: 'membership_request',
+        icon: 'person_add',
+        iconBg: 'bg-emerald-100 text-emerald-600',
+        title: r.prenom,
+        desc: `${r.prenom} ${r.nom} a demandé à rejoindre le club`,
+        created_at: r.created_at,
+        lu: false,
+        action: 'members',
+      })
+    }
+
+    const [unreadContacts] = await db.query(
+      'SELECT nom, created_at FROM contacts WHERE lu = 0 ORDER BY created_at DESC'
+    )
+
+    if (unreadContacts.length > 0) {
+      const first = unreadContacts[0]
+      const count = unreadContacts.length
+      let desc
+      if (count === 1) {
+        desc = `${first.nom} a envoyé un message`
+      } else if (count === 2) {
+        desc = `${first.nom} et ${unreadContacts[1].nom} ont envoyé des messages`
+      } else {
+        desc = `${first.nom} et ${count - 1} autres ont envoyé des messages`
+      }
+
+      feed.push({
+        id: 'contacts-feed',
+        type: 'unread_contact',
+        icon: 'mail',
+        iconBg: 'bg-violet-100 text-violet-600',
+        title: first.nom.split(' ')[0] || first.nom,
+        desc,
+        created_at: first.created_at,
+        lu: false,
+        action: 'overview',
+      })
+    }
+
+    const [recentAnns] = await db.query(
+      `SELECT id, titre, created_at FROM annonces
+       WHERE created_at >= DATE_SUB(NOW(), INTERVAL 72 HOUR)
+       ORDER BY created_at DESC`
+    )
+
+    for (const a of recentAnns) {
+      feed.push({
+        id: `ann-${a.id}`,
+        type: 'announcement',
+        icon: 'campaign',
+        iconBg: 'bg-amber-100 text-amber-700',
+        title: a.titre,
+        desc: `Nouvelle annonce publiée : ${a.titre}`,
+        created_at: a.created_at,
+        lu: false,
+        action: 'announcements',
+      })
+    }
+
+    let parts = []
+    try {
+      ;[parts] = await db.query(
+        `SELECT p.evenement_id, p.created_at, u.prenom, e.titre AS event_titre
+         FROM participations p
+         JOIN utilisateurs u ON p.utilisateur_id = u.id
+         JOIN evenements e ON p.evenement_id = e.id
+         WHERE p.created_at >= DATE_SUB(NOW(), INTERVAL 72 HOUR)
+         ORDER BY p.created_at DESC`
+      )
+    } catch (partErr) {
+      if (partErr.code !== 'ER_BAD_FIELD_ERROR') throw partErr
+      ;[parts] = await db.query(
+        `SELECT p.evenement_id, NOW() AS created_at, u.prenom, e.titre AS event_titre
+         FROM participations p
+         JOIN utilisateurs u ON p.utilisateur_id = u.id
+         JOIN evenements e ON p.evenement_id = e.id
+         ORDER BY p.evenement_id DESC`
+      )
+    }
+
+    const byEvent = new Map()
+    for (const p of parts) {
+      if (!byEvent.has(p.evenement_id)) byEvent.set(p.evenement_id, [])
+      byEvent.get(p.evenement_id).push(p)
+    }
+
+    for (const [eventId, group] of byEvent) {
+      const first = group[0]
+      const count = group.length
+      const eventTitle = first.event_titre
+      let desc
+      if (count === 1) {
+        desc = `${first.prenom} a rejoint ${eventTitle}`
+      } else if (count === 2) {
+        desc = `${first.prenom} et ${group[1].prenom} ont rejoint ${eventTitle}`
+      } else {
+        desc = `${first.prenom} et ${count - 1} autres ont rejoint ${eventTitle}`
+      }
+
+      const latestAt = group.reduce((max, row) => {
+        const t = new Date(row.created_at).getTime()
+        return t > max ? t : max
+      }, 0)
+
+      feed.push({
+        id: `part-${eventId}`,
+        type: 'participation',
+        icon: 'group_add',
+        iconBg: 'bg-sky-100 text-sky-600',
+        title: first.prenom,
+        desc,
+        created_at: new Date(latestAt).toISOString(),
+        lu: false,
+        action: 'events',
+      })
+    }
+
+    feed.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    res.json(feed)
+  } catch (err) {
+    console.error('getAdminFeed error:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
 // GET ALL NOTIFICATIONS
 export const getNotifications = async (req, res) => {
   try {

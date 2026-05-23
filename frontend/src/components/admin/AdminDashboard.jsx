@@ -58,6 +58,27 @@ function formatMember(m) {
   };
 }
 
+function timeAgo(dateStr) {
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return "";
+  const sec = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (sec < 60) return "à l'instant";
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `il y a ${min} min`;
+  const hrs = Math.floor(min / 60);
+  if (hrs < 24) return `il y a ${hrs} h`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `il y a ${days} j`;
+  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+}
+
+const TAB_FROM_FEED_ACTION = {
+  members: "members",
+  overview: "overview",
+  announcements: "overview",
+  events: "events",
+};
+
 // ─── Toast component (top-center, slide-down) ────────────────────────────────
 
 function Toast({ message, type, onDismiss }) {
@@ -217,26 +238,27 @@ const TAB_TITLES = {
   profile: { title: "Profile", subtitle: "Your account settings" },
 };
 
-const FAKE_NOTIFICATIONS = [
-  { id: "n1", icon: "person_add", iconBg: "bg-emerald-100 text-emerald-600", title: "New member joined", desc: "Sarah Jenkins just signed up and is awaiting approval.", time: "2 min ago", read: false },
-  { id: "n2", icon: "event_available", iconBg: "bg-sky-100 text-sky-600", title: "Event RSVP milestone", desc: "\"Summer Rooftop Gala\" hit 50 confirmed attendees.", time: "18 min ago", read: false },
-  { id: "n3", icon: "campaign", iconBg: "bg-amber-100 text-amber-700", title: "Announcement published", desc: "Your latest announcement was sent to 124 members.", time: "1 hour ago", read: false },
-  { id: "n4", icon: "warning", iconBg: "bg-red-100 text-red-500", title: "System alert", desc: "Storage usage has reached 85% of the allocated quota.", time: "3 hours ago", read: true },
-  { id: "n5", icon: "trending_up", iconBg: "bg-violet-100 text-violet-600", title: "Weekly report ready", desc: "Club analytics for this week are now available.", time: "5 hours ago", read: true },
-  { id: "n6", icon: "group", iconBg: "bg-primary/15 text-primary", title: "Role change request", desc: "Marcus Thorne requested an upgrade to Curator role.", time: "1 day ago", read: true },
-];
-
-function AdminTopBar({ activeTab, user, unreadCount, onRefresh, refreshing }) {
+function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRefresh, refreshing }) {
   const [notifOpen, setNotifOpen] = useState(false);
-  const [fakeNotifs, setFakeNotifs] = useState(FAKE_NOTIFICATIONS);
+  const [localNotifs, setLocalNotifs] = useState([]);
   const notifRef = useRef(null);
+
+  useEffect(() => {
+    setLocalNotifs((prev) => {
+      const readIds = new Set(prev.filter((n) => n.lu).map((n) => n.id));
+      return feedNotifications.map((n) => ({
+        ...n,
+        lu: readIds.has(n.id) ? true : (n.lu ?? false),
+      }));
+    });
+  }, [feedNotifications]);
 
   const tabInfo = TAB_TITLES[activeTab] || TAB_TITLES.overview;
   const now = new Date();
   const greeting =
     now.getHours() < 12 ? "Good morning" : now.getHours() < 18 ? "Good afternoon" : "Good evening";
 
-  const fakeUnread = fakeNotifs.filter((n) => !n.read).length;
+  const feedUnread = localNotifs.filter((n) => !n.lu).length;
 
   // Click outside to close
   useEffect(() => {
@@ -250,13 +272,21 @@ function AdminTopBar({ activeTab, user, unreadCount, onRefresh, refreshing }) {
   }, [notifOpen]);
 
   const markOneRead = (id) => {
-    setFakeNotifs((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    setLocalNotifs((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, lu: true } : n))
     );
   };
 
   const markAllRead = () => {
-    setFakeNotifs((prev) => prev.map((n) => ({ ...n, read: true })));
+    setLocalNotifs((prev) => prev.map((n) => ({ ...n, lu: true })));
+  };
+
+  const handleNotifClick = (n) => {
+    markOneRead(n.id);
+    setNotifOpen(false);
+    if (n.action && onNavigateToTab) {
+      onNavigateToTab(n.action);
+    }
   };
 
   return (
@@ -297,9 +327,9 @@ function AdminTopBar({ activeTab, user, unreadCount, onRefresh, refreshing }) {
             >
               <span className="material-symbols-outlined text-[20px]">notifications</span>
             </button>
-            {fakeUnread > 0 && (
+            {feedUnread > 0 && (
               <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm pointer-events-none">
-                {fakeUnread > 9 ? "9+" : fakeUnread}
+                {feedUnread > 9 ? "9+" : feedUnread}
               </span>
             )}
 
@@ -313,13 +343,13 @@ function AdminTopBar({ activeTab, user, unreadCount, onRefresh, refreshing }) {
                 <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                   <div className="flex items-center gap-2">
                     <h3 className="font-heading text-sm font-bold text-slate-900">Notifications</h3>
-                    {fakeUnread > 0 && (
+                    {feedUnread > 0 && (
                       <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
-                        {fakeUnread}
+                        {feedUnread}
                       </span>
                     )}
                   </div>
-                  {fakeUnread > 0 && (
+                  {feedUnread > 0 && (
                     <button
                       onClick={markAllRead}
                       className="text-xs font-semibold text-primary hover:underline"
@@ -331,37 +361,53 @@ function AdminTopBar({ activeTab, user, unreadCount, onRefresh, refreshing }) {
 
                 {/* Notification list */}
                 <div className="max-h-[400px] overflow-y-auto divide-y divide-slate-50">
-                  {fakeNotifs.map((n) => (
-                    <div
-                      key={n.id}
-                      className={`flex gap-3 px-5 py-4 transition-colors cursor-pointer hover:bg-slate-50 ${
-                        !n.read ? "bg-primary/[0.03]" : ""
-                      }`}
-                      onClick={() => markOneRead(n.id)}
-                    >
+                  {localNotifs.length === 0 ? (
+                    <p className="px-5 py-8 text-center text-sm text-slate-500">
+                      Aucune notification pour le moment
+                    </p>
+                  ) : (
+                    localNotifs.map((n) => (
                       <div
-                        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${n.iconBg}`}
+                        key={n.id}
+                        role="button"
+                        tabIndex={0}
+                        className={`flex gap-3 px-5 py-4 transition-colors cursor-pointer hover:bg-slate-50 ${
+                          !n.lu ? "bg-primary/[0.03]" : ""
+                        }`}
+                        onClick={() => handleNotifClick(n)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            handleNotifClick(n);
+                          }
+                        }}
                       >
-                        <span className="material-symbols-outlined text-[18px]">{n.icon}</span>
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <p
-                            className={`text-sm leading-snug ${
-                              !n.read ? "font-semibold text-slate-900" : "font-medium text-slate-700"
-                            }`}
-                          >
-                            {n.title}
-                          </p>
-                          {!n.read && (
-                            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                          )}
+                        <div
+                          className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${n.iconBg}`}
+                        >
+                          <span className="material-symbols-outlined text-[18px]">{n.icon}</span>
                         </div>
-                        <p className="mt-0.5 text-xs text-slate-500 line-clamp-2">{n.desc}</p>
-                        <p className="mt-1 text-[10px] font-medium text-slate-400">{n.time}</p>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-2">
+                            <p
+                              className={`text-sm leading-snug ${
+                                !n.lu ? "font-semibold text-slate-900" : "font-medium text-slate-700"
+                              }`}
+                            >
+                              {n.title}
+                            </p>
+                            {!n.lu && (
+                              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                            )}
+                          </div>
+                          <p className="mt-0.5 text-xs text-slate-500 line-clamp-2">{n.desc}</p>
+                          <p className="mt-1 text-[10px] font-medium text-slate-400">
+                            {timeAgo(n.created_at)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
 
                 {/* Footer */}
@@ -430,8 +476,9 @@ function AdminDashboard() {
   const [annSubject, setAnnSubject] = useState("");
   const [annBody, setAnnBody] = useState("");
 
-  // Notifications
+  // Member notifications (DB) + admin bell feed
   const [notifications, setNotifications] = useState([]);
+  const [adminFeed, setAdminFeed] = useState([]);
 
   // Test results
   const [testResults, setTestResults] = useState([]);
@@ -468,13 +515,14 @@ function AdminDashboard() {
     async (isRefresh = false) => {
       if (isRefresh) setRefreshing(true);
       try {
-        const [statsRes, eventsRes, membersRes, annRes, notifRes, testRes] =
+        const [statsRes, eventsRes, membersRes, annRes, notifRes, feedRes, testRes] =
           await Promise.all([
             api.get("/api/admin/dashboard/stats"),
             api.get("/api/admin/events"),
             api.get("/api/admin/members"),
             api.get("/api/admin/announcements"),
             api.get("/api/admin/notifications"),
+            api.get("/api/admin/notifications/admin-feed"),
             api.get("/api/admin/tests/results"),
           ]);
 
@@ -485,6 +533,7 @@ function AdminDashboard() {
           annRes.data.map((a) => ({ id: a.id, subject: a.titre, body: a.contenu }))
         );
         setNotifications(notifRes.data);
+        setAdminFeed(feedRes.data);
         setTestResults(testRes.data);
         setError(null);
 
@@ -847,7 +896,10 @@ function AdminDashboard() {
     onToggleStatus: toggleEventStatus,
   };
 
-  const unreadNotifications = notifications.filter((n) => !n.lu).length;
+  const handleFeedNavigate = useCallback((action) => {
+    const tab = TAB_FROM_FEED_ACTION[action] || action;
+    setActiveTab(tab);
+  }, []);
 
   // ── Loading state ──
   if (loading) return <DashboardSkeleton />;
@@ -894,7 +946,8 @@ function AdminDashboard() {
         <AdminTopBar
           activeTab={activeTab}
           user={user}
-          unreadCount={unreadNotifications}
+          feedNotifications={adminFeed}
+          onNavigateToTab={handleFeedNavigate}
           onRefresh={() => fetchData(true)}
           refreshing={refreshing}
         />
@@ -1006,6 +1059,10 @@ function AdminDashboard() {
         @keyframes scaleIn {
           from { opacity: 0; transform: scale(.92); }
           to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>

@@ -34,6 +34,7 @@ router.delete('/announcements/:id',           admin, ctrl.deleteAnnouncement)
 router.patch('/announcements/:id/status',     admin, ctrl.updateAnnouncementStatus)
 
 // notifications
+router.get('/notifications/admin-feed',       admin, ctrl.getAdminFeed)
 router.get('/notifications',                  admin, ctrl.getNotifications)
 router.post('/notifications',                 admin, ctrl.sendNotification)
 router.post('/notifications/inactive-members',admin, ctrl.notifyInactiveMembers)

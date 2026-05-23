@@ -58,6 +58,10 @@ describe('Admin routes — auth and role guards', () => {
     await expectBlocked('get', '/api/admin/notifications')
   })
 
+  it('blocks /notifications/admin-feed without token or wrong role', async () => {
+    await expectBlocked('get', '/api/admin/notifications/admin-feed')
+  })
+
   it('blocks /contacts without token or wrong role', async () => {
     await expectBlocked('get', '/api/admin/contacts')
   })
