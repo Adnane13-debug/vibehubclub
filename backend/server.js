@@ -14,6 +14,8 @@ dotenv.config()
 
 const app = express()
 
+app.set('trust proxy', 1) // trust first proxy (if behind one) for correct IP in rate limiter
+
 // FIX 1: helmet adds ~12 security headers automatically (clickjacking, sniffing, etc.)
 app.use(helmet())
 
