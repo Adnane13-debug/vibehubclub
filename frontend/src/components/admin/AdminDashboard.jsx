@@ -626,6 +626,7 @@ function AdminDashboard() {
           date_debut: newDraft.date || new Date(),
           lieu: newDraft.lieu || newDraft.subtitle || "CMC OFPPT",
           categorie: newDraft.category?.toLowerCase() || "sport",
+          image: newDraft.image || null,
         });
         // Fetch the full event from the DB so `raw` is properly hydrated
         // (includes statut, id, created_at, etc.)
