@@ -4,11 +4,16 @@ import express from 'express'
 import * as ctrl from '../controllers/admin.controller.js'
 import verifyToken from '../middleware/auth.js'
 import checkRole from '../middleware/roles.js'
+import upload from '../middleware/upload.js'
+import { uploadImage } from '../controllers/admin.controller.js'
 
 const router = express.Router()
 
 // shortcut — every admin route needs these 2
 const admin = [verifyToken, checkRole('admin')]
+
+// upload image (for events/announcements) — separate route to handle Cloudinary upload
+router.post('/upload', verifyToken, isAdmin, upload.single('image'), uploadImage)
 
 // dashboard
 router.get('/dashboard/stats',                admin, ctrl.getStats)
