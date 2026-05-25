@@ -20,7 +20,12 @@ app.use(helmet())
 // FIX 2: CORS — only allow your real frontend domain
 // Change the origin below to your actual frontend URL
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    'https://vibehubclub.com',
+    'https://www.vibehubclub.com',
+    process.env.FRONTEND_URL,
+    'http://localhost:5173'
+  ],
   credentials: true
 }))
 

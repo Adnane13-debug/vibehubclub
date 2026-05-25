@@ -248,7 +248,7 @@ function ContactComponent() {
               </p>
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
-                  to="/register"
+                  to="/apply"
                   className="rounded-xl bg-primary px-9 py-3.5 text-sm font-bold text-background-dark shadow-sm transition-all duration-200 hover:-translate-y-px hover:shadow-md active:scale-[0.98]"
                 >
                   Get started free
