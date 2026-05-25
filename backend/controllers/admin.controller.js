@@ -3,6 +3,7 @@
 import db from '../config/db.js'
 import bcrypt from 'bcrypt'
 import { sendWelcomeEmail } from '../services/email.service.js'
+import { uploadToCloudinary } from '../middleware/upload.js'
 
 // GET DASHBOARD STATS
 export const getStats = async (req, res) => {
@@ -750,10 +751,9 @@ export const uploadImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' })
     }
-    // Cloudinary URL is in req.file.path
-    res.json({ url: req.file.path })
+    const result = await uploadToCloudinary(req.file.buffer)
+    res.json({ url: result.secure_url })
   } catch (err) {
     res.status(500).json({ message: 'Upload failed' })
   }
 }
- 
