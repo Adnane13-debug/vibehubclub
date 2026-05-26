@@ -206,8 +206,9 @@
     "ctaFootnote": "Pas de carte de crédit. Pas de pression. Juste votre campus, en mieux."
   },
   "eventsPage": {
-    "loading": "Chargement...",
-    "empty": "Aucun événement disponible."
+    "loading": "Chargement…",
+    "empty": "Aucun événement disponible.",
+    "noFilterMatch": "Aucun événement ne correspond à ce filtre."
   },
   "eventsHero": {
     "eyebrow": "La vie sur le campus, tout en un",

@@ -238,19 +238,26 @@ const TAB_TITLES = {
   profile: { title: "Profile", subtitle: "Your account settings" },
 };
 
-function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRefresh, refreshing }) {
+function isFeedUnread(item) {
+  return item.lu !== true && item.lu !== 1;
+}
+
+function AdminTopBar({
+  activeTab,
+  user,
+  feedNotifications,
+  onNavigateToTab,
+  onMarkFeedRead,
+  onMarkAllFeedRead,
+  onRefresh,
+  refreshing,
+}) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [localNotifs, setLocalNotifs] = useState([]);
   const notifRef = useRef(null);
 
   useEffect(() => {
-    setLocalNotifs((prev) => {
-      const readIds = new Set(prev.filter((n) => n.lu).map((n) => n.id));
-      return feedNotifications.map((n) => ({
-        ...n,
-        lu: readIds.has(n.id) ? true : (n.lu ?? false),
-      }));
-    });
+    setLocalNotifs(feedNotifications);
   }, [feedNotifications]);
 
   const tabInfo = TAB_TITLES[activeTab] || TAB_TITLES.overview;
@@ -258,7 +265,7 @@ function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRe
   const greeting =
     now.getHours() < 12 ? "Good morning" : now.getHours() < 18 ? "Good afternoon" : "Good evening";
 
-  const feedUnread = localNotifs.filter((n) => !n.lu).length;
+  const feedUnread = localNotifs.filter(isFeedUnread).length;
 
   // Click outside to close
   useEffect(() => {
@@ -271,18 +278,34 @@ function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRe
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [notifOpen]);
 
-  const markOneRead = (id) => {
+  const markOneRead = async (id) => {
     setLocalNotifs((prev) =>
       prev.map((n) => (n.id === id ? { ...n, lu: true } : n))
     );
+    if (onMarkFeedRead) {
+      try {
+        await onMarkFeedRead(id);
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
 
-  const markAllRead = () => {
+  const markAllRead = async () => {
     setLocalNotifs((prev) => prev.map((n) => ({ ...n, lu: true })));
+    if (onMarkAllFeedRead) {
+      try {
+        await onMarkAllFeedRead();
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
 
   const handleNotifClick = (n) => {
-    markOneRead(n.id);
+    if (isFeedUnread(n)) {
+      void markOneRead(n.id);
+    }
     setNotifOpen(false);
     if (n.action && onNavigateToTab) {
       onNavigateToTab(n.action);
@@ -351,7 +374,8 @@ function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRe
                   </div>
                   {feedUnread > 0 && (
                     <button
-                      onClick={markAllRead}
+                      type="button"
+                      onClick={() => void markAllRead()}
                       className="text-xs font-semibold text-primary hover:underline"
                     >
                       Mark all read
@@ -372,7 +396,7 @@ function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRe
                         role="button"
                         tabIndex={0}
                         className={`flex gap-3 px-5 py-4 transition-colors cursor-pointer hover:bg-slate-50 ${
-                          !n.lu ? "bg-primary/[0.03]" : ""
+                          isFeedUnread(n) ? "bg-primary/[0.03]" : ""
                         }`}
                         onClick={() => handleNotifClick(n)}
                         onKeyDown={(e) => {
@@ -391,12 +415,14 @@ function AdminTopBar({ activeTab, user, feedNotifications, onNavigateToTab, onRe
                           <div className="flex items-start justify-between gap-2">
                             <p
                               className={`text-sm leading-snug ${
-                                !n.lu ? "font-semibold text-slate-900" : "font-medium text-slate-700"
+                                isFeedUnread(n)
+                                  ? "font-semibold text-slate-900"
+                                  : "font-medium text-slate-700"
                               }`}
                             >
                               {n.title}
                             </p>
-                            {!n.lu && (
+                            {isFeedUnread(n) && (
                               <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
                             )}
                           </div>
@@ -901,6 +927,22 @@ function AdminDashboard() {
     setActiveTab(tab);
   }, []);
 
+  const handleMarkFeedRead = useCallback(
+    async (id) => {
+      setAdminFeed((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, lu: true } : n))
+      );
+      await api.patch("/api/admin/notifications/admin-feed/read", { id });
+    },
+    []
+  );
+
+  const handleMarkAllFeedRead = useCallback(async () => {
+    const ids = adminFeed.map((n) => n.id);
+    setAdminFeed((prev) => prev.map((n) => ({ ...n, lu: true })));
+    await api.patch("/api/admin/notifications/admin-feed/read-all", { ids });
+  }, [adminFeed]);
+
   // ── Loading state ──
   if (loading) return <DashboardSkeleton />;
 
@@ -948,6 +990,8 @@ function AdminDashboard() {
           user={user}
           feedNotifications={adminFeed}
           onNavigateToTab={handleFeedNavigate}
+          onMarkFeedRead={handleMarkFeedRead}
+          onMarkAllFeedRead={handleMarkAllFeedRead}
           onRefresh={() => fetchData(true)}
           refreshing={refreshing}
         />

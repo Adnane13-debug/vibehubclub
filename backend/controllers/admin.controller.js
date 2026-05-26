@@ -264,9 +264,34 @@ export const updateAnnouncementStatus = async (req, res) => {
   }
 }
 
+async function getAdminReadSet(adminId) {
+  try {
+    const [rows] = await db.query(
+      'SELECT item_id FROM admin_feed_reads WHERE admin_id = ?',
+      [adminId]
+    )
+    return new Set(rows.map((r) => r.item_id))
+  } catch (err) {
+    if (err.code === 'ER_NO_SUCH_TABLE') return new Set()
+    throw err
+  }
+}
+
+async function persistAdminFeedRead(adminId, itemId) {
+  await db.query(
+    'INSERT IGNORE INTO admin_feed_reads (admin_id, item_id) VALUES (?, ?)',
+    [adminId, itemId]
+  )
+
+  if (itemId === 'contacts-feed') {
+    await db.query('UPDATE contacts SET lu = 1 WHERE lu = 0')
+  }
+}
+
 // GET ADMIN NOTIFICATION FEED (bell dropdown)
 export const getAdminFeed = async (req, res) => {
   try {
+    const readSet = await getAdminReadSet(req.user.id)
     const feed = []
 
     const [requests] = await db.query(
@@ -285,7 +310,7 @@ export const getAdminFeed = async (req, res) => {
         title: r.prenom,
         desc: `${r.prenom} ${r.nom} a demandé à rejoindre le club`,
         created_at: r.created_at,
-        lu: false,
+        lu: readSet.has(`req-${r.id}`),
         action: 'members',
       })
     }
@@ -314,7 +339,7 @@ export const getAdminFeed = async (req, res) => {
         title: first.nom.split(' ')[0] || first.nom,
         desc,
         created_at: first.created_at,
-        lu: false,
+        lu: readSet.has('contacts-feed'),
         action: 'overview',
       })
     }
@@ -334,8 +359,8 @@ export const getAdminFeed = async (req, res) => {
         title: a.titre,
         desc: `Nouvelle annonce publiée : ${a.titre}`,
         created_at: a.created_at,
-        lu: false,
-        action: 'announcements',
+        lu: readSet.has(`ann-${a.id}`),
+        action: 'overview',
       })
     }
 
@@ -392,7 +417,7 @@ export const getAdminFeed = async (req, res) => {
         title: first.prenom,
         desc,
         created_at: new Date(latestAt).toISOString(),
-        lu: false,
+        lu: readSet.has(`part-${eventId}`),
         action: 'events',
       })
     }
@@ -401,6 +426,61 @@ export const getAdminFeed = async (req, res) => {
     res.json(feed)
   } catch (err) {
     console.error('getAdminFeed error:', err)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// MARK ONE ADMIN FEED ITEM AS READ
+export const markAdminFeedRead = async (req, res) => {
+  const { id } = req.body
+
+  if (!id || typeof id !== 'string') {
+    return res.status(400).json({ message: 'id is required' })
+  }
+
+  try {
+    await persistAdminFeedRead(req.user.id, id)
+    res.json({ message: 'Notification marked as read', id })
+  } catch (err) {
+    console.error('markAdminFeedRead error:', err)
+    if (err.code === 'ER_NO_SUCH_TABLE') {
+      return res.status(503).json({
+        message: 'admin_feed_reads table missing — run migrations/002_admin_feed_reads.sql',
+      })
+    }
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+// MARK ALL ADMIN FEED ITEMS AS READ
+export const markAllAdminFeedRead = async (req, res) => {
+  const { ids } = req.body
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: 'ids array is required' })
+  }
+
+  try {
+    const adminId = req.user.id
+    const values = ids.map((itemId) => [adminId, itemId])
+
+    await db.query(
+      'INSERT IGNORE INTO admin_feed_reads (admin_id, item_id) VALUES ?',
+      [values]
+    )
+
+    if (ids.includes('contacts-feed')) {
+      await db.query('UPDATE contacts SET lu = 1 WHERE lu = 0')
+    }
+
+    res.json({ message: 'All notifications marked as read' })
+  } catch (err) {
+    console.error('markAllAdminFeedRead error:', err)
+    if (err.code === 'ER_NO_SUCH_TABLE') {
+      return res.status(503).json({
+        message: 'admin_feed_reads table missing — run migrations/002_admin_feed_reads.sql',
+      })
+    }
     res.status(500).json({ message: 'Server error' })
   }
 }
