@@ -57,8 +57,8 @@ function EventsFeaturedSection({ event, apiFailed = false }) {
         className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/15 blur-3xl"
       />
 
-      <div className="relative grid grid-cols-1 gap-0 md:grid-cols-5">
-        <div className="group relative h-72 overflow-hidden rounded-t-2xl md:col-span-3 md:h-auto md:rounded-l-2xl md:rounded-tr-none">
+      <div className="relative grid grid-cols-1 gap-0 md:grid-cols-5 md:h-[22rem]">
+        <div className="group relative h-72 overflow-hidden rounded-t-2xl md:col-span-3 md:h-full md:min-h-0 md:rounded-l-2xl md:rounded-tr-none">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.03]"
             style={{ backgroundImage: FEATURED_BG_IMAGE }}
@@ -77,21 +77,25 @@ function EventsFeaturedSection({ event, apiFailed = false }) {
           </div>
         </div>
 
-        <div className="relative flex flex-col justify-center gap-5 rounded-b-2xl bg-[#221c10] px-7 py-9 md:col-span-2 md:rounded-r-2xl md:rounded-bl-none">
-          <div className="flex items-center gap-2">
-            <span className="h-px w-5 rounded-full bg-primary/50" aria-hidden />
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
-              {t("eventsFeatured.label")}
-            </span>
+        <div className="relative flex h-full min-h-0 flex-col gap-4 overflow-hidden rounded-b-2xl bg-[#221c10] px-7 py-8 md:col-span-2 md:justify-between md:rounded-r-2xl md:rounded-bl-none">
+          <div className="min-h-0 flex-shrink-0 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="h-px w-5 rounded-full bg-primary/50" aria-hidden />
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
+                {t("eventsFeatured.label")}
+              </span>
+            </div>
+
+            <h2 className="line-clamp-2 text-2xl font-black leading-snug tracking-tight text-white">
+              {title}
+            </h2>
+
+            <p className="line-clamp-3 text-sm leading-relaxed text-slate-300">
+              {description}
+            </p>
           </div>
 
-          <h2 className="text-2xl font-black leading-snug tracking-tight text-white">
-            {title}
-          </h2>
-
-          <p className="text-sm leading-relaxed text-slate-300">{description}</p>
-
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-shrink-0 flex-wrap gap-2">
             <div className="flex items-center gap-1.5 rounded-xl border border-white/5 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 shadow-sm">
               <span className="material-symbols-outlined text-[13px] text-primary">
                 calendar_today
@@ -104,7 +108,7 @@ function EventsFeaturedSection({ event, apiFailed = false }) {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3 pt-1">
+          <div className="flex flex-shrink-0 flex-wrap gap-3">
             <Link
               to={detailPath}
               className="rounded-xl bg-primary px-6 py-3 text-sm font-bold text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-px hover:shadow-md active:scale-[0.98]"

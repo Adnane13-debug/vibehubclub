@@ -12,6 +12,16 @@ function pickFeaturedEvent(list) {
   return flagged ?? list[0];
 }
 
+function getEventsGridClass(count) {
+  if (count === 1) {
+    return "mx-auto grid w-full max-w-md grid-cols-1 gap-8";
+  }
+  if (count === 2) {
+    return "mx-auto grid w-full max-w-3xl grid-cols-1 gap-8 sm:grid-cols-2";
+  }
+  return "grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3";
+}
+
 function EventsPage() {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState("all");
@@ -44,6 +54,11 @@ function EventsPage() {
       ? publishedEvents
       : publishedEvents.filter((e) => e.categorie?.toLowerCase() === activeFilter);
 
+  const gridClass = useMemo(
+    () => getEventsGridClass(filteredEvents.length),
+    [filteredEvents.length]
+  );
+
   if (loading) {
     return <div className="p-8 text-center">{t("eventsPage.loading")}</div>;
   }
@@ -56,9 +71,15 @@ function EventsPage() {
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
         />
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className={gridClass}>
           {publishedEvents.length === 0 ? (
-            <p className="text-slate-500">{t("eventsPage.empty")}</p>
+            <p className="col-span-full text-center text-slate-500 py-8">
+              {t("eventsPage.empty")}
+            </p>
+          ) : filteredEvents.length === 0 ? (
+            <p className="col-span-full text-center text-slate-500 py-8">
+              {t("eventsPage.noFilterMatch")}
+            </p>
           ) : (
             filteredEvents.map((event) => (
               <EventCard key={event.id} event={event} />

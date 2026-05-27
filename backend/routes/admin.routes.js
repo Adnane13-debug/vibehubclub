@@ -39,6 +39,8 @@ router.patch('/announcements/:id/status',     admin, ctrl.updateAnnouncementStat
 
 // notifications
 router.get('/notifications/admin-feed',       admin, ctrl.getAdminFeed)
+router.patch('/notifications/admin-feed/read', admin, ctrl.markAdminFeedRead)
+router.patch('/notifications/admin-feed/read-all', admin, ctrl.markAllAdminFeedRead)
 router.get('/notifications',                  admin, ctrl.getNotifications)
 router.post('/notifications',                 admin, ctrl.sendNotification)
 router.post('/notifications/inactive-members',admin, ctrl.notifyInactiveMembers)

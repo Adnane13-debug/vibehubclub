@@ -206,8 +206,9 @@
     "ctaFootnote": "No credit card. No pressure. Just your campus, better."
   },
   "eventsPage": {
-    "loading": "Chargement...",
-    "empty": "Aucun événement disponible."
+    "loading": "Loading…",
+    "empty": "No events available.",
+    "noFilterMatch": "No events match this filter."
   },
   "eventsHero": {
     "eyebrow": "Campus life, all in one place",
