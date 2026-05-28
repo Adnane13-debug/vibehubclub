@@ -5,6 +5,8 @@ import cors         from 'cors'
 import helmet       from 'helmet'           // FIX: security headers
 import rateLimit    from 'express-rate-limit' // FIX: brute-force protection
 import dotenv       from 'dotenv'
+import passport     from 'passport'
+import './config/passport.js'
 import authRoutes   from './routes/auth.routes.js'
 import publicRoutes from './routes/public.routes.js'
 import adminRoutes  from './routes/admin.routes.js'
@@ -13,6 +15,8 @@ import memberRoutes from './routes/member.routes.js'
 dotenv.config()
 
 const app = express()
+
+app.use(passport.initialize())
 
 // FIX 1: helmet adds ~12 security headers automatically (clickjacking, sniffing, etc.)
 app.use(helmet())

@@ -1,17 +1,31 @@
 import { useTranslation } from "react-i18next";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../auth/AuthContext'
+import GoogleAuthButton from '../../../components/shared/GoogleAuthButton'
+import { OrDivider } from '../../../components/shared/GoogleAuthButton'
 
 function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const { login, loginWithToken } = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('token')
+    if (!token) return
+    window.history.replaceState({}, '', '/login')
+    loginWithToken(token).then(user => {
+      if (user.role === 'admin') navigate('/admin', { replace: true })
+      else if (user.role === 'membre') navigate('/profile', { replace: true })
+      else navigate('/visitor', { replace: true })
+    }).catch(() => setError('Erreur de connexion Google'))
+  }, [loginWithToken, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -98,6 +112,9 @@ function LoginPage() {
               {loading ? 'Connexion…' : 'Se connecter'}
             </button>
           </form>
+
+          <OrDivider />
+          <GoogleAuthButton mode="login" label="Se connecter avec Google" />
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Pas encore membre ?{' '}

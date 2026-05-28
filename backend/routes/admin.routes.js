@@ -13,7 +13,7 @@ const router = express.Router()
 const admin = [verifyToken, checkRole('admin')]
 
 // upload image (for events/announcements) — separate route to handle Cloudinary upload
-router.post('/upload', verifyToken, isAdmin, upload.single('image'), uploadImage)
+router.post('/upload', admin, upload.single('image'), uploadImage)
 
 // dashboard
 router.get('/dashboard/stats',                admin, ctrl.getStats)

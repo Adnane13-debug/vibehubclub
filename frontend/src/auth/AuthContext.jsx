@@ -20,8 +20,22 @@ export function AuthProvider({ children }) {
     }
   })
 
+  const loginWithToken = useCallback(async (token) => {
+    localStorage.setItem('vibehub_token', token)
+    const res = await api.get('/api/auth/me')
+    setUser(res.data)
+    localStorage.setItem('vibehub_user', JSON.stringify(res.data))
+    return res.data
+  }, [])
+
   // Fetch fresh user data on mount if token exists
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const googleToken = urlParams.get('token')
+    if (googleToken) {
+      return
+    }
+
     const token = localStorage.getItem('vibehub_token')
     if (token) {
       api.get('/api/auth/me')
@@ -64,9 +78,10 @@ export function AuthProvider({ children }) {
       role: user?.role ?? null,
       isAuthenticated: Boolean(user),
       login,
+      loginWithToken,
       logout,
     }),
-    [user, login, logout]
+    [user, login, loginWithToken, logout]
   )
 
   return (
