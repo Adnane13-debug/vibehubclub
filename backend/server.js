@@ -16,6 +16,8 @@ dotenv.config()
 
 const app = express()
 
+app.set('trust proxy', 1)
+
 app.use(passport.initialize())
 
 // FIX 1: helmet adds ~12 security headers automatically (clickjacking, sniffing, etc.)
@@ -24,7 +26,12 @@ app.use(helmet())
 // FIX 2: CORS — only allow your real frontend domain
 // Change the origin below to your actual frontend URL
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    'https://vibehubclub.com',
+    'https://www.vibehubclub.com',
+    process.env.FRONTEND_URL,
+    'http://localhost:5173'
+  ],
   credentials: true
 }))
 
