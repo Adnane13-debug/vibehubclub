@@ -30,7 +30,7 @@ function MbtiCard({ type, onSave, value, onChange }) {
     <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-heading text-base font-bold text-slate-900">Personality</h3>
-        <a href="https://bit.ly/CMC-Personality-Test" target="_blank" rel="noreferrer"
+        <a href="https://www.16personalities.com/free-personality-test" target="_blank" rel="noreferrer"
           className="text-xs font-semibold text-amber-600 hover:underline flex items-center gap-1">
           <span className="material-symbols-outlined text-[14px]">open_in_new</span>Take test
         </a>
