@@ -16,7 +16,6 @@ import LoginPage from "../../features/auth/pages/LoginPage";
 import ApplyPage from "../../features/apply/pages/ApplyPage";
 import ProfilePage from "../../features/profile/pages/ProfilePage";
 import AdminPage from "../../features/admin/pages/AdminPage";
-import VisitorPage from "../../features/visitor/pages/VisitorPage";
 
 function AppRouter() {
   return (
@@ -43,14 +42,6 @@ function AppRouter() {
             element={
               <ProtectedRoute roles={["admin"]}>
                 <AdminPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/visitor"
-            element={
-              <ProtectedRoute roles={["visiteur"]}>
-                <VisitorPage />
               </ProtectedRoute>
             }
           />
