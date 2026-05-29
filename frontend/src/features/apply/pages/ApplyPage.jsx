@@ -1,7 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from '../../../services/api'
+import GoogleAuthButton from '../../../components/shared/GoogleAuthButton'
+import { OrDivider } from '../../../components/shared/GoogleAuthButton'
 
 function ApplyPage() {
   const { t } = useTranslation();
@@ -13,6 +15,20 @@ function ApplyPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [googlePrefilled, setGooglePrefilled] = useState(false);
+  const [notRegistered, setNotRegistered] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('google') === '1') {
+      setNom(params.get('nom') || '')
+      setPrenom(params.get('prenom') || '')
+      setEmail(params.get('email') || '')
+      setGooglePrefilled(true)
+      setNotRegistered(params.get('notRegistered') === '1')
+      window.history.replaceState({}, '', '/apply')
+    }
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,6 +138,20 @@ function ApplyPage() {
             </div>
           )}
 
+          {notRegistered && (
+            <div className="mb-4 flex items-center gap-2 rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              <span className="material-symbols-outlined text-[18px]">info</span>
+              Aucun compte associé à cet email. Complétez votre demande d&apos;adhésion ci-dessous.
+            </div>
+          )}
+
+          {googlePrefilled && (
+            <div className="mb-4 flex items-center gap-2 rounded-xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-700">
+              <span className="material-symbols-outlined text-[18px]">check_circle</span>
+              Informations récupérées depuis Google — vérifiez et soumettez.
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Nom / Prénom row */}
             <div className="grid grid-cols-2 gap-3">
@@ -164,9 +194,10 @@ function ApplyPage() {
                 type="email"
                 required
                 maxLength={255}
+                readOnly={googlePrefilled}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className={`w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 ${googlePrefilled ? 'bg-slate-50 cursor-not-allowed' : 'bg-white'}`}
                 placeholder="alex@example.com"
               />
             </div>
@@ -194,6 +225,9 @@ function ApplyPage() {
               {loading ? t("apply.submitting") : t("apply.submit")}
             </button>
           </form>
+
+          <OrDivider />
+          <GoogleAuthButton mode="apply" label="Postuler avec Google" />
 
           <p className="mt-6 text-center text-sm text-slate-500">
             {t("apply.alreadyMember")}{" "}

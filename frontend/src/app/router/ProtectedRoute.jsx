@@ -5,8 +5,10 @@ import { useAuth } from "../../auth/AuthContext";
  * @param {{ children: React.ReactNode, roles?: string[] }} props
  */
 function ProtectedRoute({ children, roles }) {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
   const location = useLocation();
+
+  if (loading) return null
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;

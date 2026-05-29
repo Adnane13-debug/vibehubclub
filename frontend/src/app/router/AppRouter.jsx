@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GoogleOAuthCallback } from "../../auth/GoogleOAuthCallback";
 import MainLayout from "../../layouts/MainLayout";
 import AuthLayout from "../../layouts/AuthLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -15,11 +16,11 @@ import LoginPage from "../../features/auth/pages/LoginPage";
 import ApplyPage from "../../features/apply/pages/ApplyPage";
 import ProfilePage from "../../features/profile/pages/ProfilePage";
 import AdminPage from "../../features/admin/pages/AdminPage";
-import VisitorPage from "../../features/visitor/pages/VisitorPage";
 
 function AppRouter() {
   return (
     <BrowserRouter>
+      <GoogleOAuthCallback>
       <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
@@ -44,14 +45,6 @@ function AppRouter() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/visitor"
-            element={
-              <ProtectedRoute roles={["visiteur"]}>
-                <VisitorPage />
-              </ProtectedRoute>
-            }
-          />
         </Route>
 
         <Route element={<AuthLayout />}>
@@ -61,6 +54,7 @@ function AppRouter() {
           <Route path="/apply" element={<ApplyPage />} />
         </Route>
       </Routes>
+      </GoogleOAuthCallback>
     </BrowserRouter>
   );
 }
