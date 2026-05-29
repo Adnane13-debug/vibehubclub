@@ -39,7 +39,7 @@ function AboutCtaSection() {
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
               {/* Primary CTA — dominant */}
               <Link
-                to="/register"
+                to="/apply"
                 className="group relative w-full overflow-hidden rounded-xl bg-primary px-9 py-3.5 text-sm font-bold text-background-dark shadow-sm transition-all duration-200 hover:shadow-md hover:brightness-105 active:scale-[0.98] sm:w-auto"
               >
                 <span className="relative z-10">{t("aboutCta.getStarted")}</span>

@@ -4,8 +4,7 @@ import express from 'express'
 import * as ctrl from '../controllers/admin.controller.js'
 import verifyToken from '../middleware/auth.js'
 import checkRole from '../middleware/roles.js'
-import upload from '../middleware/upload.js'
-import { uploadImage } from '../controllers/admin.controller.js'
+import { upload } from '../middleware/upload.js'
 
 const router = express.Router()
 
@@ -13,7 +12,7 @@ const router = express.Router()
 const admin = [verifyToken, checkRole('admin')]
 
 // upload image (for events/announcements) — separate route to handle Cloudinary upload
-router.post('/upload', admin, upload.single('image'), uploadImage)
+router.post('/upload',                        ...admin, upload.single('image'), ctrl.uploadImage)
 
 // dashboard
 router.get('/dashboard/stats',                admin, ctrl.getStats)
