@@ -27,7 +27,7 @@ export function GoogleOAuthCallback({ children }) {
       .then((user) => {
         if (user.role === 'admin') navigate('/admin', { replace: true })
         else if (user.role === 'membre') navigate('/profile', { replace: true })
-        else navigate('/visitor', { replace: true })
+        else navigate('/apply', { replace: true })
       })
       .catch(() => navigate('/login', { replace: true }))
       .finally(() => setProcessing(false))

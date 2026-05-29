@@ -20,6 +20,10 @@ export function AuthProvider({ children }) {
     }
   })
 
+  const [loading, setLoading] = useState(() => {
+    return Boolean(localStorage.getItem('vibehub_token'))
+  })
+
   const loginWithToken = useCallback(async (token) => {
     localStorage.setItem('vibehub_token', token)
     const res = await api.get('/api/auth/me')
@@ -46,6 +50,9 @@ export function AuthProvider({ children }) {
           localStorage.removeItem('vibehub_user')
           setUser(null)
         })
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(false)
     }
   }, [])
 
@@ -77,11 +84,12 @@ export function AuthProvider({ children }) {
       user,
       role: user?.role ?? null,
       isAuthenticated: Boolean(user),
+      loading,
       login,
       loginWithToken,
       logout,
     }),
-    [user, login, loginWithToken, logout]
+    [user, loading, login, loginWithToken, logout]
   )
 
   return (

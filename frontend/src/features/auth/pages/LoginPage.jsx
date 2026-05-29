@@ -15,18 +15,6 @@ function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const token = params.get('token')
-    if (!token) return
-    window.history.replaceState({}, '', '/login')
-    loginWithToken(token).then(user => {
-      if (user.role === 'admin') navigate('/admin', { replace: true })
-      else if (user.role === 'membre') navigate('/profile', { replace: true })
-      else navigate('/visitor', { replace: true })
-    }).catch(() => setError('Erreur de connexion Google'))
-  }, [loginWithToken, navigate])
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -41,7 +29,7 @@ function LoginPage() {
       } else if (user.role === 'membre') {
         navigate('/profile', { replace: true })
       } else {
-        navigate('/visitor', { replace: true })
+        navigate('/apply', { replace: true })
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Email ou mot de passe incorrect')
