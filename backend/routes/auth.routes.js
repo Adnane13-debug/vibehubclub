@@ -27,7 +27,7 @@ router.get('/google/callback',
     const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173'
     const state = req.query.state || 'login'
 
-    // APPLY MODE — don't create session, redirect with prefill params
+    // Not registered or apply mode — redirect to membership form with prefill
     if (user._applyMode || state === 'apply') {
       const params = new URLSearchParams({
         nom: user.nom || '',
@@ -35,6 +35,9 @@ router.get('/google/callback',
         email: user.email || '',
         google: '1',
       })
+      if (state === 'login' && user._applyMode) {
+        params.set('notRegistered', '1')
+      }
       return res.redirect(`${frontendURL}/apply?${params.toString()}`)
     }
 

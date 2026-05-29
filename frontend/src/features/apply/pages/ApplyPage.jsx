@@ -16,6 +16,7 @@ function ApplyPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [googlePrefilled, setGooglePrefilled] = useState(false);
+  const [notRegistered, setNotRegistered] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -24,6 +25,7 @@ function ApplyPage() {
       setPrenom(params.get('prenom') || '')
       setEmail(params.get('email') || '')
       setGooglePrefilled(true)
+      setNotRegistered(params.get('notRegistered') === '1')
       window.history.replaceState({}, '', '/apply')
     }
   }, [])
@@ -133,6 +135,13 @@ function ApplyPage() {
           {error && (
             <div className="mb-5 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600">
               {error}
+            </div>
+          )}
+
+          {notRegistered && (
+            <div className="mb-4 flex items-center gap-2 rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              <span className="material-symbols-outlined text-[18px]">info</span>
+              Aucun compte associé à cet email. Complétez votre demande d&apos;adhésion ci-dessous.
             </div>
           )}
 

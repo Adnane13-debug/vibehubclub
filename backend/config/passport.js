@@ -26,19 +26,8 @@ passport.use(new GoogleStrategy(
         return done(null, rows[0])
       }
 
-      // Only auto-create user if mode is NOT 'apply'
-      // For apply mode, we don't create — just pass profile data
-      if (req.query.state && req.query.state.startsWith('apply')) {
-        return done(null, { _applyMode: true, nom, prenom, email })
-      }
-
-      // Auto-create for login mode (new Google user becomes visiteur)
-      await db.query(
-        'INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)',
-        [nom, prenom, email, null, 'visiteur']
-      )
-      const [newRows] = await db.query('SELECT * FROM utilisateurs WHERE email = ?', [email])
-      return done(null, newRows[0])
+      // Not registered — no DB insert; redirect to membership application with prefill
+      return done(null, { _applyMode: true, nom, prenom, email })
     } catch (err) {
       return done(err, null)
     }
